@@ -54,7 +54,7 @@ export function Dashboard() {
                       Authorization: localStorage.getItem("token")
                     }
                   });
-                  const shareUrl = `http://localhost:5173/share/${response.data.hash}`;
+                  const shareUrl = `${BACKEND_URL}/share/${response.data.hash}`;
                   navigator.clipboard.writeText(shareUrl)
                     .then(() => alert(`Link copied to clipboard!\n${shareUrl}`))
                     .catch(() => alert("Failed to copy link."));
