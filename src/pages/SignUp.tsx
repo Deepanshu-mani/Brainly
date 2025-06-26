@@ -40,6 +40,15 @@ export function SignUp() {
             onClick={signup}
           />
         </div>
+        <div className="text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <button
+            className="text-blue-600 hover:text-blue-800 font-medium"
+            onClick={() => navigate('/signin')}
+          >
+            Sign In
+          </button>
+        </div>
       </div>
     </div>
   );
