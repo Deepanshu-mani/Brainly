@@ -12,7 +12,7 @@ export function Share() {
 
   useEffect(() => {
     if (shareId) {
-      axios.get(`https://brainly-backendd.onrender.com/api/v1/brain/${shareId}`)
+      axios.get(`${BACKEND_URL}/api/v1/brain/${shareId}`)
         .then((res) => {
           setData(res.data);
         })
