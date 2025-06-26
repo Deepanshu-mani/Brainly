@@ -2,7 +2,7 @@ import { Card } from "../components/ui/Card";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+const BACKEND_URL = window.location.origin.replace("vercel.app", "onrender.com");
 import { Sidebar } from "../components/ui/Sidebar";
 
 export function Share() {
