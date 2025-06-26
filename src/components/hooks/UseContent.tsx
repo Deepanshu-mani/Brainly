@@ -11,20 +11,20 @@ export type Content = {
 
 export function UseContent() {
     const [contents, setContents] = useState<Content[]>([]);
-
-    function refresh() {
-        axios.get(`${BACKEND_URL}/api/v1/content`, {
-            headers : {
-                Authorization : localStorage.getItem("token")
+    const refresh = () => {
+        return axios.get(`${BACKEND_URL}/api/v1/content`, {
+            headers: {
+                Authorization: localStorage.getItem("token")
             }
         })
-        .then ((response) => {
-            setContents(response.data.content)
+        .then((res) => {
+            setContents(res.data.content);
         })
     }
-    useEffect(( )=> {
+
+    useEffect(() => {
         refresh();
-        let interval = setInterval( () =>{
+        let interval = setInterval(() => {
             refresh()
         },10*1000 )
         return () =>  clearInterval(interval)

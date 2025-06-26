@@ -9,6 +9,7 @@ export function Share() {
   const { shareId } = useParams();
   const [data, setData] = useState<{ username: string; content: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"twitter" | "youtube" | "all">("all");
 
   useEffect(() => {
     if (shareId) {
@@ -30,18 +31,21 @@ export function Share() {
 
   return (
     <div className="ml-[15rem] min-h-screen bg-gray-100 overflow-y-auto overflow-x-hidden">
-        <Sidebar filter="all" setFilter={() => {}} />
+        <Sidebar filter={filter} setFilter={setFilter} />
       <div className="w-full max-w-[1200px] mx-auto px-4 pt-10">
         <h2 className="text-2xl font-semibold mb-4 text-center">Shared by {data.username}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
-          {data.content.map((item, idx) => (
-            <Card
-              key={idx}
-              title={item.title || "Untitled"}
-              link={item.link}
-              type={item.type}
-            />
-          ))}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 pb-10">
+          {data.content
+            .filter(item => filter === "all" || item.type === filter)
+            .map((item, idx) => (
+              <div key={idx} className="break-inside-avoid">
+                <Card
+                  title={item.title || "Untitled"}
+                  link={item.link}
+                  type={item.type}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>

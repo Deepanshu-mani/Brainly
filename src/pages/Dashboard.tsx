@@ -13,14 +13,16 @@ export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'twitter' | 'youtube'>('all');
   const { contents, refresh } = UseContent();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    refresh();
+    setLoading(true);
+    refresh().finally(() => setLoading(false));
   }, [modalOpen]);
 
   const filteredContents = filter === 'all' 
-    ? contents 
-    : contents.filter(content => content.type === filter);
+    ? contents || []
+    : contents?.filter(content => content.type === filter) || [];
 
   return (
     <FilterContext.Provider value={{ filter, setFilter }}>
@@ -54,7 +56,8 @@ export function Dashboard() {
                       Authorization: localStorage.getItem("token")
                     }
                   });
-                  const shareUrl = `https://brainly-9lwi.vercel.app/share/${response.data.hash}`;
+                  // const shareUrl = `${BACKEND_URL}/share/${response.data.hash}`;
+                  const shareUrl = `${window.location.origin}/share/${response.data.hash}`;
                   navigator.clipboard.writeText(shareUrl)
                     .then(() => alert(`Link copied to clipboard!\n${shareUrl}`))
                     .catch(() => alert("Failed to copy link."));
@@ -62,30 +65,42 @@ export function Dashboard() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
-              {filteredContents.map((content, index) => (
-                <Card
-                  key={index}
-                  type={content.type}
-                  link={content.link}
-                  title={content.title}
-                  onDelete={() => {
-                    axios.delete(`${BACKEND_URL}/api/v1/content/${content._id}`, {
-                      headers: {
-                        Authorization: localStorage.getItem("token")
-                      }
-                    }).then(() => {
-                      refresh();
-                    }).catch(() => {
-                      alert("Failed to delete content");
-                    });
-                  }}
-                />
-              ))}
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 pb-10">
+              {loading ? (
+                <div className="col-span-3 text-center py-8">Loading...</div>
+              ) : filteredContents.length === 0 ? (
+                <div className="col-span-3 text-center py-8">No content found</div>
+              ) : (
+                <>
+                  {filteredContents.map((content, index) => (
+                    <div key={index} className="break-inside-avoid">
+                      <Card
+                        type={content.type}
+                        link={content.link}
+                        title={content.title}
+                        onDelete={() => {
+                          axios.delete(`${BACKEND_URL}/api/v1/content`, {
+                            data: {
+                              contentId: content._id
+                            },
+                            headers: {
+                              Authorization: localStorage.getItem("token")
+                            }
+                          }).then(() => {
+                            refresh();
+                          }).catch(() => {
+                            alert("Failed to delete content");
+                          });
+                        }}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
       </>
     </FilterContext.Provider>
-  );
+  ); 
 }
