@@ -54,8 +54,7 @@ export function Dashboard() {
                       Authorization: localStorage.getItem("token")
                     }
                   });
-                  // const shareUrl = `${BACKEND_URL}/share/${response.data.hash}`;
-                  const shareUrl = `${window.location.origin}/share/${response.data.hash}`;
+                  const shareUrl = `https://brainly-9lwi.vercel.app/share/${response.data.hash}`;
                   navigator.clipboard.writeText(shareUrl)
                     .then(() => alert(`Link copied to clipboard!\n${shareUrl}`))
                     .catch(() => alert("Failed to copy link."));
