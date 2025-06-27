@@ -40,7 +40,7 @@ export function SignIn() {
         <div className="absolute top-40 left-40 w-60 h-60 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-500"></div>
       </div>
 
-      <div className="relative bg-white/80 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8 w-full max-w-md space-y-6 mx-auto transform hover:scale-105 transition-all duration-300">
+      <div className="relative bg-white/80 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8 w-full max-w-md space-y-6 mx-auto transition-all duration-300">
         {/* Logo and Title */}
         <div className="text-center space-y-4">
           <div className="flex justify-center">
@@ -75,7 +75,6 @@ export function SignIn() {
               fullWidth={true} 
               loading={loading}
               onClick={signin}
-              hover={true}
             />
           </div>
         </div>
@@ -97,6 +96,16 @@ export function SignIn() {
           >
             Create your account →
           </button>
+
+          {/* Terms and Privacy */}
+          <div className="text-xs text-gray-500 space-y-2">
+            <p>
+              By signing in, you agree to our{' '}
+              <button className="text-purple-600 hover:underline">Terms of Service</button>
+              {' '}and{' '}
+              <button className="text-purple-600 hover:underline">Privacy Policy</button>
+            </p>
+          </div>
         </div>
       </div>
     </div>

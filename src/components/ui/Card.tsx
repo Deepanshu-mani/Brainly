@@ -3,42 +3,45 @@ import { ShareIcnon } from "./icons/ShareIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
 import { DeleteIcon } from "./icons/DeleteIcon";
+
 interface CardProps {
   title: string;
   link: string;
   type: "youtube" | "twitter";
   onDelete?: () => void;
 }
+
 export function Card({ title, link, type, onDelete }: CardProps) {
   useEffect(() => {
     if (type === "twitter" && window.twttr && window.twttr.widgets) {
       window.twttr.widgets.load();
     }
   }, [link, type]);
+
   return (
-    <div>
-      <div className="bg-white rounded-md shadow-sm border border-gray-100 flex w-[22rem] flex-col mt-7 ml-5">
-        <div className="flex px-4 py-3 justify-between items-center">
-          <div className=" text-gray-500 flex items-center gap-2">
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300">
+      <div className="flex px-6 py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+        <div className="text-gray-700 flex items-center gap-3 font-medium">
+          <div className={`p-2 rounded-lg ${type === "twitter" ? "bg-blue-100" : "bg-red-100"}`}>
             {type === "twitter" ? <TwitterIcon /> : <YoutubeIcon />}
-            {title}
           </div>
-          <div className="flex text-gray-500 gap-4">
-            <div>
-              <a href={link} target="_blank"></a>
-              <ShareIcnon />
-            </div>
-           {
-            onDelete && (
-              <button onClick={onDelete}>
-                 <DeleteIcon />
-              </button>
-            )
-           }
-          </div>
+          <span className="truncate max-w-[200px]">{title}</span>
         </div>
-        {type === "youtube" && (
-          <div className=" flex mx-auto p-4">
+        <div className="flex text-gray-500 gap-3">
+          <a href={link} target="_blank" rel="noopener noreferrer" className="hover:text-purple-600 transition-colors">
+            <ShareIcnon />
+          </a>
+          {onDelete && (
+            <button onClick={onDelete} className="hover:text-red-500 transition-colors">
+              <DeleteIcon />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {type === "youtube" && (
+        <div className="p-4">
+          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={link.replace("watch?v=", "embed/")}
               title="YouTube video player"
@@ -46,18 +49,19 @@ export function Card({ title, link, type, onDelete }: CardProps) {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
-            ></iframe>
+              className="absolute top-0 left-0 w-full h-full rounded-lg"
+            />
           </div>
-        )}
+        </div>
+      )}
 
-        {type === "twitter" && (
-          <div className="p-4">
-            <blockquote className="twitter-tweet">
-              <a href={link.replace("x.com", "twitter.com")}></a>
-            </blockquote>
-          </div>
-        )}
-      </div>
+      {type === "twitter" && (
+        <div className="p-4">
+          <blockquote className="twitter-tweet">
+            <a href={link.replace("x.com", "twitter.com")}></a>
+          </blockquote>
+        </div>
+      )}
     </div>
   );
 }

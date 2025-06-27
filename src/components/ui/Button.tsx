@@ -27,8 +27,8 @@ export function Button({
   const classes =
     variantClasses[variant] +
     " " +
-    "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2 transform" +
-    (loading ? " opacity-60 cursor-not-allowed" : hover ? " hover:scale-[0.98] active:scale-95" : "") +
+    "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2" +
+    (loading ? " opacity-60 cursor-not-allowed" : "") +
     (fullWidth ? " w-full" : "");
   
   return (

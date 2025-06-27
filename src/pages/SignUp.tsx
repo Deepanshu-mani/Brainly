@@ -43,7 +43,7 @@ export function SignUp() {
         <div className="absolute top-40 left-40 w-60 h-60 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse delay-500"></div>
       </div>
 
-      <div className="relative bg-white/80 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8 w-full max-w-md space-y-6 mx-auto transform hover:scale-105 transition-all duration-300">
+      <div className="relative bg-white/80 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8 w-full max-w-md space-y-6 mx-auto transition-all duration-300">
         {/* Logo and Title */}
         <div className="text-center space-y-4">
           <div className="flex justify-center">
@@ -83,7 +83,6 @@ export function SignUp() {
               fullWidth={true}
               loading={loading}
               onClick={signup}
-              hover={true}
             />
           </div>
         </div>
@@ -110,9 +109,9 @@ export function SignUp() {
         {/* Terms */}
         <p className="text-xs text-gray-500 text-center leading-relaxed">
           By creating an account, you agree to our{' '}
-          <span className="text-blue-600 hover:underline cursor-pointer">Terms of Service</span>
+          <button className="text-blue-600 hover:underline">Terms of Service</button>
           {' '}and{' '}
-          <span className="text-blue-600 hover:underline cursor-pointer">Privacy Policy</span>
+          <button className="text-blue-600 hover:underline">Privacy Policy</button>
         </p>
       </div>
     </div>
