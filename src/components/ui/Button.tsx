@@ -7,7 +7,7 @@ interface ButtonProps {
   onClick?: () => void;
   fullWidth?: boolean;
   loading?: boolean;
-  hover?: boolean;
+  // hover?: boolean;
 }
 
 const variantClasses = {
@@ -22,7 +22,7 @@ export function Button({
   fullWidth,
   onClick,
   loading,
-  hover,
+  // hover,
 }: ButtonProps) {
   const classes =
     variantClasses[variant] +
