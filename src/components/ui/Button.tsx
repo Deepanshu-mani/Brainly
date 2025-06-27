@@ -11,8 +11,8 @@ interface ButtonProps {
 }
 
 const variantClasses = {
-  primary: "bg-purple-600 text-white",
-  secondary: "bg-purple-200 text-purple-600",
+  primary: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl",
+  secondary: "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 text-purple-700 shadow-md hover:shadow-lg",
 };
 
 export function Button({
@@ -21,21 +21,26 @@ export function Button({
   startIcon,
   fullWidth,
   onClick,
-  loading ,
+  loading,
   hover,
 }: ButtonProps) {
   const classes =
     variantClasses[variant] +
     " " +
-    "px-4 py-2 rounded-md font-light flex items-center justify-center transition duration-200 gap-2 all-ease" +
-    (loading ? " opacity-40" : hover ? " hover:scale-95" : "") +
+    "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2 transform" +
+    (loading ? " opacity-60 cursor-not-allowed" : hover ? " hover:scale-[0.98] active:scale-95" : "") +
     (fullWidth ? " w-full" : "");
+  
   return (
     <button
       onClick={onClick}
-      className={classes} disabled={loading}
+      className={classes} 
+      disabled={loading}
     >
-      {startIcon}
+      {loading && (
+        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+      )}
+      {!loading && startIcon}
       <span>{text}</span>
     </button>
   );
