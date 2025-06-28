@@ -41,27 +41,27 @@ A modern, responsive web application that allows users to bookmark and organize 
 ### 🔐 Authentication Pages
 
 #### Sign Up
-![Sign Up Page](https://via.placeholder.com/800x600/3b82f6/ffffff?text=Sign+Up+Page)
+![Sign Up Page](./public/screenshots/signup.png)
 *Clean and modern signup form with gradient background*
 
 #### Sign In
-![Sign In Page](https://via.placeholder.com/800x600/8b5cf6/ffffff?text=Sign+In+Page)
+![Sign In Page](./public/screenshots/signin.png)
 *Streamlined signin experience with animated background elements*
 
 ### 📊 Dashboard
-![Dashboard](https://via.placeholder.com/800x600/6366f1/ffffff?text=Dashboard+View)
+![Dashboard Desktop](./public/screenshots/dashboard-desktop.png)
 *Main dashboard showing content cards, statistics, and filtering options*
 
 #### Mobile Dashboard
-![Mobile Dashboard](https://via.placeholder.com/400x800/6366f1/ffffff?text=Mobile+Dashboard)
+![Mobile Dashboard](./public/screenshots/dashboard-mobile.png)
 *Responsive mobile layout with collapsible sidebar*
 
 ### 🔗 Share Page
-![Share Page](https://via.placeholder.com/800x600/10b981/ffffff?text=Share+Page)
+![Share Page](./public/screenshots/share-page.png)
 *Public view of shared content collections*
 
 ### 🎯 Content Management
-![Add Content Modal](https://via.placeholder.com/600x400/f59e0b/ffffff?text=Add+Content+Modal)
+![Add Content Modal](./public/screenshots/add-content-modal.png)
 *Modal for adding new YouTube videos and Twitter posts*
 
 ## 🚀 Getting Started
@@ -75,7 +75,7 @@ A modern, responsive web application that allows users to bookmark and organize 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Deepanshu-Mani/brainly-frontend.git
+   git clone https://github.com/yourusername/brainly-frontend.git
    cd brainly-frontend
    ```
 
