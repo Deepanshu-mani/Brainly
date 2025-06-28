@@ -37,7 +37,7 @@ export function Sidebar({
       
       {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 h-full bg-white border-r-2 border-gray-200 z-50 transition-transform duration-300 ease-in-out
+        sticky top-0 left-0 h-screen bg-white border-r-2 border-gray-200 z-50 transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:z-auto
         w-64
