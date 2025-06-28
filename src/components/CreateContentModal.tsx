@@ -46,13 +46,13 @@ export function CreateContentModal({ open, onClose }: {
   return (
     <div>
       {open && (
-        <div className="w-screen h-screen fixed top-0 left-0 bg-black/50 flex items-center justify-center backdrop-blur-sm z-50">
-          <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-8 w-full max-w-md mx-4">
+        <div className="w-screen h-screen fixed top-0 left-0 bg-black/50 flex items-center justify-center backdrop-blur-sm z-50 p-4">
+          <div className="bg-white/95 backdrop-blur-lg rounded-2xl border border-white/20 shadow-2xl p-6 sm:p-8 w-full max-w-md mx-4">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
+              <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent">
                 Add Content
               </h2>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors p-1">
                 <CrossIcon />
               </button>
             </div>
@@ -70,7 +70,7 @@ export function CreateContentModal({ open, onClose }: {
 
               <div className="space-y-3">
                 <label className="text-sm font-medium text-gray-700 block">Content Type</label>
-                <div className="flex gap-3">
+                <div className="flex gap-2 sm:gap-3">
                   <Button 
                     text="YouTube" 
                     variant={type === ContentType.Youtube ? "primary" : "secondary"}  

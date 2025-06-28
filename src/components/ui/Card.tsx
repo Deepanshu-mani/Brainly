@@ -20,19 +20,27 @@ export function Card({ title, link, type, onDelete }: CardProps) {
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300">
-      <div className="flex px-6 py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-        <div className="text-gray-700 flex items-center gap-3 font-medium">
-          <div className={`p-2 rounded-lg ${type === "twitter" ? "bg-blue-100" : "bg-red-100"}`}>
+      <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+        <div className="text-gray-700 flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1">
+          <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${type === "twitter" ? "bg-blue-100" : "bg-red-100"}`}>
             {type === "twitter" ? <TwitterIcon /> : <YoutubeIcon />}
           </div>
-          <span className="truncate max-w-[200px]">{title}</span>
+          <span className="truncate text-sm sm:text-base">{title}</span>
         </div>
-        <div className="flex text-gray-500 gap-3">
-          <a href={link} target="_blank" rel="noopener noreferrer" className="hover:text-purple-600 transition-colors">
+        <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0">
+          <a 
+            href={link} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-purple-600 transition-colors p-1"
+          >
             <ShareIcnon />
           </a>
           {onDelete && (
-            <button onClick={onDelete} className="hover:text-red-500 transition-colors">
+            <button 
+              onClick={onDelete} 
+              className="hover:text-red-500 transition-colors p-1"
+            >
               <DeleteIcon />
             </button>
           )}
@@ -40,7 +48,7 @@ export function Card({ title, link, type, onDelete }: CardProps) {
       </div>
 
       {type === "youtube" && (
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={link.replace("watch?v=", "embed/")}
@@ -56,7 +64,7 @@ export function Card({ title, link, type, onDelete }: CardProps) {
       )}
 
       {type === "twitter" && (
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           <blockquote className="twitter-tweet">
             <a href={link.replace("x.com", "twitter.com")}></a>
           </blockquote>
