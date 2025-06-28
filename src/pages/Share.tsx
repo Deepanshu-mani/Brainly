@@ -64,7 +64,7 @@ export function Share() {
       />
       
       {/* Main Content */}
-      <div className="flex-1 min-h-screen overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 lg:ml-64 min-h-screen overflow-y-auto overflow-x-hidden">
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
           {/* Mobile Header */}
           <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30">
