@@ -1,7 +1,7 @@
 # 🧠 Brainly - Personal Content Dashboard
 
 A modern, responsive web application that allows users to bookmark and organize their favorite YouTube videos and Twitter/X posts in one centralized dashboard. Built as a demonstration project showcasing full-stack web development skills.
-![Logo](./public/logo.png)
+
 
 ## ✨ Features
 
