@@ -2,7 +2,7 @@
 
 A modern, responsive web application that allows users to bookmark and organize their favorite YouTube videos and Twitter/X posts in one centralized dashboard. Built as a demonstration project showcasing full-stack web development skills.
 
-![Brainly Logo](https://via.placeholder.com/120x120/6366f1/ffffff?text=🧠)
+![Brainly Logo](./public/logo.svg)
 
 ## ✨ Features
 
@@ -52,9 +52,6 @@ A modern, responsive web application that allows users to bookmark and organize 
 ![Dashboard Desktop](./public/screenshots/dashboard-desktop.png)
 *Main dashboard showing content cards, statistics, and filtering options*
 
-#### Mobile Dashboard
-![Mobile Dashboard](./public/screenshots/dashboard-mobile.png)
-*Responsive mobile layout with collapsible sidebar*
 
 ### 🔗 Share Page
 ![Share Page](./public/screenshots/share-page.png)
