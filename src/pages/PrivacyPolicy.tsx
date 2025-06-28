@@ -28,61 +28,125 @@ export function PrivacyPolicy() {
 
         {/* Content */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-8 space-y-8">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+            <h3 className="font-semibold text-amber-800 mb-3">⚠️ Demo Project Notice</h3>
+            <p className="text-amber-700 leading-relaxed">
+              <strong>This is a demonstration project for educational and portfolio purposes only.</strong> 
+              While we take privacy seriously, please use test data only and avoid entering real personal information. 
+              Data may be reset or cleared as part of the demo environment.
+            </p>
+          </div>
+
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">1. Introduction</h2>
             <p className="text-gray-700 leading-relaxed">
               This Privacy Policy explains how Brainly ("the App") handles your information. 
-              We are committed to protecting your privacy and being transparent about our data practices. 
-              This is a personal project that prioritizes user privacy by design.
+              This is a personal demonstration project created for educational and portfolio purposes. 
+              We are committed to being transparent about our data practices in this demo environment.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Information We Do NOT Collect</h2>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-4">
-              <h3 className="font-semibold text-green-800 mb-3">✅ Zero Data Collection Policy</h3>
-              <p className="text-green-700 leading-relaxed">
-                We do not collect, store, transmit, or process any personal information on external servers. 
-                Your privacy is completely protected.
-              </p>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">2. Information We Collect</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              For demonstration purposes, this app collects and stores the following information in our MongoDB database:
+            </p>
+            
+            <div className="space-y-4">
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">👤 Account Information</h3>
+                <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                  <li>Username (for display and identification)</li>
+                  <li>Email address (for account creation and authentication)</li>
+                  <li>Password (encrypted/hashed for security)</li>
+                  <li>Account creation date</li>
+                </ul>
+              </div>
+              
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">📚 Content Data</h3>
+                <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                  <li>Bookmarked YouTube video URLs and titles</li>
+                  <li>Saved Twitter/X post URLs and titles</li>
+                  <li>Content organization and tags</li>
+                  <li>Timestamps of when content was added</li>
+                </ul>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">⚙️ Usage Data</h3>
+                <ul className="list-disc list-inside text-gray-700 space-y-1 text-sm">
+                  <li>User preferences and settings</li>
+                  <li>Content filtering preferences</li>
+                  <li>Share link generation data</li>
+                </ul>
+              </div>
             </div>
-            <p className="text-gray-700 leading-relaxed mb-4">Specifically, we do NOT collect:</p>
-            <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
-              <li>Personal identification information (name, email, phone number)</li>
-              <li>Account credentials or login information</li>
-              <li>Browsing history or usage analytics</li>
-              <li>IP addresses or location data</li>
-              <li>Device information or browser fingerprints</li>
-              <li>Cookies for tracking purposes</li>
-              <li>Any form of personal or behavioral data</li>
-            </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. Local Data Storage</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">3. How We Use Your Information</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>Browser Local Storage:</strong> All your bookmarks, preferences, and app data are stored exclusively 
-              in your browser's local storage on your device. This data never leaves your device.
-            </p>
-            <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>What's Stored Locally:</strong>
+              In this demonstration environment, we use your information to:
             </p>
             <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
-              <li>YouTube video URLs and titles you've bookmarked</li>
-              <li>Twitter/X post URLs and titles you've saved</li>
-              <li>Your content organization and filtering preferences</li>
-              <li>App settings and display preferences</li>
+              <li>Provide user authentication and account management features</li>
+              <li>Store and organize your bookmarked content</li>
+              <li>Enable content sharing functionality</li>
+              <li>Demonstrate the app's features and capabilities</li>
+              <li>Maintain the functionality of the demo application</li>
             </ul>
             <p className="text-gray-700 leading-relaxed mt-4">
-              <strong>Your Control:</strong> You have complete control over this data. You can clear it at any time 
-              through your browser settings or by clearing the app's data.
+              <strong>We do NOT:</strong> Sell, share, or use your data for commercial purposes, advertising, or marketing.
             </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Third-Party Embedded Content</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">4. Data Storage and Security</h2>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-4">
+              <h3 className="font-semibold text-blue-800 mb-3">🗄️ Database Storage</h3>
+              <p className="text-blue-700 leading-relaxed">
+                Your data is stored in a MongoDB database hosted for demonstration purposes. 
+                We implement basic security measures including password encryption and secure connections.
+              </p>
+            </div>
+            
             <p className="text-gray-700 leading-relaxed mb-4">
-              The app displays embedded content from third-party platforms:
+              <strong>Security Measures:</strong>
+            </p>
+            <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
+              <li>Passwords are hashed and encrypted before storage</li>
+              <li>Database connections use secure protocols</li>
+              <li>Access to the database is restricted</li>
+              <li>Regular security updates and monitoring</li>
+            </ul>
+            
+            <p className="text-gray-700 leading-relaxed mt-4">
+              <strong>Demo Environment Limitations:</strong> As this is a demonstration project, 
+              security measures may not be at enterprise level. Please use test data only.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. Data Retention and Deletion</h2>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-4">
+              <h3 className="font-semibold text-yellow-800 mb-3">⏰ Demo Data Policy</h3>
+              <p className="text-yellow-700 leading-relaxed">
+                As this is a demonstration project, data may be periodically cleared or reset without notice 
+                for maintenance, updates, or demonstration purposes. Do not rely on long-term data persistence.
+              </p>
+            </div>
+            
+            <p className="text-gray-700 leading-relaxed">
+              You can delete your account and associated data at any time through the app interface. 
+              However, due to the demo nature of this project, we may also reset the entire database periodically.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. Third-Party Services and Embeds</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              The app integrates with third-party services that may collect their own data:
             </p>
             
             <div className="space-y-4">
@@ -102,90 +166,76 @@ export function PrivacyPolicy() {
                 </p>
               </div>
             </div>
-            
-            <p className="text-gray-700 leading-relaxed mt-4">
-              <strong>Important:</strong> We recommend reviewing the privacy policies of YouTube and Twitter/X 
-              to understand how they handle embedded content.
-            </p>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">5. No User Accounts or Registration</h2>
-            <p className="text-gray-700 leading-relaxed">
-              The app does not require user registration, account creation, or any form of authentication. 
-              There are no usernames, passwords, or personal profiles. Your bookmarks are tied only to your specific browser and device.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">6. No Analytics or Tracking</h2>
-            <p className="text-gray-700 leading-relaxed">
-              We do not use any analytics services, tracking pixels, or monitoring tools. 
-              There are no Google Analytics, Facebook Pixel, or similar tracking technologies implemented in this app.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Data Security</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">7. Sharing Your Information</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Since all data is stored locally on your device:
+              We do not sell, trade, or share your personal information with third parties, except:
             </p>
             <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
-              <li>Your data security depends on your device and browser security</li>
-              <li>We recommend keeping your browser and device updated</li>
-              <li>Consider using browser security features and extensions</li>
-              <li>Be cautious when using the app on shared or public computers</li>
+              <li>When you explicitly choose to share content collections through the app's sharing feature</li>
+              <li>If required by law or legal process</li>
+              <li>To protect the rights, property, or safety of the demo project</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">8. Data Backup and Loss</h2>
-            <p className="text-gray-700 leading-relaxed">
-              Since data is stored locally, you are responsible for backing up your bookmarks if desired. 
-              Data may be lost if you clear browser data, uninstall the browser, or experience device issues. 
-              We cannot recover lost data as we do not have access to it.
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">8. Your Rights and Choices</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              In this demo environment, you have the right to:
             </p>
+            <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
+              <li>Access your stored data through the app interface</li>
+              <li>Update or modify your account information</li>
+              <li>Delete your bookmarked content</li>
+              <li>Delete your account and associated data</li>
+              <li>Request information about your stored data</li>
+            </ul>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">9. Children's Privacy</h2>
             <p className="text-gray-700 leading-relaxed">
-              Since we do not collect any personal information, the app is safe for users of all ages. 
-              However, parents should be aware that the app displays content from YouTube and Twitter/X, 
-              which may have their own age restrictions and content policies.
+              This demo app is not intended for children under 13. We do not knowingly collect personal information from children under 13. 
+              If you are a parent or guardian and believe your child has provided us with personal information, 
+              please contact us to have the information removed.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">10. International Users</h2>
             <p className="text-gray-700 leading-relaxed">
-              Since no data is transmitted or stored on external servers, there are no international data transfer concerns. 
-              All data remains on your local device regardless of your location.
+              This is a demonstration project and may not comply with all international data protection regulations. 
+              If you are accessing this demo from outside the United States, please be aware that your information 
+              may be transferred to and stored in the United States.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">11. Changes to This Privacy Policy</h2>
             <p className="text-gray-700 leading-relaxed">
-              We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date. 
-              Since we don't collect contact information, we cannot notify users directly of changes.
+              We may update this Privacy Policy from time to time as the demo project evolves. 
+              Any changes will be posted on this page with an updated date. 
+              Continued use of the app after changes constitutes acceptance of the updated policy.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">12. Contact Information</h2>
             <p className="text-gray-700 leading-relaxed">
-              This is a personal project. For questions about this Privacy Policy, 
+              This is a personal demonstration project. For questions about this Privacy Policy or your data, 
               please refer to the project's documentation or repository.
             </p>
           </section>
 
           <div className="border-t border-gray-200 pt-8 mt-8">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-800 mb-3">🔒 Privacy Summary</h3>
-              <p className="text-blue-700 leading-relaxed">
-                <strong>Your privacy is our priority.</strong> We don't collect, store, or transmit any personal data. 
-                Everything stays on your device. You have complete control over your information.
+            <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
+              <h3 className="font-semibold text-purple-800 mb-3">🔒 Privacy Summary for Demo Project</h3>
+              <p className="text-purple-700 leading-relaxed">
+                <strong>Demo Environment:</strong> This is a demonstration project. We collect basic account and content data 
+                to showcase app functionality. Please use test data only. Data may be reset periodically. 
+                We do not use your data for commercial purposes.
               </p>
             </div>
           </div>
