@@ -109,9 +109,19 @@ export function SignUp() {
         {/* Terms */}
         <p className="text-xs text-gray-500 text-center leading-relaxed">
           By creating an account, you agree to our{' '}
-          <button className="text-blue-600 hover:underline">Terms of Service</button>
+          <button 
+            className="text-blue-600 hover:underline"
+            onClick={() => navigate('/terms')}
+          >
+            Terms of Service
+          </button>
           {' '}and{' '}
-          <button className="text-blue-600 hover:underline">Privacy Policy</button>
+          <button 
+            className="text-blue-600 hover:underline"
+            onClick={() => navigate('/privacy')}
+          >
+            Privacy Policy
+          </button>
         </p>
       </div>
     </div>

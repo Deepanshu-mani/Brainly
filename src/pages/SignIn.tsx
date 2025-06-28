@@ -101,9 +101,19 @@ export function SignIn() {
           <div className="text-xs text-gray-500 space-y-2">
             <p>
               By signing in, you agree to our{' '}
-              <button className="text-purple-600 hover:underline">Terms of Service</button>
+              <button 
+                className="text-purple-600 hover:underline"
+                onClick={() => navigate('/terms')}
+              >
+                Terms of Service
+              </button>
               {' '}and{' '}
-              <button className="text-purple-600 hover:underline">Privacy Policy</button>
+              <button 
+                className="text-purple-600 hover:underline"
+                onClick={() => navigate('/privacy')}
+              >
+                Privacy Policy
+              </button>
             </p>
           </div>
         </div>
