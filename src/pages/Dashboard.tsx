@@ -39,7 +39,7 @@ export function Dashboard() {
         />
         
         {/* Main Content */}
-        <div className="flex-1 lg:ml-64 min-h-screen overflow-y-auto overflow-x-hidden">
+        <div className="flex-1 min-h-screen overflow-y-auto overflow-x-hidden">
           <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
             <CreateContentModal
               open={modalOpen}
