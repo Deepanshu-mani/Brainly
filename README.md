@@ -75,7 +75,7 @@ A modern, responsive web application that allows users to bookmark and organize 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/brainly-frontend.git
+   git clone https://github.com/Deepanshu-Mani/brainly-frontend.git
    cd brainly-frontend
    ```
 
