@@ -5,6 +5,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { Sidebar } from "../components/ui/Sidebar";
 import { MenuIcon } from "../components/ui/icons/MenuIcon";
+import { BrainIcon } from "../components/ui/icons/BrainIcon";
 
 export function Share() {
   const { shareId } = useParams();
@@ -63,7 +64,7 @@ export function Share() {
       />
       
       {/* Main Content */}
-      <div className="flex-1 lg:ml-64 min-h-screen overflow-y-auto overflow-x-hidden">
+      <div className="flex-1 min-h-screen overflow-y-auto overflow-x-hidden">
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
           {/* Mobile Header */}
           <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30">
@@ -74,10 +75,8 @@ export function Share() {
               <MenuIcon />
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 fill-current text-purple-600" viewBox="0 0 48 48">
-                  <path d="M11 5.34c-.12 1 .26.66-1 .66a7 7 0 0 0-5.15 11.75 7 7 0 0 0-2.23 10.73 12.14 12.14 0 0 0-2.56 8.74C1 46.59 12.33 51.56 19.31 45A11.66 11.66 0 0 0 23 36.51V6.22c0-7.79-11.14-8.36-12-.88z"/>
-                </svg>
+              <div className="w-8 h-8 flex items-center justify-center">
+                <BrainIcon />
               </div>
               <span className="text-xl font-bold text-purple-600">Brainly</span>
             </div>

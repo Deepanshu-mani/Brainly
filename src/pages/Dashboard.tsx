@@ -54,8 +54,8 @@ export function Dashboard() {
               >
                 <MenuIcon />
               </button>
-              <div className="flex justify-center items-center gap-4">
-                <div className="w-5 h-5">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 flex items-center justify-center">
                   <BrainIcon />
                 </div>
                 <span className="text-xl font-bold text-purple-600">Brainly</span>
