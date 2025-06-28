@@ -1,6 +1,7 @@
 import { PlusIcon } from "../components/ui/icons/PlusIcon";
 import { ShareIcnon } from "../components/ui/icons/ShareIcon";
 import { MenuIcon } from "../components/ui/icons/MenuIcon";
+import { BrainIcon } from "../components/ui/icons/BrainIcon";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { CreateContentModal } from "../components/CreateContentModal";
@@ -55,8 +56,7 @@ export function Dashboard() {
               </button>
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 fill-current text-purple-600" viewBox="0 0 48 48">
-                    <path d="M11 5.34c-.12 1 .26.66-1 .66a7 7 0 0 0-5.15 11.75 7 7 0 0 0-2.23 10.73 12.14 12.14 0 0 0-2.56 8.74C1 46.59 12.33 51.56 19.31 45A11.66 11.66 0 0 0 23 36.51V6.22c0-7.79-11.14-8.36-12-.88z"/>
+                  <BrainIcon />
                   </svg>
                 </div>
                 <span className="text-xl font-bold text-purple-600">Brainly</span>
