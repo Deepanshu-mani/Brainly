@@ -57,7 +57,6 @@ export function Dashboard() {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8">
                   <BrainIcon />
-                  </svg>
                 </div>
                 <span className="text-xl font-bold text-purple-600">Brainly</span>
               </div>
