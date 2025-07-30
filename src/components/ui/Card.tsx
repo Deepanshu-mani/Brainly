@@ -19,27 +19,27 @@ export function Card({ title, link, type, onDelete }: CardProps) {
   }, [link, type]);
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300">
-      <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-        <div className="text-gray-700 flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1">
-          <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${type === "twitter" ? "bg-blue-100" : "bg-red-100"}`}>
+    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl">
+      <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 dark:from-dark-surface dark:to-dark-surface-alt dark:border-dark-border">
+        <div className="text-gray-700 flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1 dark:text-dark-text">
+          <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${type === "twitter" ? "bg-blue-100 dark:bg-blue-900/30" : "bg-red-100 dark:bg-red-900/30"}`}>
             {type === "twitter" ? <TwitterIcon /> : <YoutubeIcon />}
           </div>
           <span className="truncate text-sm sm:text-base">{title}</span>
         </div>
-        <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0">
+        <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0 dark:text-dark-text-muted">
           <a 
             href={link} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="hover:text-purple-600 transition-colors p-1"
+            className="hover:text-purple-600 transition-colors p-1 dark:hover:text-dark-primary"
           >
             <ShareIcnon />
           </a>
           {onDelete && (
             <button 
               onClick={onDelete} 
-              className="hover:text-red-500 transition-colors p-1"
+              className="hover:text-red-500 transition-colors p-1 dark:hover:text-dark-error"
             >
               <DeleteIcon />
             </button>

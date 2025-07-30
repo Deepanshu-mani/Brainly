@@ -11,8 +11,8 @@ interface ButtonProps {
 }
 
 const variantClasses = {
-  primary: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl",
-  secondary: "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 text-purple-700 shadow-md hover:shadow-lg",
+  primary: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl dark:from-dark-primary dark:to-dark-primary dark:hover:from-dark-primary-hover dark:hover:to-dark-primary-hover",
+  secondary: "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 text-purple-700 shadow-md hover:shadow-lg dark:from-dark-surface dark:to-dark-surface-alt dark:hover:from-dark-surface-alt dark:hover:to-dark-border dark:text-dark-text dark:border dark:border-dark-border",
 };
 
 export function Button({
