@@ -5,7 +5,7 @@ export function PrivacyPolicy() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
@@ -14,23 +14,23 @@ export function PrivacyPolicy() {
               <BrainIcon />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-4 dark:from-dark-primary dark:to-dark-primary-hover">
             Privacy Policy
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base">Last updated: {new Date().toLocaleDateString()}</p>
+          <p className="text-gray-600 text-sm sm:text-base dark:text-dark-text-muted">Last updated: {new Date().toLocaleDateString()}</p>
           <button
             onClick={() => navigate(-1)}
-            className="mt-4 text-purple-600 hover:text-purple-800 font-medium hover:underline text-sm sm:text-base"
+            className="mt-4 text-purple-600 hover:text-purple-800 font-medium hover:underline text-sm sm:text-base dark:text-dark-primary dark:hover:text-dark-primary-hover"
           >
             ← Back
           </button>
         </div>
 
         {/* Content */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-6 sm:p-8 space-y-6 sm:space-y-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-6 sm:p-8 space-y-6 sm:space-y-8 dark:bg-dark-surface/80 dark:border-dark-border">
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
-            <h3 className="font-semibold text-amber-800 mb-3 text-sm sm:text-base">⚠️ Demo Project Notice</h3>
-            <p className="text-amber-700 leading-relaxed text-sm sm:text-base">
+            <h3 className="font-semibold text-amber-800 mb-3 text-sm sm:text-base dark:text-amber-200">⚠️ Demo Project Notice</h3>
+            <p className="text-amber-700 leading-relaxed text-sm sm:text-base dark:text-amber-300">
               <strong>This is a demonstration project for educational and portfolio purposes only.</strong> 
               While we take privacy seriously, please use test data only and avoid entering real personal information. 
               Data may be reset or cleared as part of the demo environment.

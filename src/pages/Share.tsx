@@ -31,10 +31,10 @@ export function Share() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading shared content...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-200 border-t-purple-600 mx-auto mb-4 dark:border-dark-border dark:border-t-dark-primary"></div>
+          <p className="text-gray-600 dark:text-dark-text-muted">Loading shared content...</p>
         </div>
       </div>
     );
@@ -42,10 +42,10 @@ export function Share() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 flex items-center justify-center dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
         <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Content Not Found</h2>
-          <p className="text-gray-600">The shared content you're looking for doesn't exist or has been removed.</p>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2 dark:text-dark-text">Content Not Found</h2>
+          <p className="text-gray-600 dark:text-dark-text-muted">The shared content you're looking for doesn't exist or has been removed.</p>
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export function Share() {
   const filteredContent = data.content.filter(item => filter === "all" || item.type === filter);
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50">
+    <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
       {/* Sidebar */}
       <Sidebar 
         filter={filter} 
@@ -67,10 +67,10 @@ export function Share() {
       <div className="flex-1 min-h-screen overflow-y-auto overflow-x-hidden">
         <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
           {/* Mobile Header */}
-          <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30">
+          <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30 dark:border-dark-border dark:bg-dark-surface/80">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors dark:hover:bg-dark-surface-alt dark:text-dark-text"
             >
               <MenuIcon />
             </button>
@@ -78,7 +78,7 @@ export function Share() {
               <div className="w-8 h-8 flex items-center justify-center">
                 <BrainIcon />
               </div>
-              <span className="text-xl font-bold text-purple-600">Brainly</span>
+              <span className="text-xl font-bold text-purple-600 dark:text-dark-primary">Brainly</span>
             </div>
             <div className="w-10"></div> {/* Spacer for centering */}
           </div>
@@ -86,10 +86,10 @@ export function Share() {
           {/* Header */}
           <div className="pt-4 lg:pt-10 pb-6">
             <div className="text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-2 dark:from-dark-primary dark:to-dark-primary-hover">
                 Shared by {data.username}
               </h2>
-              <p className="text-gray-600 text-sm sm:text-base">
+              <p className="text-gray-600 text-sm sm:text-base dark:text-dark-text-muted">
                 {filteredContent.length} {filter === 'all' ? 'items' : filter} shared
               </p>
             </div>
