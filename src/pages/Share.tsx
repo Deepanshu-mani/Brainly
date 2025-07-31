@@ -16,7 +16,7 @@ export function Share() {
 
   useEffect(() => {
     if (shareId) {
-      axios.get(`${BACKEND_URL}/api/v1/brain/${shareId}`)
+      axios.get(`${BACKEND_URL}/brain/${shareId}`)
         .then((res) => {
           setData(res.data);
         })

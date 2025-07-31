@@ -5,6 +5,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { BrainIcon } from "../components/ui/icons/BrainIcon";
+import { TestCred } from "../components/TestCred";
 
 export function SignIn() {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -17,7 +18,7 @@ export function SignIn() {
     try {
       const email = emailRef.current?.value;
       const password = passwordRef.current?.value;
-      const response = await axios.post(BACKEND_URL + "/api/v1/signin", {
+      const response = await axios.post(BACKEND_URL + "/user/signin", {
         email,
         password,
       });
@@ -54,7 +55,9 @@ export function SignIn() {
             </h1>
             <p className="text-gray-600 mt-2 text-sm sm:text-base dark:text-dark-text-muted">Sign in to your Brainly account</p>
           </div>
+          <TestCred emailRef={emailRef} passwordRef={passwordRef} /> 
         </div>
+        
 
         {/* Form */}
         <div className="space-y-4">

@@ -12,7 +12,7 @@ export type Content = {
 export function UseContent() {
     const [contents, setContents] = useState<Content[]>([]);
     const refresh = () => {
-        return axios.get(`${BACKEND_URL}/api/v1/content`, {
+        return axios.get(`${BACKEND_URL}/content`, {
             headers: {
                 Authorization: localStorage.getItem("token")
             }

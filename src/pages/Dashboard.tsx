@@ -1,3 +1,4 @@
+import Masonry from 'react-masonry-css';
 import { PlusIcon } from "../components/ui/icons/PlusIcon";
 import { ShareIcnon } from "../components/ui/icons/ShareIcon";
 import { MenuIcon } from "../components/ui/icons/MenuIcon";
@@ -95,7 +96,7 @@ export function Dashboard() {
                       startIcon={<ShareIcnon />}
                       onClick={async () => {
                         try {
-                          const response = await axios.post(`${BACKEND_URL}/api/v1/brain/share`, {
+                          const response = await axios.post(`${BACKEND_URL}/brain/share`, {
                             share: true
                           }, {
                             headers: {
@@ -129,7 +130,7 @@ export function Dashboard() {
                     startIcon={<ShareIcnon />}
                     onClick={async () => {
                       try {
-                        const response = await axios.post(`${BACKEND_URL}/api/v1/brain/share`, {
+                        const response = await axios.post(`${BACKEND_URL}/brain/share`, {
                           share: true
                         }, {
                           headers: {
@@ -227,21 +228,26 @@ export function Dashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+                <Masonry
+                  breakpointCols={{
+                    default: 3,
+                    1280: 3,
+                    1024: 2,
+                    640: 1
+                  }}
+                  className="flex gap-4"
+                  columnClassName="masonry-column"
+                >
                   {filteredContents.map((content, index) => (
-                    <div key={index} className="w-full">
+                    <div key={index} className="mb-4">
                       <Card
                         type={content.type}
                         link={content.link}
                         title={content.title}
                         onDelete={() => {
-                          axios.delete(`${BACKEND_URL}/api/v1/content`, {
-                            data: {
-                              contentId: content._id
-                            },
-                            headers: {
-                              Authorization: localStorage.getItem("token")
-                            }
+                          axios.delete(`${BACKEND_URL}/content`, {
+                            data: { contentId: content._id },
+                            headers: { Authorization: localStorage.getItem("token") }
                           }).then(() => {
                             refresh();
                           }).catch(() => {
@@ -251,7 +257,7 @@ export function Dashboard() {
                       />
                     </div>
                   ))}
-                </div>
+                </Masonry>
               )}
             </div>
           </div>
