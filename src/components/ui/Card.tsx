@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ShareIcnon } from "./icons/ShareIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
@@ -12,11 +12,19 @@ interface CardProps {
 }
 
 export function Card({ title, link, type, onDelete }: CardProps) {
+  const [mounted, setMounted] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
   useEffect(() => {
-    if (type === "twitter" && window.twttr && window.twttr.widgets) {
+    setMounted(true);
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  useEffect(() => {
+    if (type === "twitter" && mounted && window.twttr?.widgets) {
       window.twttr.widgets.load();
     }
-  }, [link, type]);
+  }, [link, type, mounted, isDark]);
 
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl">
@@ -63,10 +71,14 @@ export function Card({ title, link, type, onDelete }: CardProps) {
         </div>
       )}
 
-      {type === "twitter" && (
+    {type === "twitter" && mounted && (
         <div className="p-3 sm:p-4">
-          <blockquote className="twitter-tweet">
-            <a href={link? link.replace("x.com", "twitter.com") : "#"}></a>
+          <blockquote
+            className="twitter-tweet"
+            key={`tweet-${isDark ? "dark" : "light"}-${link}`}
+            data-theme={isDark ? "dark" : "light"}
+          >
+            <a href={link ? link.replace("x.com", "twitter.com") : "#"}></a>
           </blockquote>
         </div>
       )}
