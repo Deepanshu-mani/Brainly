@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { BrainIcon } from "../components/ui/icons/BrainIcon";
+import { BrainIcon } from "../ui/icons/BrainIcon";
 
 export function TermsOfService() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export function TermsOfService() {
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <div className="flex justify-center mb-4 sm:mb-6">
-            <div className="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl shadow-lg">
+            <div className="p-2 sm:p-3 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl shadow-lg dark:from-dark-primary dark:to-dark-primary-hover">
               <BrainIcon />
             </div>
           </div>
@@ -20,17 +20,17 @@ export function TermsOfService() {
           <p className="text-gray-600 text-sm sm:text-base dark:text-dark-text-muted">Last updated: {new Date().toLocaleDateString()}</p>
           <button
             onClick={() => navigate(-1)}
-            className="mt-4 text-purple-600 hover:text-purple-800 font-medium hover:underline text-sm sm:text-base dark:text-dark-primary dark:hover:text-dark-primary-hover"
+            className="mt-4 text-purple-600 hover:text-purple-800 font-medium hover:underline text-sm sm:text-base dark:text-dark-primary dark:hover:text-dark-primary-hover transition-colors"
           >
             ← Back
           </button>
         </div>
 
         {/* Content */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-6 sm:p-8 space-y-6 sm:space-y-8 dark:bg-dark-surface/80 dark:border-dark-border">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-white/20 shadow-lg p-6 sm:p-8 space-y-6 sm:space-y-8 dark:bg-dark-surface/90 dark:border-dark-border">
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8 dark:bg-amber-900/20 dark:border-amber-800/50">
             <h3 className="font-semibold text-amber-800 mb-3 text-sm sm:text-base dark:text-amber-200">⚠️ Demo Project Notice</h3>
-            <p className="text-amber-700 leading-relaxed text-sm sm:text-base dark:text-amber-300">
+            <p className="text-amber-700 leading-relaxed text-sm sm:text-base dark:text-amber-200">
               <strong>This is a demonstration project for educational and portfolio purposes only.</strong> 
               This is not a commercial service and is provided for testing and showcase purposes. 
               Use at your own discretion and do not store sensitive or important information.
@@ -46,11 +46,11 @@ export function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">2. Description of Service</h2>
-            <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4 dark:text-dark-text">2. Description of Service</h2>
+            <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base dark:text-dark-text-muted">
               Brainly is a demonstration web application that allows users to:
             </p>
-            <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4 text-sm sm:text-base">
+            <ul className="list-disc list-inside text-gray-700 dark:text-dark-text-muted space-y-2 ml-4 text-sm sm:text-base">
               <li>Create user accounts for testing purposes</li>
               <li>Bookmark and organize YouTube videos and Twitter/X posts</li>
               <li>Create a personal content library for demonstration</li>
@@ -60,10 +60,10 @@ export function TermsOfService() {
           </section>
 
           <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">3. Demo Project Status</h2>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6 mb-4">
-              <h3 className="font-semibold text-blue-800 mb-3 text-sm sm:text-base">📋 Important Disclaimers</h3>
-              <ul className="list-disc list-inside text-blue-700 space-y-2 text-sm sm:text-base">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4 dark:text-dark-text">3. Demo Project Status</h2>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 sm:p-6 mb-4 dark:bg-blue-900/10 dark:border-blue-800/30">
+              <h3 className="font-semibold text-blue-800 mb-3 text-sm sm:text-base dark:text-blue-300">📋 Important Disclaimers</h3>
+              <ul className="list-disc list-inside text-blue-700 space-y-2 text-sm sm:text-base dark:text-blue-200">
                 <li><strong>Not a Commercial Service:</strong> This app is a personal project for demonstration purposes</li>
                 <li><strong>No Service Guarantees:</strong> No uptime, availability, or data persistence guarantees</li>
                 <li><strong>Educational Purpose:</strong> Created to showcase web development skills and technologies</li>
@@ -74,27 +74,27 @@ export function TermsOfService() {
 
           {/* Continue with remaining sections... */}
           <section>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4">4. Data Storage and Privacy</h2>
-            <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
-              <strong>Database Storage:</strong> User data including accounts, bookmarks, and preferences are stored in a MongoDB database 
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-3 sm:mb-4 dark:text-dark-text">4. Data Storage and Privacy</h2>
+            <p className="text-gray-700 dark:text-dark-text-muted leading-relaxed mb-4 text-sm sm:text-base">
+              <strong className="dark:text-dark-text">Database Storage:</strong> User data including accounts, bookmarks, and preferences are stored in a MongoDB database 
               for demonstration purposes. This data is used solely to showcase the application's functionality.
             </p>
-            <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
-              <strong>User Accounts:</strong> The app requires user registration to demonstrate authentication features. 
+            <p className="text-gray-700 dark:text-dark-text-muted leading-relaxed mb-4 text-sm sm:text-base ">
+              <strong className="dark:text-dark-text">User Accounts:</strong> The app requires user registration to demonstrate authentication features. 
               Please use test data only and avoid using real personal information.
             </p>
-            <p className="text-gray-700 leading-relaxed mb-4 text-sm sm:text-base">
-              <strong>Data Retention:</strong> As this is a demo project, data may be periodically cleared or the database may be reset 
+            <p className="text-gray-700 dark:text-dark-text-muted leading-relaxed mb-4 text-sm sm:text-base ">
+              <strong className="dark:text-dark-text">Data Retention:</strong> As this is a demo project, data may be periodically cleared or the database may be reset 
               without notice for maintenance or demonstration purposes.
             </p>
-            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-              <strong>Third-Party Content:</strong> The app displays embedded content from YouTube and Twitter/X. 
+            <p className="text-gray-700 dark:text-dark-text-muted leading-relaxed text-sm sm:text-base ">
+              <strong className="dark:text-dark-text">Third-Party Content:</strong> The app displays embedded content from YouTube and Twitter/X. 
               These embeds are subject to the respective platforms' terms of service and privacy policies.
             </p>
           </section>
 
-          <div className="border-t border-gray-200 pt-6 sm:pt-8 mt-6 sm:mt-8">
-            <p className="text-xs sm:text-sm text-gray-500 text-center leading-relaxed">
+          <div className="border-t border-gray-200 dark:border-dark-border pt-6 sm:pt-8 mt-6 sm:mt-8">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-dark-text-muted text-center leading-relaxed">
               By using Brainly, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service, 
               and that you understand this is a demonstration project for educational and portfolio purposes only.
             </p>

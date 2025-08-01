@@ -1,6 +1,6 @@
-import { CrossIcon } from "./ui/icons/CrossIcon";
-import { Button } from "./ui/Button";
-import { Input } from "./ui/Input";
+import { CrossIcon } from "../ui/icons/CrossIcon";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
@@ -16,6 +16,7 @@ export function CreateContentModal({ open, onClose }: {
 }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
+  const tagsRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState(ContentType.Youtube);
   const [loading, setLoading] = useState(false);
 
@@ -24,11 +25,15 @@ export function CreateContentModal({ open, onClose }: {
     try {
       const title = titleRef.current?.value;
       const link = linkRef.current?.value;
+      const tagsRaw = tagsRef.current?.value || "";
+      // Expecting plain tag strings like ["tech", "ai"]
+      const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
 
       await axios.post(`${BACKEND_URL}/content`, {
         link,
         title,
-        type
+        type,
+        tags
       }, {
         headers: {
           Authorization: localStorage.getItem("token")
@@ -82,6 +87,11 @@ export function CreateContentModal({ open, onClose }: {
                     onClick={() => setType(ContentType.Twitter)} 
                   />   
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 block dark:text-dark-text">Tags</label>
+                <Input placeholder="Comma-separated tags (e.g. tech, ai)" reference={tagsRef} />
               </div>
 
               <div className="pt-4">

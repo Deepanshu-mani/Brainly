@@ -1,40 +1,129 @@
+import { useEffect, useState } from 'react';
 import Masonry from 'react-masonry-css';
-import { PlusIcon } from "../components/ui/icons/PlusIcon";
-import { ShareIcnon } from "../components/ui/icons/ShareIcon";
-import { MenuIcon } from "../components/ui/icons/MenuIcon";
-import { BrainIcon } from "../components/ui/icons/BrainIcon";
-import { Button } from "../components/ui/Button";
-import { Card } from "../components/ui/Card";
-import { CreateContentModal } from "../components/CreateContentModal";
-import { useEffect, useState } from "react";
-import { Sidebar, FilterContext } from "../components/ui/Sidebar";
-import { UseContent } from "../components/hooks/UseContent";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
+import axios from 'axios';
+import { StickyNote } from 'lucide-react';
+
+// Components
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { Sidebar, FilterContext } from '../ui/Sidebar';
+import { NoteCard } from '../components/NoteCard';
+import { NoteEditor } from '../components/NoteEditor';
+import { CreateContentModal } from '../components/CreateContentModal';
+
+// Icons
+import { PlusIcon } from '../ui/icons/PlusIcon';
+import { ShareIcon } from '../ui/icons/ShareIcon';
+import { MenuIcon } from '../ui/icons/MenuIcon';
+import { BrainIcon } from '../ui/icons/BrainIcon';
+
+// Hooks
+import { useNotesAndReminders } from '../hooks/useNotesAndReminders';
+import { UseContent } from '../components/hooks/UseContent';
+
+// Types
+import type { Content, ContentType } from '../types/content';
+import { BACKEND_URL } from '../config';
+
+// Define filter type that includes all content types
+type ContentFilter = 'all' | ContentType;
+
+// Content filter type is now defined above
 
 export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'twitter' | 'youtube'>('all');
+  const [filter, setFilter] = useState<ContentFilter>('all');
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [isReminder, setIsReminder] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const { contents, refresh } = UseContent();
+  const { 
+    createNote, 
+    createReminder, 
+    updateContent, 
+    deleteContent
+  } = useNotesAndReminders();
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     refresh().finally(() => setLoading(false));
-  }, [modalOpen]);
+  }, [modalOpen, showNoteModal]);
 
-  const filteredContents = filter === 'all' 
-    ? contents || []
-    : contents?.filter(content => content.type === filter) || [];
+  const filteredContents = (contents || []).filter((content: Content) => {
+    if (filter === 'all') return true;
+    return content.type === filter;
+  });
+    
+  const handleCreateNote = async (data: { title: string; content: string; dueDate?: string }) => {
+    try {
+      setIsSubmitting(true);
+      if (isReminder && data.dueDate) {
+        await createReminder({
+          title: data.title,
+          content: data.content,
+          dueDate: data.dueDate,
+          tags: []
+        });
+      } else {
+        await createNote({
+          title: data.title,
+          content: data.content,
+          tags: []
+        });
+      }
+      setShowNoteModal(false);
+      setIsReminder(false);
+      await refresh();
+    } catch (error) {
+      console.error('Error creating note/reminder:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const handleUpdateContent = async (updatedContent: Content) => {
+    try {
+      setIsSubmitting(true);
+      await updateContent(updatedContent._id, updatedContent);
+      await refresh();
+    } catch (error) {
+      console.error('Error updating content:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const handleDeleteContent = async (id: string) => {
+    try {
+      setIsSubmitting(true);
+      await deleteContent(id);
+      await refresh();
+    } catch (error) {
+      console.error('Error deleting content:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Create a sidebar-compatible filter type
+  type SidebarFilter = 'all' | 'twitter' | 'youtube';
+  
+  const sidebarFilter: SidebarFilter = filter === 'note' || filter === 'reminder' ? 'all' : filter as SidebarFilter;
+  const handleSidebarFilterChange = (newFilter: SidebarFilter) => {
+    setFilter(newFilter);
+  };
 
   return (
-    <FilterContext.Provider value={{ filter, setFilter }}>
+    <FilterContext.Provider value={{ filter: sidebarFilter, setFilter: handleSidebarFilterChange }}>
       <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
         {/* Sidebar */}
         <Sidebar 
-          filter={filter} 
-          setFilter={setFilter}
+          filter={sidebarFilter} 
+          setFilter={handleSidebarFilterChange}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
@@ -42,10 +131,27 @@ export function Dashboard() {
         {/* Main Content */}
         <div className="flex-1 min-h-screen overflow-y-auto overflow-x-hidden">
           <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6">
+            {/* Create Content Modals */}
             <CreateContentModal
               open={modalOpen}
               onClose={() => setModalOpen(false)}
             />
+            
+            {/* Note/Reminder Editor Modal */}
+            {showNoteModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="w-full max-w-md">
+                  <NoteEditor
+                    isReminder={isReminder}
+                    onSave={handleCreateNote}
+                    onCancel={() => {
+                      setShowNoteModal(false);
+                      setIsReminder(false);
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Mobile Header */}
             <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30 dark:border-dark-border dark:bg-dark-surface/80">
@@ -91,9 +197,18 @@ export function Dashboard() {
                       startIcon={<PlusIcon />}
                     />
                     <Button
+                      onClick={() => {
+                        setIsReminder(false);
+                        setShowNoteModal(true);
+                      }}
+                      variant="secondary"
+                      text="Add Note"
+                      startIcon={<StickyNote className="w-4 h-4" />}
+                    />
+                    <Button
                       variant="secondary"
                       text="Share Brain"
-                      startIcon={<ShareIcnon />}
+                      startIcon={<ShareIcon />}
                       onClick={async () => {
                         try {
                           const response = await axios.post(`${BACKEND_URL}/brain/share`, {
@@ -127,7 +242,7 @@ export function Dashboard() {
                   <Button
                     variant="secondary"
                     text="Share"
-                    startIcon={<ShareIcnon />}
+                    startIcon={<ShareIcon />}
                     onClick={async () => {
                       try {
                         const response = await axios.post(`${BACKEND_URL}/brain/share`, {
@@ -229,32 +344,40 @@ export function Dashboard() {
                 </div>
               ) : (
                 <Masonry
-                  breakpointCols={{
-                    default: 3,
-                    1280: 3,
-                    1024: 2,
-                    640: 1
-                  }}
-                  className="flex gap-4"
-                  columnClassName="masonry-column"
+                  breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
+                  className="flex -ml-4 w-auto"
+                  columnClassName="pl-4 bg-clip-padding"
                 >
-                  {filteredContents.map((content, index) => (
-                    <div key={index} className="mb-4">
-                      <Card
-                        type={content.type}
-                        link={content.link}
-                        title={content.title}
-                        onDelete={() => {
-                          axios.delete(`${BACKEND_URL}/content`, {
-                            data: { contentId: content._id },
-                            headers: { Authorization: localStorage.getItem("token") }
-                          }).then(() => {
-                            refresh();
-                          }).catch(() => {
-                            alert("Failed to delete content");
-                          });
-                        }}
-                      />
+                  {filteredContents.map((content) => (
+                    <div key={content._id} className="mb-4">
+                      {content.type === 'note' || content.type === 'reminder' ? (
+                        <NoteCard
+                          content={content}
+                          onUpdate={handleUpdateContent}
+                          onDelete={handleDeleteContent}
+                        />
+                      ) : (
+                        <Card
+                          id={content._id}
+                          title={content.title}
+                          link={content.link}
+                          type={content.type as 'twitter' | 'youtube'}
+                          tags={content.tags}
+                          onDelete={async () => {
+                            try {
+                              await axios.delete(`${BACKEND_URL}/content/${content._id}`, {
+                                headers: {
+                                  Authorization: localStorage.getItem("token"),
+                                },
+                              });
+                              refresh();
+                            } catch (error) {
+                              console.error("Error deleting content:", error);
+                            }
+                          }}
+                          isShared={false}
+                        />
+                      )}
                     </div>
                   ))}
                 </Masonry>

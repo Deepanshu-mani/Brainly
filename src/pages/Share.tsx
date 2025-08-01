@@ -1,11 +1,11 @@
-import { Card } from "../components/ui/Card";
+import { Card } from "../ui/Card";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { Sidebar } from "../components/ui/Sidebar";
-import { MenuIcon } from "../components/ui/icons/MenuIcon";
-import { BrainIcon } from "../components/ui/icons/BrainIcon";
+import { Sidebar } from "../ui/Sidebar";
+import { MenuIcon } from "../ui/icons/MenuIcon";
+import { BrainIcon } from "../ui/icons/BrainIcon";
 
 export function Share() {
   const { shareId } = useParams();
@@ -70,7 +70,7 @@ export function Share() {
           <div className="lg:hidden flex items-center justify-between py-4 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-30 dark:border-dark-border dark:bg-dark-surface/80">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors dark:hover:bg-dark-surface-alt dark:text-dark-text"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors dark:hover:bg-dark-surface-alt/80 dark:text-dark-text"
             >
               <MenuIcon />
             </button>
@@ -97,11 +97,11 @@ export function Share() {
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 lg:mb-8">
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Total Items</p>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900">{data.content.length}</p>
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">Total Items</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-dark-text">{data.content.length}</p>
                 </div>
                 <div className="p-2 sm:p-3 bg-purple-100 rounded-lg">
                   <svg className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,32 +111,32 @@ export function Share() {
               </div>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">YouTube Videos</p>
-                  <p className="text-xl sm:text-2xl font-bold text-red-600">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">YouTube Videos</p>
+                  <p className="text-xl sm:text-2xl font-bold text-red-600 dark:text-red-400">
                     {data.content.filter(c => c.type === 'youtube').length}
                   </p>
                 </div>
-                <div className="p-2 sm:p-3 bg-red-100 rounded-lg">
-                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                <div className="p-2 sm:p-3 bg-red-100 rounded-lg dark:bg-red-900/30">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 shadow-lg sm:col-span-2 lg:col-span-1">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-white/20 dark:bg-dark-surface/80 dark:border-dark-border shadow-lg sm:col-span-2 lg:col-span-1">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600">Twitter Posts</p>
-                  <p className="text-xl sm:text-2xl font-bold text-blue-600">
+                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">Twitter Posts</p>
+                  <p className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
                     {data.content.filter(c => c.type === 'twitter').length}
                   </p>
                 </div>
-                <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
-                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                <div className="p-2 sm:p-3 bg-blue-100 rounded-lg dark:bg-blue-900/30">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </div>
@@ -163,6 +163,9 @@ export function Share() {
                       title={item.title || "Untitled"}
                       link={item.link}
                       type={item.type}
+                      id={item.id}
+                      tags={item.tags}
+                      isShared={true}
                     />
                   </div>
                 ))}
