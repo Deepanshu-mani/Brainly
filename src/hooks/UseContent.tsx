@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
-import { BACKEND_URL } from "../../config";
-import type { Content } from "../../types/content";
+import { BACKEND_URL } from "../config";
+import type { Content } from "../types/content";
 
 export function UseContent() {
     const [contents, setContents] = useState<Content[]>([]);

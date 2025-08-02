@@ -19,7 +19,7 @@ import { BrainIcon } from '../ui/icons/BrainIcon';
 
 // Hooks
 import { useNotesAndReminders } from '../hooks/useNotesAndReminders';
-import { UseContent } from '../components/hooks/UseContent';
+import { UseContent } from '../hooks/UseContent';
 
 // Types
 import type { Content, ContentType } from '../types/content';
@@ -355,10 +355,13 @@ export function Dashboard() {
                           tags={content.tags}
                           onDelete={async () => {
                             try {
-                              await axios.delete(`${BACKEND_URL}/content/${content._id}`, {
+                              await axios.delete(`${BACKEND_URL}/content`, {
                                 headers: {
-                                  Authorization: localStorage.getItem("token"),
+                                  Authorization: localStorage.getItem("token") || "",
                                 },
+                                data: {
+                                  contentId: content._id
+                                }
                               });
                               refresh();
                             } catch (error) {
