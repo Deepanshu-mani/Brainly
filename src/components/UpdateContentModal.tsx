@@ -16,7 +16,7 @@ export function CreateContentModal({ open, onClose }: {
 }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
-  const [type, setType] = useState(ContentType.Youtube);
+  const [type] = useState(ContentType.Youtube);
   const [loading, setLoading] = useState(false);
 
   async function addContent() {
@@ -109,9 +109,9 @@ export function UpdateContentModal({
 }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
-  const [type, setType] = useState<ContentType>(initialType);
+  const [type] = useState<ContentType>(initialType);
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags] = useState<string[]>([]);
   const tagsRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
