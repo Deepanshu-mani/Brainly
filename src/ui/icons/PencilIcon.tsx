@@ -1,4 +1,3 @@
-import React from 'react';
 
 export function PencilIcon({ className = 'w-4 h-4' }: { className?: string }) {
   return (

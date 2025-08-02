@@ -1,4 +1,3 @@
-import React from 'react';
 
 export function TrashIcon({ className = 'w-4 h-4' }: { className?: string }) {
   return (

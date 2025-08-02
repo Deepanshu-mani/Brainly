@@ -36,7 +36,6 @@ export function Dashboard() {
   const [filter, setFilter] = useState<ContentFilter>('all');
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [isReminder, setIsReminder] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { contents, refresh } = UseContent();
   const { 
@@ -60,7 +59,6 @@ export function Dashboard() {
     
   const handleCreateNote = async (data: { title: string; content: string; dueDate?: string }) => {
     try {
-      setIsSubmitting(true);
       if (isReminder && data.dueDate) {
         await createReminder({
           title: data.title,
@@ -80,32 +78,24 @@ export function Dashboard() {
       await refresh();
     } catch (error) {
       console.error('Error creating note/reminder:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
   
   const handleUpdateContent = async (updatedContent: Content) => {
     try {
-      setIsSubmitting(true);
       await updateContent(updatedContent._id, updatedContent);
       await refresh();
     } catch (error) {
       console.error('Error updating content:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
   
   const handleDeleteContent = async (id: string) => {
     try {
-      setIsSubmitting(true);
       await deleteContent(id);
       await refresh();
     } catch (error) {
       console.error('Error deleting content:', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

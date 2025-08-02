@@ -26,14 +26,6 @@ export function UseContent() {
         });
     }, []);
 
-    const updateContentLocally = (updatedContent: Content) => {
-        setContents((prev) =>
-            prev.map((content) =>
-                content._id === updatedContent._id ? updatedContent : content
-            )
-        );
-    };
-
     useEffect(() => {
         fetchContents(); // Initial fetch
         const interval = setInterval(() => {
@@ -41,10 +33,6 @@ export function UseContent() {
         }, 5000);
         return () => clearInterval(interval);
     }, [fetchContents]);
-
-    const forceRefresh = () => {
-        fetchContents();
-    };
 
     return { 
         contents, 
