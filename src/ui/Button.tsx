@@ -7,6 +7,8 @@ interface ButtonProps {
   onClick?: () => void;
   fullWidth?: boolean;
   loading?: boolean;
+  className?: string;
+  type?: "button" | "submit" | "reset";
   // hover?: boolean;
 }
 
@@ -22,14 +24,13 @@ export function Button({
   fullWidth,
   onClick,
   loading,
-  // hover,
+  className,
 }: ButtonProps) {
-  const classes =
-    variantClasses[variant] +
-    " " +
-    "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2" +
-    (loading ? " opacity-60 cursor-not-allowed" : "") +
-    (fullWidth ? " w-full" : "");
+  const baseClasses = "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2";
+  const variantClass = variantClasses[variant];
+  const loadingClass = loading ? " opacity-60 cursor-not-allowed" : "";
+  const widthClass = fullWidth ? " w-full" : "";
+  const classes = `${baseClasses} ${variantClass} ${loadingClass} ${widthClass} ${className || ''}`.trim();
   
   return (
     <button

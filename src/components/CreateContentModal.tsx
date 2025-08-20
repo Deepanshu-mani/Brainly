@@ -12,7 +12,7 @@ enum ContentType {
 
 export function CreateContentModal({ open, onClose }: {
     open: boolean,
-    onClose: () => void
+    onClose: () => void 
 }) {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);

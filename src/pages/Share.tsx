@@ -1,4 +1,5 @@
 import { Card } from "../ui/Card";
+import { WebsiteCard } from "../ui/WebsiteCard";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -13,6 +14,12 @@ export function Share() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"twitter" | "youtube" | "all">("all");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  type SidebarFilter = 'all' | 'twitter' | 'youtube' | 'notes';
+  const sidebarFilter: SidebarFilter = filter; // share page does not support notes
+  const handleSidebarFilterChange = (newFilter: SidebarFilter) => {
+    setFilter(newFilter === 'notes' ? 'all' : newFilter);
+  };
 
   useEffect(() => {
     if (shareId) {
@@ -57,8 +64,8 @@ export function Share() {
     <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
       {/* Sidebar */}
       <Sidebar 
-        filter={filter} 
-        setFilter={setFilter}
+        filter={sidebarFilter} 
+        setFilter={handleSidebarFilterChange}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
@@ -121,7 +128,7 @@ export function Share() {
                 </div>
                 <div className="p-2 sm:p-3 bg-red-100 rounded-lg dark:bg-red-900/30">
                   <svg className="w-4 h-4 sm:w-6 sm:h-6 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0  9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
                 </div>
               </div>
@@ -159,14 +166,18 @@ export function Share() {
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
                 {filteredContent.map((item, idx) => (
                   <div key={idx} className="w-full">
-                    <Card
-                      title={item.title || "Untitled"}
-                      link={item.link}
-                      type={item.type}
-                      id={item.id}
-                      tags={item.tags}
-                      isShared={true}
-                    />
+                    {item.type === 'website' ? (
+                      <WebsiteCard content={item} isShared={true} />
+                    ) : (
+                      <Card
+                        title={item.title || "Untitled"}
+                        link={item.link}
+                        type={item.type}
+                        id={item.id}
+                        tags={item.tags}
+                        isShared={true}
+                      />
+                    )}
                   </div>
                 ))}
               </div>

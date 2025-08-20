@@ -5,12 +5,12 @@ import { YoutubeIcon } from "./icons/YoutubeIcon";
 import { SidebarItem } from "./SidebarItem";
 import { CrossIcon } from "./icons/CrossIcon";
 import { ThemeToggle } from "./ThemeToggle";
-
+import { StickyNote } from 'lucide-react';
 import { createContext, useContext } from 'react';
 
 interface FilterContextType {
-  filter: 'all' | 'twitter' | 'youtube';
-  setFilter: (filter: 'all' | 'twitter' | 'youtube') => void;
+  filter: 'all' | 'twitter' | 'youtube' | 'notes';
+  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'notes') => void;
 }
 
 export const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -21,8 +21,8 @@ export function Sidebar({
   isOpen, 
   onClose 
 }: { 
-  filter: 'all' | 'twitter' | 'youtube'; 
-  setFilter: (filter: 'all' | 'twitter' | 'youtube') => void;
+  filter: 'all' | 'twitter' | 'youtube' | 'notes'; 
+  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'notes') => void;
   isOpen?: boolean;
   onClose?: () => void;
 }) {
@@ -92,6 +92,15 @@ export function Sidebar({
             active={filter === 'youtube'}
             onClick={() => {
               setFilter('youtube');
+              onClose?.();
+            }}
+          />
+          <SidebarItem 
+            icon={<StickyNote />} 
+            text="Notes"  
+            active={filter === 'notes'}
+            onClick={() => {
+              setFilter('notes');
               onClose?.();
             }}
           />

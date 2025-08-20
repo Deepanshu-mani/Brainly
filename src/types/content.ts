@@ -1,4 +1,15 @@
-export type ContentType = "youtube" | "twitter" | "note" | "reminder";
+export type ContentType = "youtube" | "twitter" | "note" | "website";
+
+export const CONTENT_TYPES: ContentType[] = ["youtube", "twitter", "note", "website"];
+
+export type ProcessingStatus = "pending" | "processing" | "completed" | "failed";
+
+export interface WebsiteMetadata {
+  description: string;
+  favicon: string;
+  domain: string;
+  screenshot: string;
+}
 
 export interface BaseContent {
   _id: string;
@@ -6,8 +17,17 @@ export interface BaseContent {
   title: string;
   userId: string;
   tags: string[];
+  content?: string;
+  link?: string;
   createdAt: string;
   updatedAt: string;
+  // AI-enhanced fields
+  summary?: string;
+  keywords?: string[];
+  embedding?: number[];
+  // Processing status
+  processingStatus?: ProcessingStatus;
+  processingError?: string;
 }
 
 export interface LinkContent extends BaseContent {
@@ -20,11 +40,22 @@ export interface NoteContent extends BaseContent {
   content: string;
 }
 
-export interface ReminderContent extends BaseContent {
-  type: "reminder";
-  content: string;
-  dueDate: string; // ISO date string
-  isCompleted: boolean;
+export interface WebsiteContent extends BaseContent {
+  type: "website";
+  link: string;
+  websiteMetadata: WebsiteMetadata;
 }
 
-export type Content = LinkContent | NoteContent | ReminderContent;
+export type Content = LinkContent | NoteContent | WebsiteContent;
+
+export interface SearchResult {
+  content: Content;
+  similarity: number;
+}
+
+export interface SearchFilters {
+  query?: string;
+  type?: ContentType;
+  tags?: string[];
+  limit?: number;
+}

@@ -6,36 +6,41 @@ import { CrossIcon } from '../ui/icons/CrossIcon';
 type NoteEditorProps = {
   initialContent?: string;
   initialTitle?: string;
-  isReminder?: boolean;
-  initialDueDate?: string;
-  onSave: (data: { title: string; content: string; dueDate?: string }) => void;
+  onSave: (data: { title: string; content: string }) => void;
   onCancel: () => void;
 };
 
 export function NoteEditor({
   initialContent = '',
   initialTitle = '',
-  isReminder = false,
-  initialDueDate = '',
   onSave,
   onCancel,
 }: NoteEditorProps) {
   const [title, setTitle] = useState(initialTitle);
-  const [content, setContent] = useState(initialContent);
-  const [dueDate, setDueDate] = useState(initialDueDate);
+  const [content, setContent] = useState('');
 
+  // Initialize content from the link field if it exists and is a data URL
   useEffect(() => {
-    setTitle(initialTitle);
-    setContent(initialContent);
-    setDueDate(initialDueDate);
-  }, [initialTitle, initialContent, initialDueDate]);
+    setTitle(initialTitle ?? '');
+
+    // Check if initialContent is a data URL
+    if (initialContent?.startsWith('data:text/plain;charset=utf-8,')) {
+      try {
+        const decoded = decodeURIComponent(initialContent.split(',')[1] || '');
+        setContent(decoded);
+      } catch {
+        setContent('');
+      }
+    } else {
+      setContent(initialContent ?? '');
+    }
+  }, [initialTitle, initialContent]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave({
       title: title.trim(),
-      content: content.trim(),
-      ...(isReminder && { dueDate })
+      content: content.trim()
     });
   };
 
@@ -43,7 +48,7 @@ export function NoteEditor({
     <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden">
       <div className="p-4 border-b border-gray-200 dark:border-dark-border flex justify-between items-center">
         <h3 className="text-lg font-medium text-gray-900 dark:text-dark-text">
-          {isReminder ? 'Reminder' : 'Note'}
+          Note
         </h3>
         <button
           onClick={onCancel}
@@ -70,25 +75,9 @@ export function NoteEditor({
           />
         </div>
 
-        {isReminder && (
-          <div>
-            <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-dark-text-muted mb-1">
-              Due Date
-            </label>
-            <input
-              type="datetime-local"
-              id="dueDate"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-dark-surface dark:text-white"
-              required
-            />
-          </div>
-        )}
-
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-dark-text-muted mb-1">
-            {isReminder ? 'Reminder Details' : 'Note Content'}
+            Note Content
           </label>
           <textarea
             id="content"
@@ -96,7 +85,6 @@ export function NoteEditor({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-dark-surface dark:text-white"
-            placeholder={isReminder ? 'Enter reminder details...' : 'Write your note here...'}
             required
           />
         </div>
@@ -109,8 +97,9 @@ export function NoteEditor({
           />
           <Button
             variant="primary"
-           startIcon={<PlusIcon />}
+            startIcon={<PlusIcon />}
             text="Save"
+            type="submit"
           />
         </div>
       </form>

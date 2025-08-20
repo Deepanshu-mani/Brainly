@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BACKEND_URL } from '../config';
 import type { Content } from '../types/content';
 
-export function useNotesAndReminders() {
+export function useNotes() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -30,44 +30,12 @@ export function useNotesAndReminders() {
     }
   }, []);
 
-  const createReminder = useCallback(async (data: { 
-    title: string; 
-    content: string; 
-    dueDate: string; 
-    tags?: string[] 
-  }): Promise<Content> => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await axios.post(
-        `${BACKEND_URL}/content/reminder`,
-        { 
-          ...data, 
-          type: 'reminder',
-          isCompleted: false 
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      return response.data;
-    } catch (err) {
-      setError(err as Error);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const updateContent = useCallback(async (id: string, data: Partial<Content>): Promise<Content> => {
+  const updateNote = useCallback(async (id: string, data: { title?: string; content?: string; tags?: string[] }): Promise<Content> => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.put(
-        `${BACKEND_URL}/content/${id}`,
+        `${BACKEND_URL}/content/note/${id}`,
         data,
         {
           headers: {
@@ -85,7 +53,7 @@ export function useNotesAndReminders() {
     }
   }, []);
 
-  const deleteContent = useCallback(async (id: string): Promise<void> => {
+  const deleteNote = useCallback(async (id: string): Promise<void> => {
     setIsLoading(true);
     setError(null);
     try {
@@ -107,9 +75,8 @@ export function useNotesAndReminders() {
 
   return {
     createNote,
-    createReminder,
-    updateContent,
-    deleteContent,
+    updateNote,
+    deleteNote,
     isLoading,
     error,
   };

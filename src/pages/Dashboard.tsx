@@ -1,80 +1,89 @@
 import { useEffect, useState } from 'react';
 import Masonry from 'react-masonry-css';
-import axios from 'axios';
 import { StickyNote } from 'lucide-react';
+import axios from 'axios';
+import { BACKEND_URL } from '../config';
 
 // Components
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
+import { WebsiteCard } from '../ui/WebsiteCard';
 import { Sidebar, FilterContext } from '../ui/Sidebar';
 import { NoteCard } from '../components/NoteCard';
-import { NoteEditor } from '../components/NoteEditor';
 import { CreateContentModal } from '../components/CreateContentModal';
+import { NoteEditor } from '../components/NoteEditor';
+import { BookmarkWebsiteModal } from '../components/BookmarkWebsiteModal';
+import { SearchBar } from '../components/SearchBar';
 
 // Icons
 import { PlusIcon } from '../ui/icons/PlusIcon';
 import { ShareIcon } from '../ui/icons/ShareIcon';
 import { MenuIcon } from '../ui/icons/MenuIcon';
 import { BrainIcon } from '../ui/icons/BrainIcon';
+import { LinkIcon } from '../ui/icons/LinkIcon';
 
 // Hooks
-import { useNotesAndReminders } from '../hooks/useNotesAndReminders';
 import { UseContent } from '../hooks/UseContent';
 
 // Types
 import type { Content, ContentType } from '../types/content';
-import { BACKEND_URL } from '../config';
 
 // Define filter type that includes all content types
 type ContentFilter = 'all' | ContentType;
 
-// Content filter type is now defined above
-
 export function Dashboard() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filter, setFilter] = useState<ContentFilter>('all');
+  
+  const { 
+    contents, 
+    loading, 
+    refresh,
+    createContent,
+    updateContent,
+    deleteContent
+  } = UseContent();
+  
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [isReminder, setIsReminder] = useState(false);
-  
-  const { contents, refresh } = UseContent();
-  const { 
-    createNote, 
-    createReminder, 
-    updateContent, 
-    deleteContent
-  } = useNotesAndReminders();
-  
-  const [loading, setLoading] = useState(true);
+
+  // Search state
+  const [displayedContents, setDisplayedContents] = useState<Content[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-    refresh().finally(() => setLoading(false));
-  }, [modalOpen, showNoteModal]);
+    refresh();
+  }, [modalOpen, showNoteModal, bookmarkModalOpen]);
 
-  const filteredContents = (contents || []).filter((content: Content) => {
+  useEffect(() => {
+    setDisplayedContents(contents || []);
+  }, [contents]);
+
+  const filteredContents = (displayedContents || []).filter((content: Content) => {
     if (filter === 'all') return true;
     return content.type === filter;
   });
-    
+
   const handleCreateNote = async (data: { title: string; content: string; dueDate?: string }) => {
     try {
       if (isReminder && data.dueDate) {
-        await createReminder({
+        await createContent({
           title: data.title,
           content: data.content,
+          type: 'note',
           dueDate: data.dueDate,
           tags: []
         });
       } else {
-        await createNote({
+        await createContent({
           title: data.title,
           content: data.content,
+          type: 'note',
           tags: []
         });
       }
       setShowNoteModal(false);
-      setIsReminder(false);
       await refresh();
     } catch (error) {
       console.error('Error creating note/reminder:', error);
@@ -100,11 +109,11 @@ export function Dashboard() {
   };
 
   // Create a sidebar-compatible filter type
-  type SidebarFilter = 'all' | 'twitter' | 'youtube';
+  type SidebarFilter = 'all' | 'twitter' | 'youtube' | 'notes';
   
-  const sidebarFilter: SidebarFilter = filter === 'note' || filter === 'reminder' ? 'all' : filter as SidebarFilter;
+  const sidebarFilter: SidebarFilter = filter === 'note' ? 'notes' : filter as SidebarFilter;
   const handleSidebarFilterChange = (newFilter: SidebarFilter) => {
-    setFilter(newFilter);
+    setFilter(newFilter === 'notes' ? 'note' : newFilter);
   };
 
   return (
@@ -126,13 +135,13 @@ export function Dashboard() {
               open={modalOpen}
               onClose={() => setModalOpen(false)}
             />
+            <BookmarkWebsiteModal open={bookmarkModalOpen} onClose={() => setBookmarkModalOpen(false)} />
             
             {/* Note/Reminder Editor Modal */}
             {showNoteModal && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                 <div className="w-full max-w-md">
                   <NoteEditor
-                    isReminder={isReminder}
                     onSave={handleCreateNote}
                     onCancel={() => {
                       setShowNoteModal(false);
@@ -187,6 +196,12 @@ export function Dashboard() {
                       startIcon={<PlusIcon />}
                     />
                     <Button
+                      onClick={() => setBookmarkModalOpen(true)}
+                      variant="secondary"
+                      text="Bookmark Website"
+                      startIcon={<LinkIcon />}
+                    />
+                    <Button
                       onClick={() => {
                         setIsReminder(false);
                         setShowNoteModal(true);
@@ -220,6 +235,13 @@ export function Dashboard() {
                   </div>
                 </div>
 
+                {/* Search Bar */}
+                <SearchBar
+                  onSearchResults={(results) => setDisplayedContents(results)}
+                  onSearchStart={() => {}}
+                  onSearchEnd={() => {}}
+                />
+
                 {/* Mobile Action Buttons */}
                 <div className="flex lg:hidden gap-2">
                   <Button
@@ -227,6 +249,13 @@ export function Dashboard() {
                     variant="primary"
                     text="Add Content"
                     startIcon={<PlusIcon />}
+                    fullWidth={true}
+                  />
+                  <Button
+                    onClick={() => setBookmarkModalOpen(true)}
+                    variant="secondary"
+                    text="Bookmark"
+                    startIcon={<LinkIcon />}
                     fullWidth={true}
                   />
                   <Button
@@ -261,7 +290,7 @@ export function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">Total Items</p>
-                    <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-dark-text">{contents?.length || 0}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-dark-text">{displayedContents?.length || 0}</p>
                   </div>
                   <div className="p-2 sm:p-3 bg-purple-100 rounded-lg dark:bg-dark-primary/20">
                     <svg className="w-4 h-4 sm:w-6 sm:h-6 text-purple-600 dark:text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,7 +305,7 @@ export function Dashboard() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">YouTube Videos</p>
                     <p className="text-xl sm:text-2xl font-bold text-red-600">
-                      {contents?.filter(c => c.type === 'youtube').length || 0}
+                      {displayedContents?.filter(c => c.type === 'youtube').length || 0}
                     </p>
                   </div>
                   <div className="p-2 sm:p-3 bg-red-100 rounded-lg dark:bg-red-900/30">
@@ -292,7 +321,7 @@ export function Dashboard() {
                   <div>
                     <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">Twitter Posts</p>
                     <p className="text-xl sm:text-2xl font-bold text-blue-600">
-                      {contents?.filter(c => c.type === 'twitter').length || 0}
+                      {displayedContents?.filter(c => c.type === 'twitter').length || 0}
                     </p>
                   </div>
                   <div className="p-2 sm:p-3 bg-blue-100 rounded-lg dark:bg-blue-900/30">
@@ -323,13 +352,22 @@ export function Dashboard() {
                     <p className="text-gray-600 mb-6 text-sm lg:text-base dark:text-dark-text-muted">
                       Start building your brain by adding your first {filter === 'all' ? 'content' : filter} item.
                     </p>
-                    <Button
-                      onClick={() => setModalOpen(true)}
-                      variant="primary"
-                      text="Add Content"
-                      startIcon={<PlusIcon />}
-                      fullWidth={true}
-                    />
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => setModalOpen(true)}
+                        variant="primary"
+                        text="Add Content"
+                        startIcon={<PlusIcon />}
+                        fullWidth={true}
+                      />
+                      <Button
+                        onClick={() => setBookmarkModalOpen(true)}
+                        variant="secondary"
+                        text="Bookmark Website"
+                        startIcon={<LinkIcon />}
+                        fullWidth={true}
+                      />
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -340,11 +378,31 @@ export function Dashboard() {
                 >
                   {filteredContents.map((content) => (
                     <div key={content._id} className="mb-4">
-                      {content.type === 'note' || content.type === 'reminder' ? (
+                      {content.type === 'note'? (
                         <NoteCard
                           content={content}
                           onUpdate={handleUpdateContent}
                           onDelete={handleDeleteContent}
+                        />
+                      ) : content.type === 'website' ? (
+                        <WebsiteCard
+                          content={content as any}
+                          onDelete={async () => {
+                            try {
+                              await axios.delete(`${BACKEND_URL}/content`, {
+                                headers: {
+                                  Authorization: localStorage.getItem("token") || "",
+                                },
+                                data: {
+                                  contentId: content._id
+                                }
+                              });
+                              refresh();
+                            } catch (error) {
+                              console.error("Error deleting content:", error);
+                            }
+                          }}
+                          isShared={false}
                         />
                       ) : (
                         <Card
