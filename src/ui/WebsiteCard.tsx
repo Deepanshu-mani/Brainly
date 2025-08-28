@@ -43,8 +43,16 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
 
   const favicon = websiteMetadata?.favicon;
 
+  const createdAt = (content as any)?.createdAt || (content as any)?.updatedAt;
+  const formattedDate = useMemo(() => {
+    if (!createdAt) return '';
+    const d = new Date(createdAt);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }, [createdAt]);
+
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl">
+    <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl pb-7">
       <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 dark:from-dark-surface dark:to-dark-surface-alt dark:border-dark-border">
         <div className="text-gray-700 flex items-center gap-3 font-medium min-w-0 flex-1 dark:text-dark-text">
           <div className="p-1.5 sm:p-2 rounded-lg flex-shrink-0 bg-purple-100 dark:bg-white/10">
@@ -120,6 +128,12 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
         )}
       </div>
 
+      {formattedDate && (
+        <div className="absolute bottom-3 right-3 text-[11px] text-gray-500 dark:text-dark-text-muted select-none">
+          {formattedDate}
+        </div>
+      )}
+
     {isExpanded &&
       createPortal(
         <div className="fixed inset-0 z-50">
@@ -130,9 +144,9 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
           />
 
           {/* Modal content - full screen */}
-          <div className="relative w-[80vw] mx-auto rounded-xl  mt-10 h-[80vh] bg-white dark:bg-dark-surface overflow-y-auto">
+          <div className="relative z-0 w-[80vw] mx-auto rounded-xl  mt-10 h-[80vh] bg-white dark:bg-dark-surface overflow-y-auto pb-8">
             <button
-              className="absolute right-3 top-3 text-gray-600 hover:text-black dark:text-dark-text-muted dark:hover:text-dark-text bg-black/20 hover:bg-black/40 rounded-full p-1"
+              className="absolute right-3 top-3 z-50 text-gray-600 hover:text-black dark:text-dark-text-muted dark:hover:text-dark-text bg-black/20 hover:bg-black/40 rounded-full p-1"
               onClick={() => setIsExpanded(false)}
               aria-label="Close"
             >
@@ -185,6 +199,11 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
                 )}
               </div>
             </div>
+            {formattedDate && (
+              <div className="absolute bottom-3 right-4 text-xs text-gray-600 dark:text-dark-text-muted md:text-[11px]">
+                {formattedDate}
+              </div>
+            )}
           </div>
         </div>,
         document.body

@@ -72,7 +72,7 @@ export function Share() {
     );
   }
 
-  const filteredContent = data.content.filter(
+  const filteredContent = (data?.content || []).filter(
     (item) => filter === "all" || item.type === filter
   );
 
@@ -121,135 +121,53 @@ export function Share() {
             </div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-3 mb-6 lg:mb-8">
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">
-                    Total Items
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-gray-900 dark:text-dark-text">
-                    {data.content.length}
-                  </p>
+          {/* Stats Cards -> filter buttons */}
+          <div className="grid grid-cols-5 gap-1 sm:gap-2 lg:gap-3 mb-6 lg:mb-8">
+            {/* All */}
+            <button onClick={() => setFilter('all')} className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${filter==='all' ? 'border-purple-500' : 'border-white/20 dark:border-dark-border'}`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-1 sm:p-1.5 bg-purple-100 rounded-lg dark:bg-dark-primary/20 mb-1">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600 dark:text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 </div>
-                <div className="p-2 bg-purple-100 rounded-lg dark:bg-dark-primary/20">
-                  <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 dark:text-dark-primary"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                </div>
+                <p className="text-sm sm:text-base dark:text-white font-bold">{data.content.length}</p>
               </div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">
-                    YouTube Videos
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-red-600">
-                    {data.content.filter((c) => c.type === "youtube").length}
-                  </p>
+            </button>
+            {/* YouTube */}
+            <button onClick={() => setFilter('youtube')} className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${filter==='youtube' ? 'border-red-500' : 'border-white/20 dark:border-dark-border'}`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-1 sm:p-1.5 bg-red-100 rounded-lg dark:bg-red-900/30 mb-1">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </div>
-                <div className="p-2 bg-red-100 rounded-lg dark:bg-red-900/30">
-                  <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-red-600"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0  9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
-                </div>
+                <p className="text-sm sm:text-base font-bold text-red-600">{data.content.filter(c=>c.type==='youtube').length}</p>
               </div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 dark:bg-dark-surface/80 dark:border-dark-border shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">
-                    Twitter Posts
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-blue-600">
-                    {data.content.filter((c) => c.type === "twitter").length}
-                  </p>
+            </button>
+            {/* Twitter */}
+            <button onClick={() => setFilter('twitter')} className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${filter==='twitter' ? 'border-blue-500' : 'border-white/20 dark:border-dark-border'}`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg dark:bg-blue-900/30 mb-1">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </div>
-                <div className="p-2 bg-blue-100 rounded-lg dark:bg-blue-900/30">
-                  <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
-                </div>
+                <p className="text-sm sm:text-base font-bold text-blue-600">{data.content.filter(c=>c.type==='twitter').length}</p>
               </div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 dark:bg-dark-surface/80 dark:border-dark-border shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">
-                    Websites
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-emerald-600">
-                    {data.content.filter((c) => c.type === "website").length}
-                  </p>
+            </button>
+            {/* Websites */}
+            <button onClick={() => setFilter('website')} className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${filter==='website' ? 'border-emerald-500' : 'border-white/20 dark:border-dark-border'}`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-1 sm:p-1.5 bg-emerald-100 rounded-lg dark:bg-emerald-900/30 mb-1">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.59 13.41a1.5 1.5 0 010-2.12l3.88-3.88a3 3 0 114.24 4.24l-1.06 1.06m-4.24 4.24l-3.88 3.88a3 3 0 11-4.24-4.24l1.06-1.06"/></svg>
                 </div>
-                <div className="p-2 bg-emerald-100 rounded-lg dark:bg-emerald-900/30">
-                  <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10.59 13.41a1.5 1.5 0 010-2.12l3.88-3.88a3 3 0 114.24 4.24l-1.06 1.06m-4.24 4.24l-3.88 3.88a3 3 0 11-4.24-4.24l1.06-1.06"
-                    />
-                  </svg>
-                </div>
+                <p className="text-sm sm:text-base font-bold text-emerald-600">{data.content.filter(c=>c.type==='website').length}</p>
               </div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20 dark:bg-dark-surface/80 dark:border-dark-border shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-dark-text-muted">
-                    Notes
-                  </p>
-                  <p className="text-lg sm:text-xl font-bold text-yellow-600">
-                    {data.content.filter((c) => c.type === "note").length}
-                  </p>
+            </button>
+            {/* Notes */}
+            <button onClick={() => setFilter('note')} className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${filter==='note' ? 'border-yellow-500' : 'border-white/20 dark:border-dark-border'}`}>
+              <div className="flex flex-col items-center text-center">
+                <div className="p-1 sm:p-1.5 bg-yellow-100 rounded-lg dark:bg-yellow-900/30 mb-1">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3h6a2 2 0 012 2v11.586a1 1 0 01-.293.707l-3.586 3.586A1 1 0 0112.414 21H9a2 2 0 01-2-2V5a2 2 0 012-2zm6 13h-2a 2 2 0 00-2 2v2"/></svg>
                 </div>
-                <div className="p-2 bg-yellow-100 rounded-lg dark:bg-yellow-900/30">
-                  <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 3h6a2 2 0 012 2v11.586a1 1 0 01-.293.707l-3.586 3.586A1 1 0 0112.414 21H9a2 2 0 01-2-2V5a2 2 0 012-2zm6 13h-2a2 2 0 00-2 2v2"
-                    />
-                  </svg>
-                </div>
+                <p className="text-sm sm:text-base font-bold text-yellow-600">{data.content.filter(c=>c.type==='note').length}</p>
               </div>
-            </div>
+            </button>
           </div>
 
           {/* Content Grid */}
@@ -268,6 +186,7 @@ export function Share() {
               </div>
             ) : (
               <Masonry
+                key={filter}
                 breakpointCols={{ default: 3, 1100: 2, 700: 1 }}
                 className="flex -ml-4 w-auto"
                 columnClassName="pl-4 bg-clip-padding"

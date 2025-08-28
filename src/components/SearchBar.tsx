@@ -17,8 +17,7 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState<SearchFilters>({
     type: undefined,
-    tags: [],
-    limit: 20
+    tags: []
   });
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -94,9 +93,7 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
         searchParams.append('tags', activeTags.join(','));
       }
       
-      if (filters.limit) {
-        searchParams.append('limit', String(filters.limit));
-      }
+      // no limit parameter; backend will use default or unlimited when configured
 
       const response = await axios.get(`${BACKEND_URL}/content/search?${searchParams}`, {
         headers: {
@@ -106,13 +103,14 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
       });
 
       onSearchResults(response.data.content);
-    } catch (error) {
-      if ((error as any)?.name === 'CanceledError' || (error as any)?.message === 'canceled') {
-        // ignore canceled request
+    } catch (error: any) {
+      const isCanceled = error?.name === 'CanceledError' || error?.message === 'canceled' || error?.code === 'ERR_CANCELED';
+      if (isCanceled) {
+        // don't clear results on cancellations
       } else {
         console.error("Search failed:", error);
+        onSearchResults([]);
       }
-      onSearchResults([]);
     } finally {
       setLoading(false);
       onSearchEnd();
@@ -121,7 +119,6 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
     query,
     filters.type,
     filters.tags,
-    filters.limit,
     onSearchStart,
     onSearchEnd,
     onSearchResults,
@@ -141,14 +138,18 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
   const clearFilters = useCallback(() => {
     setFilters({
       type: undefined,
-      tags: [],
-      limit: 20
+      tags: []
     });
     setQuery("");
   }, []);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
       handleSearch();
     }
   }, [handleSearch]);
@@ -275,23 +276,7 @@ function SearchBarComponent({ onSearchResults, onSearchStart, onSearchEnd }: Sea
             </div>
           )}
 
-          {/* Results Limit */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-dark-text mb-2">
-              Results Limit
-            </label>
-            <select
-              value={filters.limit}
-              onChange={(e) => setFilters(prev => ({ ...prev, limit: parseInt(e.target.value) }))}
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-150 dark:bg-dark-surface dark:border-dark-border dark:text-dark-text"
-              aria-label="Results limit"
-            >
-              <option value={10}>10 results</option>
-              <option value={20}>20 results</option>
-              <option value={50}>50 results</option>
-              <option value={100}>100 results</option>
-            </select>
-          </div>
+          {/* Results Limit removed */}
       </div>
      
     </div>

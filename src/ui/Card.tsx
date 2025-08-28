@@ -29,9 +29,10 @@ interface CardProps {
   onDelete?: () => void;
   isShared?: boolean;
   notes?: string;
+  createdAt?: string;
 }
 
-export function Card({ id, title, link, type, tags, onDelete, isShared, notes }: CardProps) {
+export function Card({ id, title, link, type, tags, onDelete, isShared, notes, createdAt }: CardProps) {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -106,9 +107,14 @@ export function Card({ id, title, link, type, tags, onDelete, isShared, notes }:
     }
   }, [isExpanded, type, isShared, fetchSummary]);
 
+  const formattedDate = createdAt ? (() => {
+    const d = new Date(createdAt);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  })() : '';
+
   return (
     <>
-      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl">
+      <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl pb-7">
         <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 dark:from-dark-surface dark:to-dark-surface-alt dark:border-dark-border">
           <div className="text-gray-700 flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1 dark:text-dark-text">
             <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${type === "twitter" ? "bg-blue-100 dark:bg-white/10  dark:text-black" : "bg-red-100"}`}>
@@ -232,6 +238,11 @@ export function Card({ id, title, link, type, tags, onDelete, isShared, notes }:
             <p>{notes}</p>
           </div>
         )}
+        {formattedDate && (
+          <div className="absolute bottom-3 right-3 text-[11px] text-gray-500 dark:text-dark-text-muted select-none">
+            {formattedDate}
+          </div>
+        )}
       </div>
       <UpdateContentModal
         open={isEditModalOpen}
@@ -251,16 +262,19 @@ export function Card({ id, title, link, type, tags, onDelete, isShared, notes }:
               if (e.target === e.currentTarget) setIsExpanded(false);
             }}
           >
-            <div className="relative w-full max-w-5xl max-h-[100vh]">
+            <div className="relative z-0 w-full max-w-5xl max-h-[100vh] pb-8">
               <button
-                className="absolute right-2 top-2 text-white/90 hover:text-white bg-black/40 rounded-full p-1"
+                className="absolute right-2 top-2 z-50 text-white/90 hover:text-white bg-black/40 rounded-full p-1"
                 onClick={() => setIsExpanded(false)}
                 aria-label="Close"
               >
                 <X className="w-5 h-5" />
               </button>
               {type === 'youtube' ? (
-                <div className="bg-white dark:bg-dark-surface rounded-lg p-0 md:p-4">
+                <div
+                  className="bg-white dark:bg-dark-surface rounded-lg p-0 md:p-4 max-h-[92vh] overflow-y-auto overscroll-contain"
+                  style={{ WebkitOverflowScrolling: 'touch' }}
+                >
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4">
                     <div className="lg:col-span-2 p-0 lg:p-4">
                       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
@@ -310,7 +324,10 @@ export function Card({ id, title, link, type, tags, onDelete, isShared, notes }:
                   </div>
                 </div>
               ) : (
-                <div className="bg-white dark:bg-dark-surface rounded-lg p-0 md:p-4">
+                <div
+                  className="bg-white dark:bg-dark-surface rounded-lg p-0 md:p-4 max-h-[92vh] overflow-y-auto overscroll-contain"
+                  style={{ WebkitOverflowScrolling: 'touch' }}
+                >
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-4">
                     <div className="lg:col-span-2 p-4">
                       {isValidLink ? (
@@ -364,6 +381,11 @@ export function Card({ id, title, link, type, tags, onDelete, isShared, notes }:
                       )}
                     </div>
                   </div>
+                </div>
+              )}
+              {formattedDate && (
+                <div className="absolute bottom-9 right-4 text-xs text-white/80 md:text-gray-600 md:dark:text-dark-text-muted md:text-[11px]">
+                  {formattedDate}
                 </div>
               )}
             </div>

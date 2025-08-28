@@ -91,9 +91,15 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
     return (content.content ?? '').trim();
   };
 
+  const createdAt = (content as any)?.createdAt || (content as any)?.updatedAt;
+  const formattedDate = createdAt ? (() => {
+    const d = new Date(createdAt);
+    return isNaN(d.getTime()) ? '' : d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  })() : '';
+
   return (
     <>
-      <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl w-[360px] h-[260px] flex flex-col">
+      <div className="relative bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl w-[360px] h-[260px] flex flex-col pb-7">
         <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 dark:from-dark-surface dark:to-dark-surface-alt dark:border-dark-border">
           <div className="text-gray-700 flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1 dark:text-dark-text">
             <div className="p-1.5 sm:p-2 rounded-lg flex-shrink-0 bg-purple-100 dark:bg-white/10">
@@ -134,6 +140,11 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
             </div>
           )}
           </div>
+          {formattedDate && (
+            <div className="absolute bottom-3 right-3 text-[11px] text-gray-500 dark:text-dark-text-muted select-none">
+              {formattedDate}
+            </div>
+          )}
         </div>
         
         <div 
@@ -172,7 +183,7 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
               if (e.target === e.currentTarget) setIsExpanded(false);
             }}
           >
-            <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-dark-surface rounded-lg p-6">
+            <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-dark-surface rounded-lg p-6 pb-10">
               <button
                 className="absolute right-2 top-2 text-white/90 hover:text-white bg-black/40 rounded-full p-1"
                 onClick={() => setIsExpanded(false)}
@@ -194,6 +205,11 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
                       #{tag}
                     </span>
                   ))}
+                </div>
+              )}
+              {formattedDate && (
+                <div className="absolute bottom-3 right-4 text-xs text-gray-600 dark:text-dark-text-muted md:text-[11px]">
+                  {formattedDate}
                 </div>
               )}
             </div>

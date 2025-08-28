@@ -118,6 +118,8 @@ export function Dashboard() {
     setFilter(newFilter === 'notes' ? 'note' : newFilter);
   };
 
+  const isActiveFilter = (t: 'all' | 'youtube' | 'twitter' | 'website' | 'note') => filter === t;
+
   return (
     <FilterContext.Provider value={{ filter: sidebarFilter, setFilter: handleSidebarFilterChange }}>
       <div className="flex min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50 dark:from-dark-background dark:via-dark-surface dark:to-dark-surface-alt">
@@ -292,9 +294,14 @@ export function Dashboard() {
               </div>
             </div>
 
-            {/* Stats Cards */}
+            {/* Stats Cards (now filter buttons) */}
             <div className="grid grid-cols-5 gap-1 sm:gap-2 lg:gap-3 mb-6 lg:mb-8">
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
+              <button
+                onClick={() => setFilter('all')}
+                className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${isActiveFilter('all') ? 'border-purple-500' : 'border-white/20 dark:border-dark-border'}`}
+                aria-pressed={isActiveFilter('all')}
+                title="All"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-1 sm:p-1.5 bg-purple-100 rounded-lg dark:bg-dark-primary/20 mb-1">
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600 dark:text-dark-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -303,9 +310,14 @@ export function Dashboard() {
                   </div>
                   <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-dark-text">{displayedContents?.length || 0}</p>
                 </div>
-              </div>
+              </button>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
+              <button
+                onClick={() => setFilter('youtube')}
+                className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${isActiveFilter('youtube') ? 'border-red-500' : 'border-white/20 dark:border-dark-border'}`}
+                aria-pressed={isActiveFilter('youtube')}
+                title="YouTube"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-1 sm:p-1.5 bg-red-100 rounded-lg dark:bg-red-900/30 mb-1">
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" fill="currentColor" viewBox="0 0 24 24">
@@ -316,9 +328,14 @@ export function Dashboard() {
                     {displayedContents?.filter(c => c.type === 'youtube').length || 0}
                   </p>
                 </div>
-              </div>
+              </button>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
+              <button
+                onClick={() => setFilter('twitter')}
+                className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${isActiveFilter('twitter') ? 'border-blue-500' : 'border-white/20 dark:border-dark-border'}`}
+                aria-pressed={isActiveFilter('twitter')}
+                title="Twitter"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg dark:bg-blue-900/30 mb-1">
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
@@ -329,9 +346,14 @@ export function Dashboard() {
                     {displayedContents?.filter(c => c.type === 'twitter').length || 0}
                   </p>
                 </div>
-              </div>
+              </button>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
+              <button
+                onClick={() => setFilter('website')}
+                className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${isActiveFilter('website') ? 'border-emerald-500' : 'border-white/20 dark:border-dark-border'}`}
+                aria-pressed={isActiveFilter('website')}
+                title="Websites"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-1 sm:p-1.5 bg-emerald-100 rounded-lg dark:bg-emerald-900/30 mb-1">
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -342,9 +364,14 @@ export function Dashboard() {
                     {displayedContents?.filter(c => c.type === 'website').length || 0}
                   </p>
                 </div>
-              </div>
+              </button>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border border-white/20 shadow-lg dark:bg-dark-surface/80 dark:border-dark-border">
+              <button
+                onClick={() => setFilter('note')}
+                className={`bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 border shadow-lg dark:bg-dark-surface/80 ${isActiveFilter('note') ? 'border-yellow-500' : 'border-white/20 dark:border-dark-border'}`}
+                aria-pressed={isActiveFilter('note')}
+                title="Notes"
+              >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-1 sm:p-1.5 bg-yellow-100 rounded-lg dark:bg-yellow-900/30 mb-1">
                     <svg className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -355,7 +382,7 @@ export function Dashboard() {
                     {displayedContents?.filter(c => c.type === 'note').length || 0}
                   </p>
                 </div>
-              </div>
+              </button>
             </div>
 
             {/* Content Grid */}
@@ -436,6 +463,7 @@ export function Dashboard() {
                           link={content.link}
                           type={content.type as 'twitter' | 'youtube'}
                           tags={content.tags}
+                          createdAt={(content as any).createdAt || (content as any).updatedAt}
                           onDelete={async () => {
                             try {
                               await axios.delete(`${BACKEND_URL}/content`, {
