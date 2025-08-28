@@ -1,18 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { NoteEditor } from './NoteEditor';
 import type { Content } from '../types/content';
 import { EditIcon } from '../ui/icons/EditIcon';
 import { DeleteIcon } from '../ui/icons/DeleteIcon';
-import { StickyNote } from 'lucide-react';
+import { StickyNote, Maximize2, X } from 'lucide-react';
 type NoteCardProps = {
   content: Content;
-  onUpdate: (updatedContent: Content) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
+  onUpdate?: (updatedContent: Content) => Promise<void>;
+  onDelete?: (id: string) => Promise<void>;
+  isShared?: boolean;
 };
 
-export function NoteCard({ content, onUpdate, onDelete }: NoteCardProps) {
+export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Lock body scroll when expanded
+  useEffect(() => {
+    if (!isExpanded) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isExpanded]);
 
   const handleSave = async (data: { title: string; content: string }) => {
     try {
@@ -48,6 +61,7 @@ export function NoteCard({ content, onUpdate, onDelete }: NoteCardProps) {
         throw new Error(`Unsupported content type: ${content.type}`);
       }
 
+      if (!onUpdate) return;
       await onUpdate(updatedContent);
       setIsEditing(false);
     } catch (error) {
@@ -58,6 +72,7 @@ export function NoteCard({ content, onUpdate, onDelete }: NoteCardProps) {
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
+      if (!onDelete) return;
       await onDelete(content._id);
     } catch (error) {
       console.error('Error deleting note:', error);
@@ -89,26 +104,43 @@ export function NoteCard({ content, onUpdate, onDelete }: NoteCardProps) {
           
           <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0 dark:text-dark-text-muted">
             <button 
-              onClick={() => setIsEditing(true)}
-              className="hover:text-blue-500 transition-colors p-1 dark:hover:text-dark-primary"
-              aria-label="Edit note"
+              onClick={() => setIsExpanded(true)}
+              className="hover:text-purple-600 transition-colors p-1 dark:hover:text-dark-primary"
+              aria-label="Expand note"
             >
-              <EditIcon />
+              <Maximize2 className="w-4 h-4" />
             </button>
-            <button 
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="hover:text-red-500 transition-colors p-1 dark:hover:text-dark-error"
-              aria-label="Delete note"
-            >
-              <DeleteIcon />
-            </button>
+          {!isShared && (onUpdate || onDelete) && (
+            <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0 dark:text-dark-text-muted">
+              {onUpdate && (
+                <button 
+                  onClick={() => setIsEditing(true)}
+                  className="hover:text-blue-500 transition-colors p-1 dark:hover:text-dark-primary"
+                  aria-label="Edit note"
+                >
+                  <EditIcon />
+                </button>
+              )}
+              {onDelete && (
+                <button 
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="hover:text-red-500 transition-colors p-1 dark:hover:text-dark-error"
+                  aria-label="Delete note"
+                >
+                  <DeleteIcon />
+                </button>
+              )}
+            </div>
+          )}
           </div>
         </div>
         
         <div 
-          className="p-4 sm:p-6 flex-1 overflow-y-auto cursor-pointer"
-          onClick={() => setIsEditing(true)}
+          className={`p-4 sm:p-6 flex-1 overflow-y-auto ${onUpdate && !isShared ? 'cursor-pointer' : ''}`}
+          onClick={() => {
+            if (onUpdate && !isShared) setIsEditing(true)
+          }}
         >
           <div className="text-gray-700 dark:text-dark-text-muted whitespace-pre-line break-words">
             <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -130,6 +162,45 @@ export function NoteCard({ content, onUpdate, onDelete }: NoteCardProps) {
           )}
         </div>
       </div>
+
+      {/* Expanded View via Portal */}
+      {isExpanded && createPortal(
+        (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIsExpanded(false);
+            }}
+          >
+            <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white dark:bg-dark-surface rounded-lg p-6">
+              <button
+                className="absolute right-2 top-2 text-white/90 hover:text-white bg-black/40 rounded-full p-1"
+                onClick={() => setIsExpanded(false)}
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <h2 className="text-xl font-semibold mb-3 text-gray-900 dark:text-dark-text">{content.title}</h2>
+              <div className="text-gray-800 dark:text-dark-text whitespace-pre-wrap leading-relaxed">
+                {getNoteContent() || ""}
+              </div>
+              {content.tags && content.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {content.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-purple-600/10 text-purple-700 px-3 py-1 text-xs font-medium rounded-full dark:bg-purple-500/20 dark:text-purple-300"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ),
+        document.body
+      )}
 
       {/* Edit Modal */}
       {isEditing && (

@@ -43,14 +43,14 @@ export function UseContent() {
                 data,
                 { headers: { ...getAuthHeader(), 'Content-Type': 'application/json' } }
             );
-            await fetchContents(); // Refresh the content list
+            setContents(prevContents => [...prevContents, response.data.content]);
             return response.data.content;
         } catch (err) {
             console.error('Error creating content:', err);
             setError(err as Error);
             throw err;
         }
-    }, [fetchContents]);
+    }, []);
 
     const updateContent = useCallback(async (id: string, data: Partial<Content>) => {
         try {
@@ -59,14 +59,14 @@ export function UseContent() {
                 data,
                 { headers: { ...getAuthHeader(), 'Content-Type': 'application/json' } }
             );
-            await fetchContents(); // Refresh the content list
+            setContents(prevContents => prevContents.map(content => content._id === id ? response.data.content : content));
             return response.data.content;
         } catch (err) {
             console.error('Error updating content:', err);
             setError(err as Error);
             throw err;
         }
-    }, [fetchContents]);
+    }, []);
 
     const deleteContent = useCallback(async (id: string) => {
         try {
@@ -77,18 +77,16 @@ export function UseContent() {
                     data: { contentId: id } // Axios sends data in the request body for DELETE
                 }
             );
-            await fetchContents(); // Refresh the content list
+            setContents(prevContents => prevContents.filter(content => content._id !== id));
         } catch (err) {
             console.error('Error deleting content:', err);
             setError(err as Error);
             throw err;
         }
-    }, [fetchContents]);
+    }, []);
 
     useEffect(() => {
         fetchContents(); // Initial fetch
-        const interval = setInterval(fetchContents, 30000); // Refresh every 30 seconds
-        return () => clearInterval(interval);
     }, [fetchContents]);
 
     return { 

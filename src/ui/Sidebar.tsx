@@ -2,6 +2,7 @@ import { AllIcon } from "./icons/AllIcon";
 import { BrainIcon } from "./icons/BrainIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
+import { LinkIcon } from "./icons/LinkIcon";
 import { SidebarItem } from "./SidebarItem";
 import { CrossIcon } from "./icons/CrossIcon";
 import { ThemeToggle } from "./ThemeToggle";
@@ -9,8 +10,8 @@ import { StickyNote } from 'lucide-react';
 import { createContext, useContext } from 'react';
 
 interface FilterContextType {
-  filter: 'all' | 'twitter' | 'youtube' | 'notes';
-  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'notes') => void;
+  filter: 'all' | 'twitter' | 'youtube' | 'website' | 'notes';
+  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'website' | 'notes') => void;
 }
 
 export const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -21,8 +22,8 @@ export function Sidebar({
   isOpen, 
   onClose 
 }: { 
-  filter: 'all' | 'twitter' | 'youtube' | 'notes'; 
-  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'notes') => void;
+  filter: 'all' | 'twitter' | 'youtube' | 'website' | 'notes'; 
+  setFilter: (filter: 'all' | 'twitter' | 'youtube' | 'website' | 'notes') => void;
   isOpen?: boolean;
   onClose?: () => void;
 }) {
@@ -92,6 +93,15 @@ export function Sidebar({
             active={filter === 'youtube'}
             onClick={() => {
               setFilter('youtube');
+              onClose?.();
+            }}
+          />
+          <SidebarItem 
+            icon={<LinkIcon />} 
+            text="Websites"  
+            active={filter === 'website'}
+            onClick={() => {
+              setFilter('website');
               onClose?.();
             }}
           />

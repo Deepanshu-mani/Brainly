@@ -2,13 +2,15 @@ import type { ReactElement } from "react";
 
 interface ButtonProps {
   variant: "primary" | "secondary";
-  text: string;
+  text?: string;
   startIcon?: ReactElement;
   onClick?: () => void;
   fullWidth?: boolean;
   loading?: boolean;
   className?: string;
   type?: "button" | "submit" | "reset";
+  iconOnly?: boolean;
+  title?: string;
   // hover?: boolean;
 }
 
@@ -25,8 +27,12 @@ export function Button({
   onClick,
   loading,
   className,
+  iconOnly,
+  title,
 }: ButtonProps) {
-  const baseClasses = "px-6 py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-2";
+  const baseClasses = iconOnly 
+    ? "p-2 sm:p-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 text-sm sm:text-base"
+    : "px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-1 sm:gap-2 text-sm sm:text-base";
   const variantClass = variantClasses[variant];
   const loadingClass = loading ? " opacity-60 cursor-not-allowed" : "";
   const widthClass = fullWidth ? " w-full" : "";
@@ -37,12 +43,13 @@ export function Button({
       onClick={onClick}
       className={classes} 
       disabled={loading}
+      title={title}
     >
       {loading && (
         <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
       )}
       {!loading && startIcon}
-      <span>{text}</span>
+      {!iconOnly && text && <span>{text}</span>}
     </button>
   );
 }
