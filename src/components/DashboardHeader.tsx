@@ -49,6 +49,27 @@ export function DashboardHeader({ user, onLogout, onAddMemory }: DashboardHeader
     }
   };
 
+  const handleReprocess = async () => {
+    const loadingToast = showToast.loading('Reprocessing content for AI summaries...');
+    
+    try {
+      await axios.post(`${BACKEND_URL}/content/reprocess`, {
+        force: false
+      }, {
+        headers: {
+          Authorization: localStorage.getItem("token") || ""
+        }
+      });
+      
+      showToast.dismiss(loadingToast);
+      showToast.success('Content reprocessing started! Summaries will appear shortly.');
+    } catch (error) {
+      console.error('Error reprocessing content:', error);
+      showToast.dismiss(loadingToast);
+      showToast.error('Failed to reprocess content. Please try again.');
+    }
+  };
+
   return (
     <header className={`border-b backdrop-blur-2xl sticky top-0 z-50 ${
       theme === 'light' 
@@ -75,6 +96,21 @@ export function DashboardHeader({ user, onLogout, onAddMemory }: DashboardHeader
             >
               <span className="hidden sm:inline">+ Add Memory</span>
               <span className="sm:hidden">+ Add</span>
+            </button>
+
+            {/* Reprocess Button */}
+            <button
+              onClick={handleReprocess}
+              className={`p-2 sm:p-2.5 rounded-xl transition-all duration-300 backdrop-blur-xl border shadow-lg hover:shadow-xl ${
+                theme === 'light'
+                  ? 'bg-white/30 hover:bg-white/40 text-black border-black/20 shadow-black/10 hover:shadow-black/20'
+                  : 'bg-black/30 hover:bg-black/40 text-white border-white/20 shadow-white/10 hover:shadow-white/20'
+              }`}
+              title="Reprocess content for AI summaries"
+            >
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
             </button>
 
             {/* Share Button */}

@@ -5,6 +5,7 @@ import { LinkIcon } from "./icons/LinkIcon";
 import { X, Globe } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 import { CardActionButton } from "../components/SocialButton";
+import { WebsitePreview } from "../components/ProgressiveImage";
 
 interface WebsiteCardProps {
   content: WebsiteContent;
@@ -201,6 +202,20 @@ export const WebsiteCard = React.memo(function WebsiteCard({ content, onDelete, 
 
 
             <div className="space-y-6">
+              {/* Website Preview */}
+              <div>
+                <h3 className={`text-lg font-semibold mb-4 ${
+                  theme === 'light' ? 'text-black' : 'text-white'
+                }`}>Preview</h3>
+                <div className={`rounded-xl overflow-hidden backdrop-blur-sm border ${
+                  theme === 'light'
+                    ? 'bg-white/30 border-black/5'
+                    : 'bg-black/30 border-white/5'
+                }`}>
+                  <WebsitePreview url={link} className="w-full h-48" />
+                </div>
+              </div>
+              
               <div>
                 <h3 className={`text-lg font-semibold mb-4 ${
                   theme === 'light' ? 'text-black' : 'text-white'

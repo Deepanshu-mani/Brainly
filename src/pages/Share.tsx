@@ -228,7 +228,6 @@ export function Share() {
                     <NoteCard content={item} isShared={true} />
                   ) : (
                     <Card
-                      title={item.title || "Untitled"}
                       link={item.link}
                       type={item.type}
                       id={item.id}

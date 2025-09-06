@@ -121,7 +121,6 @@ export function MostRelevantContent({ contents, isLoading, onUpdateContent, onDe
             ) : (
               <Card
                 id={content._id}
-                title={content.title}
                 link={content.link}
                 type={content.type as 'twitter' | 'youtube'}
                 tags={content.tags}

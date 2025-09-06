@@ -18,12 +18,10 @@ export function NoteEditor({
   onCancel,
 }: NoteEditorProps) {
   const { theme } = useTheme();
-  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   // Initialize content from the link field if it exists and is a data URL
   useEffect(() => {
-    setTitle(initialTitle ?? '');
     // Check if initialContent is a data URL
     if (initialContent?.startsWith('data:text/plain;charset=utf-8,')) {
       try {
@@ -108,7 +106,7 @@ export function NoteEditor({
             variant="primary"
             type="submit"
           >
-            <PlusIcon className="w-4 h-4 mr-2" />
+            <PlusIcon />
             Save
           </Button>
         </div>

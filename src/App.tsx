@@ -9,6 +9,7 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/Layout";
 import { ToastProvider } from "./components/ToastProvider";
+import ErrorBoundaryClass, { GridErrorBoundary } from "./components/ErrorBoundary";
 
 // Wrapper component to apply layout to specific routes
 const WithLayout = ({ children }: { children: JSX.Element }) => (
@@ -33,32 +34,36 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
 function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <Routes>
-          {/* Public routes with header */}
-          <Route path="/signin" element={<WithLayout><SignIn /></WithLayout>} />
-          <Route path="/signup" element={<WithLayout><SignUp /></WithLayout>} />
-          <Route path="/" element={<Navigate to="/signin" replace />} />
-          
-          {/* Dashboard (has its own layout) */}
-          <Route path="/dashboard" element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          } />
-          
-          {/* Other routes with header */}
-          <Route path="/share/:shareId" element={<WithLayout><Share /></WithLayout>} />
-          <Route path="/terms" element={<WithLayout><TermsOfService /></WithLayout>} />
-          <Route path="/privacy" element={<WithLayout><PrivacyPolicy /></WithLayout>} />
-          
-          {/* Redirect any unknown routes to signin */}
-          <Route path="*" element={<Navigate to="/signin" replace />} />
-        </Routes>
-        <ToastProvider />
-      </BrowserRouter>
-    </ThemeProvider>
+    <ErrorBoundaryClass>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Routes>
+            {/* Public routes with header */}
+            <Route path="/signin" element={<WithLayout><SignIn /></WithLayout>} />
+            <Route path="/signup" element={<WithLayout><SignUp /></WithLayout>} />
+            <Route path="/" element={<Navigate to="/signin" replace />} />
+            
+            {/* Dashboard (has its own layout) */}
+            <Route path="/dashboard" element={
+              <PrivateRoute>
+                <GridErrorBoundary>
+                  <Dashboard />
+                </GridErrorBoundary>
+              </PrivateRoute>
+            } />
+            
+            {/* Other routes with header */}
+            <Route path="/share/:shareId" element={<WithLayout><Share /></WithLayout>} />
+            <Route path="/terms" element={<WithLayout><TermsOfService /></WithLayout>} />
+            <Route path="/privacy" element={<WithLayout><PrivacyPolicy /></WithLayout>} />
+            
+            {/* Redirect any unknown routes to signin */}
+            <Route path="*" element={<Navigate to="/signin" replace />} />
+          </Routes>
+          <ToastProvider />
+        </BrowserRouter>
+      </ThemeProvider>
+    </ErrorBoundaryClass>
   );
 }
 

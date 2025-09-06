@@ -18,6 +18,7 @@ import { FilterContext } from '../ui/Sidebar';
 // Hooks
 import { UseContent } from '../hooks/UseContent';
 import { useUser } from '../hooks/useUser';
+import { useOptimisticContent } from '../hooks/useOptimisticUpdates';
 import { useTheme } from '../contexts/ThemeContext';
 
 // Types
@@ -43,6 +44,7 @@ export function Dashboard() {
   } = UseContent();
 
   const { user, logout } = useUser();
+  const { optimisticDelete, optimisticUpdate } = useOptimisticContent();
   const { theme } = useTheme();
   
   const [showNoteModal, setShowNoteModal] = useState(false);
@@ -85,30 +87,27 @@ export function Dashboard() {
   }, [createContent]);
   
   const handleUpdateContent = useCallback(async (updatedContent: Content) => {
-    const loadingToast = showToast.loading('Updating content...');
-    try {
-      await updateContent(updatedContent._id, updatedContent);
-      showToast.dismiss(loadingToast);
-      showToast.contentUpdated();
-    } catch (error) {
-      console.error('Error updating content:', error);
-      showToast.dismiss(loadingToast);
-      showToast.error('Failed to update content. Please try again.');
-    }
-  }, [updateContent]);
+    await optimisticUpdate(
+      updatedContent._id,
+      updatedContent,
+      () => updateContent(updatedContent._id, updatedContent),
+      () => {
+        // Success callback - content is already updated optimistically
+        showToast.contentUpdated();
+      }
+    );
+  }, [updateContent, optimisticUpdate]);
   
   const handleDeleteContent = useCallback(async (id: string) => {
-    const loadingToast = showToast.loading('Deleting content...');
-    try {
-      await deleteContent(id);
-      showToast.dismiss(loadingToast);
-      showToast.contentDeleted();
-    } catch (error) {
-      console.error('Error deleting content:', error);
-      showToast.dismiss(loadingToast);
-      showToast.error('Failed to delete content. Please try again.');
-    }
-  }, [deleteContent]);
+    await optimisticDelete(
+      id,
+      () => deleteContent(id),
+      () => {
+        // Success callback - content is already removed optimistically
+        showToast.contentDeleted();
+      }
+    );
+  }, [deleteContent, optimisticDelete]);
 
   // Create a sidebar-compatible filter type
   type SidebarFilter = 'all' | 'twitter' | 'youtube' | 'website' | 'notes';
