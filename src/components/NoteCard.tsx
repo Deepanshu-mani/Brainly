@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { NoteEditor } from './NoteEditor';
 import type { Content } from '../types/content';
-import { EditIcon } from '../ui/icons/EditIcon';
-import { DeleteIcon } from '../ui/icons/DeleteIcon';
-import { StickyNote, Maximize2, X } from 'lucide-react';
+import { StickyNote, X } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
+import { CardActionButton } from './SocialButton';
 type NoteCardProps = {
   content: Content;
   onUpdate?: (updatedContent: Content) => Promise<void>;
@@ -13,9 +12,8 @@ type NoteCardProps = {
   isShared?: boolean;
 };
 
-export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProps) {
+export const NoteCard = React.memo(function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const { theme } = useTheme();
 
@@ -70,12 +68,10 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
 
   const handleDelete = async () => {
     try {
-      setIsDeleting(true);
       if (!onDelete) return;
       await onDelete(content._id);
     } catch (error) {
       console.error('Error deleting note:', error);
-      setIsDeleting(false);
     }
   };
 
@@ -99,84 +95,37 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
   return (
     <>
       <div className="relative group w-[280px] h-[240px] flex flex-col pb-7 transition-all duration-500">
+        {/* Animated Action Button - Top right corner of the card */}
+        <div className="absolute top-2 right-2 z-50 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <CardActionButton
+            onExpand={() => setIsExpanded(true)}
+            onShare={onUpdate && !isShared ? () => setIsEditing(true) : undefined}
+            onDelete={!isShared && onDelete ? handleDelete : undefined}
+            isValidLink={true}
+            isShared={isShared}
+            isEditMode={true}
+          />
+        </div>
         {/* Glass morphism container */}
-        <div className={`absolute inset-0 rounded-2xl backdrop-blur-2xl border shadow-2xl transition-all duration-500 overflow-hidden ${
+        <div className={`absolute inset-0 rounded-2xl backdrop-blur-xl border transition-all duration-500 overflow-hidden ${
           theme === 'light' 
-            ? 'bg-white/50 border-black/10 shadow-black/10 group-hover:bg-white/70 group-hover:shadow-black/20' 
-            : 'bg-black/50 border-white/10 shadow-white/10 group-hover:bg-black/70 group-hover:shadow-white/20'
+            ? 'bg-white/60 border-black/10 shadow-lg shadow-black/5 group-hover:bg-white/80' 
+            : 'bg-black/60 border-white/10 shadow-lg shadow-white/5 group-hover:bg-black/80'
         }`} />
         
         {/* Inner content */}
         <div className="relative z-10 flex flex-col h-full">
-        <div className={`flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center border-b backdrop-blur-sm transition-all duration-300 ${
-          theme === 'light'
-            ? 'bg-white/20 border-black/5 group-hover:bg-white/30'
-            : 'bg-black/20 border-white/5 group-hover:bg-black/30'
-        }`}>
-          <div className={`flex items-center gap-2 sm:gap-3 font-medium min-w-0 flex-1 ${
-            theme === 'light' ? 'text-black/80' : 'text-white/80'
-          }`}>
-            <div className={`p-1.5 sm:p-2 rounded-xl flex-shrink-0 backdrop-blur-sm border transition-all duration-300 ${
+          {/* Note badge only */}
+          <div className="p-3">
+            <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm border transition-all duration-300 ${
               theme === 'light'
-                ? 'bg-purple-500/20 border-purple-500/30 text-purple-700 group-hover:bg-purple-500/30'
-                : 'bg-purple-400/20 border-purple-400/30 text-purple-300 group-hover:bg-purple-400/30'
+                ? 'bg-purple-500/20 border-purple-500/30 text-purple-700'
+                : 'bg-purple-400/20 border-purple-400/30 text-purple-300'
             }`}>
-              <StickyNote className="w-4 h-4" />
+              <StickyNote className="w-3 h-3" />
+              Note
             </div>
-            <span className="truncate text-sm sm:text-base font-semibold">Note</span>
           </div>
-          
-          <div className={`flex gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-            theme === 'light' ? 'text-black/60' : 'text-white/60'
-          }`}>
-            <button 
-              onClick={() => setIsExpanded(true)}
-              className={`p-1.5 rounded-md transition-all duration-300 ${
-                theme === 'light'
-                  ? 'hover:bg-purple-500/20 hover:text-purple-700'
-                  : 'hover:bg-purple-400/20 hover:text-purple-300'
-              }`}
-              aria-label="Expand note"
-              title="Expand note"
-            >
-              <Maximize2 className="w-3.5 h-3.5" />
-            </button>
-          {!isShared && (onUpdate || onDelete) && (
-            <>
-              {onUpdate && (
-                <button 
-                  onClick={() => setIsEditing(true)}
-                  className={`p-1.5 rounded-md transition-all duration-300 ${
-                    theme === 'light'
-                      ? 'hover:bg-blue-500/20 hover:text-blue-700'
-                      : 'hover:bg-blue-400/20 hover:text-blue-300'
-                  }`}
-                  aria-label="Edit note"
-                  title="Edit note"
-                >
-                  <EditIcon />
-                </button>
-              )}
-              {onDelete && (
-                <button 
-                  onClick={handleDelete}
-                  disabled={isDeleting}
-                  className={`p-1.5 rounded-md transition-all duration-300 ${
-                    theme === 'light'
-                      ? 'hover:bg-red-500/20 hover:text-red-700'
-                      : 'hover:bg-red-400/20 hover:text-red-300'
-                  }`}
-                  aria-label="Delete note"
-                  title="Delete note"
-                >
-                  <DeleteIcon />
-                </button>
-              )}
-            </>
-          )}
-          </div>
-        </div>
-        
         
         <div 
           className={`p-4 sm:p-6 flex-1 overflow-y-auto transition-all duration-300 ${
@@ -217,7 +166,7 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
         </div>
         
         {formattedDate && (
-          <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg ${
+          <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 ${
             theme === 'light' 
               ? 'text-black/50 bg-white/30' 
               : 'text-white/50 bg-black/30'
@@ -335,4 +284,4 @@ export function NoteCard({ content, onUpdate, onDelete, isShared }: NoteCardProp
       )}
     </>
   );
-}
+});

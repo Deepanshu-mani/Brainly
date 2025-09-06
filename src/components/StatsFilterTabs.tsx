@@ -20,8 +20,8 @@ export function StatsFilterTabs({ filter, onFilterChange, contents }: StatsFilte
   ];
 
   return (
-    <div className="mb-12">
-      <div className={`flex space-x-2 p-2 rounded-2xl w-fit backdrop-blur-sm border ${
+    <div className="mb-8 sm:mb-12">
+      <div className={`flex space-x-1 sm:space-x-2 p-1 sm:p-2 rounded-2xl w-full sm:w-fit backdrop-blur-sm border overflow-x-auto ${
         theme === 'light'
           ? 'bg-black/5 border-black/10'
           : 'bg-white/5 border-white/10'
@@ -30,7 +30,7 @@ export function StatsFilterTabs({ filter, onFilterChange, contents }: StatsFilte
           <button
             key={tab.key}
             onClick={() => onFilterChange(tab.key as ContentFilter)}
-            className={`px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+            className={`px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
               filter === tab.key
                 ? theme === 'light'
                   ? 'bg-black text-white shadow-lg'
@@ -40,7 +40,14 @@ export function StatsFilterTabs({ filter, onFilterChange, contents }: StatsFilte
                   : 'text-white/60 hover:text-white hover:bg-white/10'
             }`}
           >
-            {tab.label}
+            <span className="hidden sm:inline">{tab.label}</span>
+            <span className="sm:hidden">
+              {tab.key === 'all' ? 'All' : 
+               tab.key === 'website' ? 'Web' :
+               tab.key === 'youtube' ? 'Videos' :
+               tab.key === 'twitter' ? 'Tweets' :
+               tab.key === 'note' ? 'Notes' : tab.label}
+            </span>
           </button>
         ))}
       </div>

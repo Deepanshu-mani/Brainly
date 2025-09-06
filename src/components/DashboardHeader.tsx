@@ -15,7 +15,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user, onLogout, onAddMemory }: DashboardHeaderProps) {
   const { theme } = useTheme();
-  const [shareHash, setShareHash] = useState<string | null>(null);
+  const [, setShareHash] = useState<string | null>(null);
   const [shareLoading, setShareLoading] = useState(false);
 
   const handleShare = async () => {
@@ -55,32 +55,33 @@ export function DashboardHeader({ user, onLogout, onAddMemory }: DashboardHeader
         ? 'border-black/10 bg-white/80 shadow-lg shadow-black/5' 
         : 'border-white/10 bg-black/80 shadow-lg shadow-white/5'
     }`}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <BrainIcon />
-            <span className={`text-xl font-bold ${theme === 'light' ? 'text-black' : 'text-white'}`}>Brainly</span>
+            <span className={`text-lg sm:text-xl font-bold ${theme === 'light' ? 'text-black' : 'text-white'}`}>Brainly</span>
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <button
               onClick={onAddMemory}
-              className={`px-5 py-2.5 font-semibold rounded-xl transition-all duration-300 backdrop-blur-xl border text-sm shadow-lg hover:shadow-xl ${
+              className={`px-3 sm:px-5 py-2 sm:py-2.5 font-semibold rounded-xl transition-all duration-300 backdrop-blur-xl border text-xs sm:text-sm shadow-lg hover:shadow-xl ${
                 theme === 'light'
                   ? 'bg-white/30 hover:bg-white/40 text-black border-black/20 shadow-black/10 hover:shadow-black/20'
                   : 'bg-black/30 hover:bg-black/40 text-white border-white/20 shadow-white/10 hover:shadow-white/20'
               }`}
             >
-              + Add Memory
+              <span className="hidden sm:inline">+ Add Memory</span>
+              <span className="sm:hidden">+ Add</span>
             </button>
 
             {/* Share Button */}
             <button
               onClick={handleShare}
               disabled={shareLoading}
-              className={`p-2.5 rounded-xl transition-all duration-300 backdrop-blur-xl border shadow-lg hover:shadow-xl ${
+              className={`p-2 sm:p-2.5 rounded-xl transition-all duration-300 backdrop-blur-xl border shadow-lg hover:shadow-xl ${
                 theme === 'light'
                   ? 'bg-white/30 hover:bg-white/40 text-black border-black/20 shadow-black/10 hover:shadow-black/20'
                   : 'bg-black/30 hover:bg-black/40 text-white border-white/20 shadow-white/10 hover:shadow-white/20'
@@ -95,12 +96,12 @@ export function DashboardHeader({ user, onLogout, onAddMemory }: DashboardHeader
             
             {/* User Initial with Dropdown */}
             <div className="relative group">
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-xl border cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl ${
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center backdrop-blur-xl border cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl ${
                 theme === 'light'
                   ? 'bg-black/90 border-black/30 hover:border-black/50 shadow-black/20 hover:shadow-black/30'
                   : 'bg-white/90 border-white/30 hover:border-white/50 shadow-white/20 hover:shadow-white/30'
               }`}>
-                <span className={`font-semibold text-sm ${
+                <span className={`font-semibold text-xs sm:text-sm ${
                   theme === 'light' ? 'text-white' : 'text-black'
                 }`}>
                   {(user?.username || 'U').charAt(0).toUpperCase()}

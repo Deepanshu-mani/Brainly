@@ -76,11 +76,12 @@ export function CreateContentModal({ open, onClose }: {
               <div className="pt-4">
                 <Button 
                   variant="primary" 
-                  text={loading ? "Adding..." : "Add Content"} 
-                  fullWidth={true} 
+                  className="w-full"
                   loading={loading}
                   onClick={addContent} 
-                />
+                >
+                  {loading ? "Adding..." : "Add Content"}
+                </Button>
               </div>
             </div>
           </div>
@@ -186,11 +187,12 @@ export function UpdateContentModal({
               <div className="pt-4">
                 <Button 
                   variant="primary" 
-                  text={loading ? "Updating..." : "Update Content"} 
-                  fullWidth={true} 
+                  className="w-full"
                   loading={loading}
                   onClick={updateContent} 
-                />
+                >
+                  {loading ? "Updating..." : "Update Content"}
+                </Button>
               </div>
             </div>
           </div>

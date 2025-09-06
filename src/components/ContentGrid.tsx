@@ -1,5 +1,5 @@
+import React from 'react';
 import Masonry from 'react-masonry-css';
-import { Plus } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { WebsiteCard } from '../ui/WebsiteCard';
 import { NoteCard } from './NoteCard';
@@ -12,11 +12,10 @@ interface ContentGridProps {
   loading: boolean;
   onUpdateContent: (content: Content) => Promise<void>;
   onDeleteContent: (id: string) => Promise<void>;
-  onRefresh: () => void;
   onAddMemory: () => void;
 }
 
-export function ContentGrid({ contents, loading, onUpdateContent, onDeleteContent, onRefresh, onAddMemory }: ContentGridProps) {
+export const ContentGrid = React.memo(function ContentGrid({ contents, loading, onUpdateContent, onDeleteContent, onAddMemory }: ContentGridProps) {
   const { theme } = useTheme();
 
   if (loading) {
@@ -65,19 +64,19 @@ export function ContentGrid({ contents, loading, onUpdateContent, onDeleteConten
   // Always render the grid so the AddToBrainCard is visible even with zero memories
 
   return (
-    <div className="pb-12">
+    <div className="pb-8 sm:pb-12 pt-2 sm:pt-4">
       <Masonry
         breakpointCols={{ default: 4, 1400: 3, 1100: 2, 700: 1 }}
-        className="flex -ml-2 w-auto"
-        columnClassName="pl-2 bg-clip-padding"
+        className="flex -ml-4 sm:-ml-8 w-auto"
+        columnClassName="pl-4 sm:pl-8 bg-clip-padding"
       >
         {/* Add to Brain Card - Always first */}
-        <div>
+        <div className="mb-6 sm:mb-8">
           <AddToBrainCard onAddMemory={onAddMemory} />
         </div>
         
         {contents.map((content) => (
-          <div key={content._id}>
+          <div key={content._id} className="mb-6 sm:mb-8">
             {content.type === 'note' ? (
               <NoteCard
                 content={content}
@@ -87,23 +86,7 @@ export function ContentGrid({ contents, loading, onUpdateContent, onDeleteConten
             ) : content.type === 'website' ? (
               <WebsiteCard
                 content={content as any}
-                onDelete={async () => {
-                  try {
-                    const { default: axios } = await import('axios');
-                    const { BACKEND_URL } = await import('../config');
-                    await axios.delete(`${BACKEND_URL}/content`, {
-                      headers: {
-                        Authorization: localStorage.getItem("token") || "",
-                      },
-                      data: {
-                        contentId: content._id
-                      }
-                    });
-                    onRefresh();
-                  } catch (error) {
-                    console.error("Error deleting content:", error);
-                  }
-                }}
+                onDelete={() => onDeleteContent(content._id)}
                 isShared={false}
               />
             ) : (
@@ -113,23 +96,7 @@ export function ContentGrid({ contents, loading, onUpdateContent, onDeleteConten
                 type={content.type as 'twitter' | 'youtube'}
                 tags={content.tags}
                 createdAt={(content as any).createdAt || (content as any).updatedAt}
-                onDelete={async () => {
-                  try {
-                    const { default: axios } = await import('axios');
-                    const { BACKEND_URL } = await import('../config');
-                    await axios.delete(`${BACKEND_URL}/content`, {
-                      headers: {
-                        Authorization: localStorage.getItem("token") || "",
-                      },
-                      data: {
-                        contentId: content._id
-                      }
-                    });
-                    onRefresh();
-                  } catch (error) {
-                    console.error("Error deleting content:", error);
-                  }
-                }}
+                onDelete={() => onDeleteContent(content._id)}
                 isShared={false}
               />
             )}
@@ -164,4 +131,4 @@ export function ContentGrid({ contents, loading, onUpdateContent, onDeleteConten
       )}
     </div>
   );
-}
+});

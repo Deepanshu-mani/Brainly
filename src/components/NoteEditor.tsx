@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '../ui/Button';
 import { PlusIcon } from '../ui/icons/PlusIcon';
 import { CrossIcon } from '../ui/icons/CrossIcon';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NoteEditorProps = {
   initialContent?: string;
@@ -16,6 +17,7 @@ export function NoteEditor({
   onSave,
   onCancel,
 }: NoteEditorProps) {
+  const { theme } = useTheme();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -44,14 +46,28 @@ export function NoteEditor({
   };
 
   return (
-    <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg border border-gray-200 dark:border-dark-border overflow-hidden">
-      <div className="p-4 border-b border-gray-200 dark:border-dark-border flex justify-between items-center">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-dark-text">
+    <div className={`rounded-2xl shadow-xl border backdrop-blur-xl overflow-hidden ${
+      theme === 'light'
+        ? 'bg-white/90 border-black/10 shadow-black/10'
+        : 'bg-black/90 border-white/10 shadow-white/10'
+    }`}>
+      <div className={`p-4 border-b flex justify-between items-center ${
+        theme === 'light'
+          ? 'border-black/10'
+          : 'border-white/10'
+      }`}>
+        <h3 className={`text-lg font-medium ${
+          theme === 'light' ? 'text-black' : 'text-white'
+        }`}>
           Note
         </h3>
         <button
           onClick={onCancel}
-          className="text-gray-400 hover:text-gray-500 dark:text-dark-text-muted dark:hover:text-white"
+          className={`p-1 rounded-lg transition-colors duration-200 ${
+            theme === 'light'
+              ? 'text-black/60 hover:text-black hover:bg-black/5'
+              : 'text-white/60 hover:text-white hover:bg-white/5'
+          }`}
           aria-label="Close"
         >
           <CrossIcon />
@@ -61,7 +77,9 @@ export function NoteEditor({
       <form onSubmit={handleSubmit} className="p-4 space-y-4">
 
         <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-dark-text-muted mb-1">
+          <label htmlFor="content" className={`block text-sm font-medium mb-1 ${
+            theme === 'light' ? 'text-black/70' : 'text-white/70'
+          }`}>
             Note Content
           </label>
           <textarea
@@ -69,7 +87,12 @@ export function NoteEditor({
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-dark-surface dark:text-white"
+            className={`w-full px-3 py-2 border rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 ${
+              theme === 'light'
+                ? 'border-black/20 bg-white/80 text-black placeholder-black/50 focus:ring-black/30 focus:border-black/40'
+                : 'border-white/20 bg-black/80 text-white placeholder-white/50 focus:ring-white/30 focus:border-white/40'
+            }`}
+            placeholder="Write your note here..."
             required
           />
         </div>
@@ -78,14 +101,16 @@ export function NoteEditor({
           <Button
             variant="secondary"
             onClick={onCancel}
-            text="Cancel"
-          />
+          >
+            Cancel
+          </Button>
           <Button
             variant="primary"
-            startIcon={<PlusIcon />}
-            text="Save"
             type="submit"
-          />
+          >
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Save
+          </Button>
         </div>
       </form>
     </div>

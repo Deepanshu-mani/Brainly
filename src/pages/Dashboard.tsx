@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { BACKEND_URL } from '../config';
 
@@ -46,7 +46,6 @@ export function Dashboard() {
   const { theme } = useTheme();
   
   const [showNoteModal, setShowNoteModal] = useState(false);
-  const [isReminder, setIsReminder] = useState(false);
 
   // Search state
   const [displayedContents, setDisplayedContents] = useState<Content[]>([]);
@@ -67,7 +66,7 @@ export function Dashboard() {
     return content.type === filter;
   });
 
-  const handleCreateNote = async (data: { title: string; content: string }) => {
+  const handleCreateNote = useCallback(async (data: { title: string; content: string }) => {
     const loadingToast = showToast.loading('Creating note...');
     try {
       await createContent({
@@ -76,7 +75,6 @@ export function Dashboard() {
         tags: []
       });
       setShowNoteModal(false);
-      await refresh();
       showToast.dismiss(loadingToast);
       showToast.contentAdded('Note');
     } catch (error) {
@@ -84,13 +82,12 @@ export function Dashboard() {
       showToast.dismiss(loadingToast);
       showToast.error('Failed to create note. Please try again.');
     }
-  };
+  }, [createContent]);
   
-  const handleUpdateContent = async (updatedContent: Content) => {
+  const handleUpdateContent = useCallback(async (updatedContent: Content) => {
     const loadingToast = showToast.loading('Updating content...');
     try {
       await updateContent(updatedContent._id, updatedContent);
-      await refresh();
       showToast.dismiss(loadingToast);
       showToast.contentUpdated();
     } catch (error) {
@@ -98,13 +95,12 @@ export function Dashboard() {
       showToast.dismiss(loadingToast);
       showToast.error('Failed to update content. Please try again.');
     }
-  };
+  }, [updateContent]);
   
-  const handleDeleteContent = async (id: string) => {
+  const handleDeleteContent = useCallback(async (id: string) => {
     const loadingToast = showToast.loading('Deleting content...');
     try {
       await deleteContent(id);
-      await refresh();
       showToast.dismiss(loadingToast);
       showToast.contentDeleted();
     } catch (error) {
@@ -112,7 +108,7 @@ export function Dashboard() {
       showToast.dismiss(loadingToast);
       showToast.error('Failed to delete content. Please try again.');
     }
-  };
+  }, [deleteContent]);
 
   // Create a sidebar-compatible filter type
   type SidebarFilter = 'all' | 'twitter' | 'youtube' | 'website' | 'notes';
@@ -212,7 +208,7 @@ export function Dashboard() {
         />
 
         {/* Main Content */}
-        <main className={`max-w-7xl mx-auto px-6 lg:px-8 py-10 relative z-10 ${
+        <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 relative z-10 ${
           theme === 'light' ? 'text-black' : 'text-white'
         }`}>
           {/* Greeting */}
@@ -239,7 +235,6 @@ export function Dashboard() {
               isLoading={aiResponse === "Analyzing your memories..."}
               onUpdateContent={handleUpdateContent}
               onDeleteContent={handleDeleteContent}
-              onRefresh={refresh}
             />
           )}
 
@@ -256,7 +251,6 @@ export function Dashboard() {
             loading={loading}
             onUpdateContent={handleUpdateContent}
             onDeleteContent={handleDeleteContent}
-            onRefresh={refresh}
             onAddMemory={() => setModalOpen(true)}
           />
         </main>
@@ -275,7 +269,6 @@ export function Dashboard() {
                 onSave={handleCreateNote}
                 onCancel={() => {
                   setShowNoteModal(false);
-                  setIsReminder(false);
                 }}
               />
             </div>

@@ -127,11 +127,12 @@ export function SignIn() {
           <div className="pt-2">
             <Button
               variant="primary"
-              text={loading ? "Signing In..." : "Sign In"}
-              fullWidth={true} 
+              className="w-full"
               loading={loading}
               onClick={signin}
-            />
+            >
+              {loading ? "Signing In..." : "Sign In"}
+            </Button>
           </div>
         </div>
 

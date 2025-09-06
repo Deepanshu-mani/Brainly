@@ -1,12 +1,11 @@
-import { useEffect, useState, useCallback, Component } from "react";
+import React, { useEffect, useState, useCallback, Component } from "react";
 import type { ErrorInfo, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
-import { DeleteIcon } from "./icons/DeleteIcon";
-import { LinkIcon } from "./icons/LinkIcon";
-import { AlertTriangle, Maximize2, X } from "lucide-react";
+import { AlertTriangle, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { CardActionButton } from "../components/SocialButton";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
@@ -62,13 +61,14 @@ interface CardProps {
   createdAt?: string;
 }
 
-export function Card({ id, link, type, tags, onDelete, isShared, notes, createdAt }: CardProps) {
+export const Card = React.memo(function Card({ id, link, type, tags, onDelete, isShared, notes, createdAt }: CardProps) {
   const [mounted, setMounted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [summary, setSummary] = useState<string>("");
   const [keywords, setKeywords] = useState<string[]>([]);
   const [sumLoading, setSumLoading] = useState(false);
   const [sumError, setSumError] = useState<string>("");
+  const [twitterLoaded, setTwitterLoaded] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -76,11 +76,27 @@ export function Card({ id, link, type, tags, onDelete, isShared, notes, createdA
     setMounted(true);
   }, []);
 
+  // Optimized Twitter widget loading
   useEffect(() => {
     if (type === "twitter" && mounted && window.twttr?.widgets) {
-      window.twttr.widgets.load();
+      setTwitterLoaded(false);
+      // Load immediately if script is ready, otherwise minimal delay
+      const loadWidgets = () => {
+        window.twttr?.widgets?.load();
+        setTwitterLoaded(true);
+      };
+      
+      // Check if widgets are already initialized
+      if (window.twttr?.widgets) {
+        // Load immediately
+        loadWidgets();
+      } else {
+        // Minimal delay only if widgets aren't ready
+        const timer = setTimeout(loadWidgets, 25);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [link, type, mounted, isDark]);
+  }, [link, type, mounted, theme]);
 
   // Close expanded view on ESC
   useEffect(() => {
@@ -143,60 +159,15 @@ export function Card({ id, link, type, tags, onDelete, isShared, notes, createdA
   return (
     <>
       <div className="relative group w-full transition-all duration-500">
-        {/* Action buttons - positioned over content */}
-        <div className={`absolute top-2 right-2 z-20 flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-          theme === 'light' ? 'text-black/60' : 'text-white/60'
-        }`}>
-          <button 
-            onClick={() => setIsExpanded(true)}
-            className={`p-1.5 rounded-md backdrop-blur-sm border transition-all duration-300 ${
-              theme === 'light'
-                ? 'bg-white/80 border-black/10 hover:bg-purple-500/20 hover:text-purple-700'
-                : 'bg-black/80 border-white/10 hover:bg-purple-400/20 hover:text-purple-300'
-            }`}
-            title="Expand"
-            aria-label="Expand"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-          </button>
-          {isValidLink ? (
-            <a 
-              href={link} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className={`p-1.5 rounded-md backdrop-blur-sm border transition-all duration-300 ${
-                theme === 'light'
-                  ? 'bg-white/80 border-black/10 hover:bg-green-500/20 hover:text-green-700'
-                  : 'bg-black/80 border-white/10 hover:bg-green-400/20 hover:text-green-300'
-              }`}
-              title="Open link"
-              aria-label="Open link"
-            >
-              <LinkIcon />
-            </a>
-          ) : (
-            <div className={`p-1.5 rounded-md backdrop-blur-sm border ${
-              theme === 'light'
-                ? 'bg-white/80 border-black/10 bg-red-500/20 text-red-700'
-                : 'bg-black/80 border-white/10 bg-red-400/20 text-red-300'
-            }`} title="Invalid link">
-              <AlertTriangle className="w-3.5 h-3.5" />
-            </div>
-          )}
-          {!isShared && onDelete && (
-            <button 
-              onClick={onDelete} 
-              className={`p-1.5 rounded-md backdrop-blur-sm border transition-all duration-300 ${
-                theme === 'light'
-                  ? 'bg-white/80 border-black/10 hover:bg-red-500/20 hover:text-red-700'
-                  : 'bg-black/80 border-white/10 hover:bg-red-400/20 hover:text-red-300'
-              }`}
-              title="Delete"
-              aria-label="Delete"
-            >
-              <DeleteIcon />
-            </button>
-          )}
+        {/* Animated Action Button - Top right corner of the card */}
+        <div className="absolute top-2 right-2 z-50 opacity-0 group-hover:opacity-100 transition-all duration-300">
+          <CardActionButton
+            onExpand={() => setIsExpanded(true)}
+            onShare={isValidLink ? () => window.open(link, '_blank') : undefined}
+            onDelete={!isShared && onDelete ? onDelete : undefined}
+            isValidLink={isValidLink}
+            isShared={isShared}
+          />
         </div>
         
         {!isValidLink && (
@@ -250,20 +221,38 @@ export function Card({ id, link, type, tags, onDelete, isShared, notes, createdA
         )}
 
         {type === "twitter" && mounted && (
-          <div>
+          <div key={`twitter-${id}-${theme}`}>
             <TwitterEmbedErrorBoundary>
               {isValidLink ? (
-                <div 
-                  key={`tweet-container-${link}`}
-                  className="twitter-embed-container"
-                  data-theme={isDark ? "dark" : "light"}
-                >
-                  <blockquote
-                    className="twitter-tweet"
+                <div className="relative">
+                  {!twitterLoaded && (
+                    <div className={`absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm ${
+                      theme === 'light' 
+                        ? 'bg-white/80 border border-black/10' 
+                        : 'bg-black/80 border border-white/10'
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
+                        <span className={`text-sm ${
+                          theme === 'light' ? 'text-black/60' : 'text-white/60'
+                        }`}>
+                          Loading tweet...
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <div 
+                    key={`tweet-container-${link}-${theme}`}
+                    className="twitter-embed-container"
                     data-theme={isDark ? "dark" : "light"}
                   >
-                    <a href={link.replace("x.com", "twitter.com")}></a>
-                  </blockquote>
+                    <blockquote
+                      className="twitter-tweet"
+                      data-theme={isDark ? "dark" : "light"}
+                    >
+                      <a href={link.replace("x.com", "twitter.com")}></a>
+                    </blockquote>
+                  </div>
                 </div>
               ) : (
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
@@ -284,7 +273,7 @@ export function Card({ id, link, type, tags, onDelete, isShared, notes, createdA
           </div>
         )}
         {formattedDate && (
-          <div className={`absolute bottom-2 right-2 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg ${
+          <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 ${
             theme === 'light' 
               ? 'text-black/50 bg-white/30' 
               : 'text-white/50 bg-black/30'
@@ -526,4 +515,4 @@ export function Card({ id, link, type, tags, onDelete, isShared, notes, createdA
       )}
     </>
   );
-}
+});

@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import type { WebsiteContent } from "../types/content";
 import { LinkIcon } from "./icons/LinkIcon";
-import { DeleteIcon } from "./icons/DeleteIcon";
-import { Maximize2, X } from "lucide-react";
+import { X, Globe } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { CardActionButton } from "../components/SocialButton";
 
 interface WebsiteCardProps {
   content: WebsiteContent;
@@ -12,7 +12,7 @@ interface WebsiteCardProps {
   isShared?: boolean;
 }
 
-export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
+export const WebsiteCard = React.memo(function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
   const { link, websiteMetadata, summary, tags, processingStatus } = content;
   const [isExpanded, setIsExpanded] = useState(false);
   const { theme } = useTheme();
@@ -55,93 +55,47 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
 
   return (
     <>
-    <div className="relative group flex w-full flex-col overflow-hidden pb-7 transition-all duration-500">
+    <div 
+      className="relative group flex w-full flex-col overflow-hidden pb-7 transition-all duration-500 hover:z-10 cursor-pointer"
+      onClick={() => {
+        if (link) {
+          window.open(link, '_blank');
+        }
+      }}
+    >
+      {/* Animated Action Button - Top right corner of the card */}
+      <div 
+        className="absolute top-2 right-2 z-50 opacity-0 group-hover:opacity-100 transition-all duration-300"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <CardActionButton
+          onExpand={() => setIsExpanded(true)}
+          onShare={link ? () => window.open(link, '_blank') : undefined}
+          onDelete={!isShared && onDelete ? onDelete : undefined}
+          isValidLink={!!link}
+          isShared={isShared}
+        />
+      </div>
       {/* Glass morphism container */}
-      <div className={`absolute inset-0 rounded-2xl backdrop-blur-2xl border shadow-2xl transition-all duration-500 ${
+      <div className={`absolute inset-0 rounded-2xl backdrop-blur-xl border transition-all duration-500 ${
         theme === 'light' 
-          ? 'bg-white/40 border-black/10 shadow-black/10 group-hover:bg-white/60 group-hover:shadow-black/20' 
-          : 'bg-black/40 border-white/10 shadow-white/10 group-hover:bg-black/60 group-hover:shadow-white/20'
+          ? 'bg-white/60 border-black/10 shadow-lg shadow-black/5 group-hover:bg-white/80 group-hover:shadow-xl group-hover:shadow-black/10' 
+          : 'bg-black/60 border-white/10 shadow-lg shadow-white/5 group-hover:bg-black/80 group-hover:shadow-xl group-hover:shadow-white/10'
       }`} />
       
       {/* Inner content */}
       <div className="relative z-10 flex flex-col h-full">
-      <div className={`flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center border-b backdrop-blur-sm transition-all duration-300 ${
-        theme === 'light'
-          ? 'bg-white/20 border-black/5 group-hover:bg-white/30'
-          : 'bg-black/20 border-white/5 group-hover:bg-black/30'
-      }`}>
-        <div className={`flex items-center gap-3 font-medium min-w-0 flex-1 ${
-          theme === 'light' ? 'text-black/80' : 'text-white/80'
-        }`}>
-          <div className={`p-1.5 sm:p-2 rounded-xl flex-shrink-0 backdrop-blur-sm border transition-all duration-300 ${
+        {/* Website badge only */}
+        <div className="p-3">
+          <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium backdrop-blur-sm border transition-all duration-300 ${
             theme === 'light'
-              ? 'bg-purple-500/20 border-purple-500/30 text-purple-700 group-hover:bg-purple-500/30'
-              : 'bg-purple-400/20 border-purple-400/30 text-purple-300 group-hover:bg-purple-400/30'
+              ? 'bg-blue-500/20 border-blue-500/30 text-blue-700'
+              : 'bg-blue-400/20 border-blue-400/30 text-blue-300'
           }`}>
-            {favicon ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={favicon} alt="favicon" className="w-4 h-4 rounded-sm" />
-            ) : (
-              <LinkIcon />
-            )}
-          </div>
-          <div className="min-w-0">
-            <div className="truncate text-sm sm:text-base font-semibold">{domain || "Website"}</div>
-            {domain && (
-              <div className={`text-xs truncate ${
-                theme === 'light' ? 'text-black/50' : 'text-white/50'
-              }`}>{domain}</div>
-            )}
+            <Globe className="w-3 h-3" />
+            Website
           </div>
         </div>
-
-        <div className={`flex gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
-          theme === 'light' ? 'text-black/60' : 'text-white/60'
-        }`}>
-          <button
-            onClick={() => setIsExpanded(true)}
-            className={`p-1.5 rounded-md transition-all duration-300 ${
-              theme === 'light'
-                ? 'hover:bg-purple-500/20 hover:text-purple-700'
-                : 'hover:bg-purple-400/20 hover:text-purple-300'
-            }`}
-            aria-label="Expand"
-            title="Expand"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-          </button>
-          {link && (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`p-1.5 rounded-md transition-all duration-300 ${
-                theme === 'light'
-                  ? 'hover:bg-green-500/20 hover:text-green-700'
-                  : 'hover:bg-green-400/20 hover:text-green-300'
-              }`}
-              aria-label="Open website"
-              title="Open website"
-            >
-              <LinkIcon />
-            </a>
-          )}
-          {!isShared && onDelete && (
-            <button
-              onClick={onDelete}
-              className={`p-1.5 rounded-md transition-all duration-300 ${
-                theme === 'light'
-                  ? 'hover:bg-red-500/20 hover:text-red-700'
-                  : 'hover:bg-red-400/20 hover:text-red-300'
-              }`}
-              aria-label="Delete bookmark"
-              title="Delete bookmark"
-            >
-              <DeleteIcon />
-            </button>
-          )}
-        </div>
-      </div>
 
       {processingStatus && processingStatus !== "completed" && (
         <div className="mx-4 mt-3 rounded-md bg-purple-50 text-purple-700 text-xs px-3 py-2 border border-purple-200 dark:bg-dark-primary/10 dark:text-dark-primary dark:border-dark-border">
@@ -177,7 +131,7 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
       </div>
 
       {formattedDate && (
-        <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg ${
+        <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 ${
           theme === 'light' 
             ? 'text-black/50 bg-white/30' 
             : 'text-white/50 bg-black/30'
@@ -229,13 +183,16 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
                 )}
               </div>
               <div className="min-w-0">
-                <h2 className={`text-2xl font-bold truncate ${
-                  theme === 'light' ? 'text-black' : 'text-white'
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm border transition-all duration-300 ${
+                  theme === 'light'
+                    ? 'bg-blue-500/20 border-blue-500/30 text-blue-700'
+                    : 'bg-blue-400/20 border-blue-400/30 text-blue-300'
                 }`}>
-                  {domain || "Website"}
-                </h2>
+                  <Globe className="w-4 h-4" />
+                  Website
+                </div>
                 {domain && (
-                  <p className={`text-sm truncate ${
+                  <p className={`text-sm truncate mt-2 ${
                     theme === 'light' ? 'text-black/60' : 'text-white/60'
                   }`}>{domain}</p>
                 )}
@@ -296,4 +253,4 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
     )}
     </>
   );
-}
+});

@@ -16,15 +16,15 @@ export function DashboardGreeting({ username, memoryCount }: DashboardGreetingPr
   };
 
   return (
-    <div className="mb-8">
-      <h1 className={`text-6xl font-bold mb-4 pb-2 tracking-tight capitalize ${
+    <div className="mb-6 sm:mb-8">
+      <h1 className={`text-3xl sm:text-4xl lg:text-6xl font-bold mb-3 sm:mb-4 pb-2 tracking-tight capitalize ${
         theme === 'light'
           ? 'bg-gradient-to-r from-black via-gray-800 to-gray-600 bg-clip-text text-transparent'
           : 'bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent '
       }`}>
         {getGreeting()} {username || 'there'}
       </h1>
-      <p className={`text-xl font-medium ${
+      <p className={`text-lg sm:text-xl font-medium ${
         theme === 'light' ? 'text-black/60' : 'text-white/60'
       }`}>
         {memoryCount} memories saved

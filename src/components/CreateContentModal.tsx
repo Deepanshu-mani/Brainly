@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { showToast } from "../utils/toast";
+import { Button } from "../ui/Button";
 
 enum ContentType {
   Youtube = "youtube",
@@ -15,7 +16,6 @@ export function CreateContentModal({ open, onClose }: {
     open: boolean,
     onClose: () => void 
 }) {
-  const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const tagsRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,6 @@ export function CreateContentModal({ open, onClose }: {
     const addingToast = showToast.loading(`Adding ${type}...`);
     setLoading(true);
     try {
-      const title = titleRef.current?.value;
       const link = linkRef.current?.value;
       const content = contentRef.current?.value;
       const tagsRaw = tagsRef.current?.value || "";
@@ -44,9 +43,8 @@ export function CreateContentModal({ open, onClose }: {
         tags
       };
 
-      // Add title only for Notes
+      // Add content for Notes (no title)
       if (type === ContentType.Note) {
-        payload.title = title;
         payload.content = content;
       } else {
         // Add link for YouTube, Twitter, and Website
@@ -74,10 +72,10 @@ export function CreateContentModal({ open, onClose }: {
   return (
     <div>
       {open && (
-        <div className="w-screen h-screen fixed top-0 left-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl p-6 w-full max-w-md mx-4">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-white">
+        <div className="w-screen h-screen fixed top-0 left-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
+          <div className="bg-black/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-2xl p-4 sm:p-6 w-full max-w-lg mx-2 sm:mx-4">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-white">
                 + Add Memory
               </h2>
               <button 
@@ -113,18 +111,6 @@ export function CreateContentModal({ open, onClose }: {
                 </div>
               </div>
 
-              {/* Title - Only for Notes */}
-              {type === ContentType.Note && (
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-white/80 block">Title</label>
-                  <input
-                    ref={titleRef}
-                    type="text"
-                    placeholder="Enter note title"
-                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/20 focus:border-white/20 transition-all duration-200 text-sm"
-                  />
-                </div>
-              )}
 
               {/* Link/Content Input */}
               {[ContentType.Youtube, ContentType.Twitter, ContentType.Website].includes(type) && (
@@ -167,19 +153,22 @@ export function CreateContentModal({ open, onClose }: {
 
               {/* Action Buttons */}
               <div className="flex gap-3 pt-2">
-                <button
+                <Button
+                  variant="ghost"
                   onClick={onClose}
-                  className="flex-1 px-4 py-2 bg-white/5 text-white/80 font-medium rounded-lg hover:bg-white/10 transition-all duration-200 text-sm"
+                  className="flex-1"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="primary"
                   onClick={addContent}
                   disabled={loading}
-                  className="flex-1 px-4 py-2 bg-white text-black font-semibold rounded-lg hover:bg-white/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  loading={loading}
+                  className="flex-1"
                 >
-                  {loading ? "Adding..." : "Add Memory"}
-                </button>
+                  Add Memory
+                </Button>
               </div>
             </div>
           </div>

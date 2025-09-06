@@ -123,11 +123,12 @@ export function BookmarkWebsiteModal({ open, onClose }: {
               <div className="pt-4">
                 <Button 
                   variant="primary" 
-                  text={loading ? "Bookmarking..." : "Bookmark Website"} 
-                  fullWidth={true} 
+                  className="w-full"
                   loading={loading}
                   onClick={bookmarkWebsite}
-                />
+                >
+                  {loading ? "Bookmarking..." : "Bookmark Website"}
+                </Button>
               </div>
 
               <div className="text-xs text-gray-500 dark:text-dark-text-muted text-center">

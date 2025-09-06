@@ -9,10 +9,9 @@ interface MostRelevantContentProps {
   isLoading: boolean;
   onUpdateContent: (content: Content) => Promise<void>;
   onDeleteContent: (id: string) => Promise<void>;
-  onRefresh: () => void;
 }
 
-export function MostRelevantContent({ contents, isLoading, onUpdateContent, onDeleteContent, onRefresh }: MostRelevantContentProps) {
+export function MostRelevantContent({ contents, isLoading, onUpdateContent, onDeleteContent }: MostRelevantContentProps) {
   const { theme } = useTheme();
 
   if (isLoading) {
@@ -116,23 +115,7 @@ export function MostRelevantContent({ contents, isLoading, onUpdateContent, onDe
             ) : content.type === 'website' ? (
               <WebsiteCard
                 content={content as any}
-                onDelete={async () => {
-                  try {
-                    const { default: axios } = await import('axios');
-                    const { BACKEND_URL } = await import('../config');
-                    await axios.delete(`${BACKEND_URL}/content`, {
-                      headers: {
-                        Authorization: localStorage.getItem("token") || "",
-                      },
-                      data: {
-                        contentId: content._id
-                      }
-                    });
-                    onRefresh();
-                  } catch (error) {
-                    console.error("Error deleting content:", error);
-                  }
-                }}
+                onDelete={() => onDeleteContent(content._id)}
                 isShared={false}
               />
             ) : (
@@ -143,23 +126,7 @@ export function MostRelevantContent({ contents, isLoading, onUpdateContent, onDe
                 type={content.type as 'twitter' | 'youtube'}
                 tags={content.tags}
                 createdAt={(content as any).createdAt || (content as any).updatedAt}
-                onDelete={async () => {
-                  try {
-                    const { default: axios } = await import('axios');
-                    const { BACKEND_URL } = await import('../config');
-                    await axios.delete(`${BACKEND_URL}/content`, {
-                      headers: {
-                        Authorization: localStorage.getItem("token") || "",
-                      },
-                      data: {
-                        contentId: content._id
-                      }
-                    });
-                    onRefresh();
-                  } catch (error) {
-                    console.error("Error deleting content:", error);
-                  }
-                }}
+                onDelete={() => onDeleteContent(content._id)}
                 isShared={false}
               />
             )}

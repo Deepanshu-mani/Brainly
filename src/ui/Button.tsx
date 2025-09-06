@@ -1,55 +1,60 @@
-import type { ReactElement } from "react";
+import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
-interface ButtonProps {
-  variant: "primary" | "secondary";
-  text?: string;
-  startIcon?: ReactElement;
-  onClick?: () => void;
-  fullWidth?: boolean;
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
   loading?: boolean;
-  className?: string;
-  type?: "button" | "submit" | "reset";
-  iconOnly?: boolean;
-  title?: string;
-  // hover?: boolean;
 }
 
-const variantClasses = {
-  primary: "bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white shadow-lg hover:shadow-xl dark:from-dark-primary dark:to-dark-primary dark:hover:from-dark-primary-hover dark:hover:to-dark-primary-hover",
-  secondary: "bg-gradient-to-r from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300 text-purple-700 shadow-md hover:shadow-lg dark:from-dark-surface dark:to-dark-surface-alt dark:hover:from-dark-surface-alt dark:hover:to-dark-border dark:text-dark-text dark:border dark:border-dark-border",
-};
-
 export function Button({
-  variant,
-  text,
-  startIcon,
-  fullWidth,
-  onClick,
-  loading,
-  className,
-  iconOnly,
-  title,
+  variant = 'primary',
+  size = 'md',
+  children,
+  loading = false,
+  className = '',
+  disabled,
+  ...props
 }: ButtonProps) {
-  const baseClasses = iconOnly 
-    ? "p-2 sm:p-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 text-sm sm:text-base"
-    : "px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium flex items-center justify-center transition-all duration-200 gap-1 sm:gap-2 text-sm sm:text-base";
-  const variantClass = variantClasses[variant];
-  const loadingClass = loading ? " opacity-60 cursor-not-allowed" : "";
-  const widthClass = fullWidth ? " w-full" : "";
-  const classes = `${baseClasses} ${variantClass} ${loadingClass} ${widthClass} ${className || ''}`.trim();
+  const { theme } = useTheme();
+
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
   
+  const sizeClasses = {
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-6 py-3 text-base'
+  };
+
+  const variantClasses = {
+    primary: theme === 'light'
+      ? 'bg-black text-white hover:bg-black/90 focus:ring-black/50 shadow-sm'
+      : 'bg-white text-black hover:bg-white/90 focus:ring-white/50 shadow-sm',
+    secondary: theme === 'light'
+      ? 'bg-white text-black border border-black/20 hover:bg-black/5 focus:ring-black/50 shadow-sm'
+      : 'bg-black text-white border border-white/20 hover:bg-white/5 focus:ring-white/50 shadow-sm',
+    ghost: theme === 'light'
+      ? 'text-black hover:bg-black/10 focus:ring-black/50'
+      : 'text-white hover:bg-white/10 focus:ring-white/50',
+    danger: theme === 'light'
+      ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm'
+      : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-500 shadow-sm'
+  };
+
   return (
     <button
-      onClick={onClick}
-      className={classes} 
-      disabled={loading}
-      title={title}
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
+      disabled={disabled || loading}
+      {...props}
     >
       {loading && (
-        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+        <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="m15.84 9.46a8 8 0 0 1-7.37 7.37"></path>
+        </svg>
       )}
-      {!loading && startIcon}
-      {!iconOnly && text && <span>{text}</span>}
+      {children}
     </button>
   );
 }

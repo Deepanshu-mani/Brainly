@@ -132,11 +132,12 @@ export function SignUp() {
           <div className="pt-2">
             <Button
               variant="primary"
-              text={loading ? "Creating Account..." : "Create Account"}
-              fullWidth={true}
+              className="w-full"
               loading={loading}
               onClick={signup}
-            />
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+            </Button>
           </div>
         </div>
 

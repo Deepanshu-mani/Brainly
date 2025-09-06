@@ -33,11 +33,11 @@ export function AddNoteButton() {
       ) : (
         <Button
           variant="primary"
-          text="Add Note"
-          startIcon={<PlusIcon />}
           onClick={() => setIsEditorOpen(true)}
           className="!rounded-full !w-14 !h-14 !p-0 flex items-center justify-center shadow-lg"
-        />
+        >
+          <PlusIcon className="w-6 h-6" />
+        </Button>
       )}
     </div>
   );

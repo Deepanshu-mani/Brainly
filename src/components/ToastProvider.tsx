@@ -7,6 +7,10 @@ export function ToastProvider() {
   return (
     <Toaster
       position="top-right"
+      containerStyle={{
+        top: '70px', // Move toasts below navbar (mobile optimized)
+        right: '16px', // Add right margin for mobile
+      }}
       toastOptions={{
         duration: 4000,
         style: {
