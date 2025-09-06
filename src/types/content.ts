@@ -14,7 +14,6 @@ export interface WebsiteMetadata {
 export interface BaseContent {
   _id: string;
   type: ContentType;
-  title: string;
   userId: string;
   tags: string[];
   content?: string;
@@ -37,6 +36,7 @@ export interface LinkContent extends BaseContent {
 
 export interface NoteContent extends BaseContent {
   type: "note";
+  title: string;
   content: string;
 }
 

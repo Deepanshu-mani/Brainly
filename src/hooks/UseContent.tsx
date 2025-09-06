@@ -30,7 +30,7 @@ export function UseContent() {
     }, []);
 
     const createContent = useCallback(async (data: {
-        title: string;
+        title?: string;
         content?: string;
         type: ContentType;
         tags?: string[];

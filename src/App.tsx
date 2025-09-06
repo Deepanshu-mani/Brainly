@@ -8,6 +8,7 @@ import { TermsOfService } from "./pages/TermsOfService";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/Layout";
+import { ToastProvider } from "./components/ToastProvider";
 
 // Wrapper component to apply layout to specific routes
 const WithLayout = ({ children }: { children: JSX.Element }) => (
@@ -55,6 +56,7 @@ function App() {
           {/* Redirect any unknown routes to signin */}
           <Route path="*" element={<Navigate to="/signin" replace />} />
         </Routes>
+        <ToastProvider />
       </BrowserRouter>
     </ThemeProvider>
   );

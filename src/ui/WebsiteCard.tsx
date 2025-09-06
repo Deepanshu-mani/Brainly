@@ -4,6 +4,7 @@ import type { WebsiteContent } from "../types/content";
 import { LinkIcon } from "./icons/LinkIcon";
 import { DeleteIcon } from "./icons/DeleteIcon";
 import { Maximize2, X } from "lucide-react";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface WebsiteCardProps {
   content: WebsiteContent;
@@ -12,8 +13,9 @@ interface WebsiteCardProps {
 }
 
 export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
-  const { title, link, websiteMetadata, summary, tags, processingStatus } = content;
+  const { link, websiteMetadata, summary, tags, processingStatus } = content;
   const [isExpanded, setIsExpanded] = useState(false);
+  const { theme } = useTheme();
   
   // Close on ESC
   useEffect(() => {
@@ -52,10 +54,30 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
   }, [createdAt]);
 
   return (
-    <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 flex w-full flex-col overflow-hidden hover:shadow-xl transition-all duration-300 dark:bg-dark-surface/90 dark:border-dark-border dark:shadow-2xl pb-7">
-      <div className="flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 dark:from-dark-surface dark:to-dark-surface-alt dark:border-dark-border">
-        <div className="text-gray-700 flex items-center gap-3 font-medium min-w-0 flex-1 dark:text-dark-text">
-          <div className="p-1.5 sm:p-2 rounded-lg flex-shrink-0 bg-purple-100 dark:bg-white/10">
+    <>
+    <div className="relative group flex w-full flex-col overflow-hidden pb-7 transition-all duration-500">
+      {/* Glass morphism container */}
+      <div className={`absolute inset-0 rounded-2xl backdrop-blur-2xl border shadow-2xl transition-all duration-500 ${
+        theme === 'light' 
+          ? 'bg-white/40 border-black/10 shadow-black/10 group-hover:bg-white/60 group-hover:shadow-black/20' 
+          : 'bg-black/40 border-white/10 shadow-white/10 group-hover:bg-black/60 group-hover:shadow-white/20'
+      }`} />
+      
+      {/* Inner content */}
+      <div className="relative z-10 flex flex-col h-full">
+      <div className={`flex px-4 sm:px-6 py-3 sm:py-4 justify-between items-center border-b backdrop-blur-sm transition-all duration-300 ${
+        theme === 'light'
+          ? 'bg-white/20 border-black/5 group-hover:bg-white/30'
+          : 'bg-black/20 border-white/5 group-hover:bg-black/30'
+      }`}>
+        <div className={`flex items-center gap-3 font-medium min-w-0 flex-1 ${
+          theme === 'light' ? 'text-black/80' : 'text-white/80'
+        }`}>
+          <div className={`p-1.5 sm:p-2 rounded-xl flex-shrink-0 backdrop-blur-sm border transition-all duration-300 ${
+            theme === 'light'
+              ? 'bg-purple-500/20 border-purple-500/30 text-purple-700 group-hover:bg-purple-500/30'
+              : 'bg-purple-400/20 border-purple-400/30 text-purple-300 group-hover:bg-purple-400/30'
+          }`}>
             {favicon ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={favicon} alt="favicon" className="w-4 h-4 rounded-sm" />
@@ -64,29 +86,42 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
             )}
           </div>
           <div className="min-w-0">
-            <div className="truncate text-sm sm:text-base">{title || domain || "Website"}</div>
+            <div className="truncate text-sm sm:text-base font-semibold">{domain || "Website"}</div>
             {domain && (
-              <div className="text-xs text-gray-500 truncate dark:text-dark-text-muted">{domain}</div>
+              <div className={`text-xs truncate ${
+                theme === 'light' ? 'text-black/50' : 'text-white/50'
+              }`}>{domain}</div>
             )}
           </div>
         </div>
 
-        <div className="flex text-gray-500 gap-2 sm:gap-3 flex-shrink-0 dark:text-dark-text-muted">
+        <div className={`flex gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+          theme === 'light' ? 'text-black/60' : 'text-white/60'
+        }`}>
           <button
             onClick={() => setIsExpanded(true)}
-            className="hover:text-purple-600 transition-colors p-1 dark:hover:text-dark-primary"
+            className={`p-1.5 rounded-md transition-all duration-300 ${
+              theme === 'light'
+                ? 'hover:bg-purple-500/20 hover:text-purple-700'
+                : 'hover:bg-purple-400/20 hover:text-purple-300'
+            }`}
             aria-label="Expand"
             title="Expand"
           >
-            <Maximize2 className="w-4 h-4" />
+            <Maximize2 className="w-3.5 h-3.5" />
           </button>
           {link && (
             <a
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-purple-600 transition-colors p-1 dark:hover:text-dark-primary"
+              className={`p-1.5 rounded-md transition-all duration-300 ${
+                theme === 'light'
+                  ? 'hover:bg-green-500/20 hover:text-green-700'
+                  : 'hover:bg-green-400/20 hover:text-green-300'
+              }`}
               aria-label="Open website"
+              title="Open website"
             >
               <LinkIcon />
             </a>
@@ -94,8 +129,13 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
           {!isShared && onDelete && (
             <button
               onClick={onDelete}
-              className="hover:text-red-500 transition-colors p-1 dark:hover:text-dark-error"
+              className={`p-1.5 rounded-md transition-all duration-300 ${
+                theme === 'light'
+                  ? 'hover:bg-red-500/20 hover:text-red-700'
+                  : 'hover:bg-red-400/20 hover:text-red-300'
+              }`}
               aria-label="Delete bookmark"
+              title="Delete bookmark"
             >
               <DeleteIcon />
             </button>
@@ -109,8 +149,12 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
         </div>
       )}
 
-      <div className="px-4 sm:px-6 py-3 cursor-pointer" onClick={() => setIsExpanded(true)}>
-        <p className="text-sm text-gray-700 dark:text-dark-text-muted line-clamp-5 whitespace-pre-line">
+      <div className={`px-4 sm:px-6 py-3 cursor-pointer transition-all duration-300 hover:bg-opacity-50 ${
+        theme === 'light' ? 'hover:bg-black/5' : 'hover:bg-white/5'
+      }`} onClick={() => setIsExpanded(true)}>
+        <p className={`text-sm line-clamp-5 whitespace-pre-line leading-relaxed ${
+          theme === 'light' ? 'text-black/70' : 'text-white/70'
+        }`}>
           {description || "No summary available yet."}
         </p>
 
@@ -119,7 +163,11 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
             {tags.map((tag, index) => (
               <span
                 key={index}
-                className="bg-purple-600/10 text-purple-700 px-3 py-1 text-xs font-medium rounded-full dark:bg-purple-500/20 dark:text-purple-300"
+                className={`px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm border transition-all duration-300 ${
+                  theme === 'light'
+                    ? 'bg-purple-500/20 border-purple-500/30 text-purple-700'
+                    : 'bg-purple-400/20 border-purple-400/30 text-purple-300'
+                }`}
               >
                 #{tag}
               </span>
@@ -129,86 +177,123 @@ export function WebsiteCard({ content, onDelete, isShared }: WebsiteCardProps) {
       </div>
 
       {formattedDate && (
-        <div className="absolute bottom-3 right-3 text-[11px] text-gray-500 dark:text-dark-text-muted select-none">
+        <div className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg ${
+          theme === 'light' 
+            ? 'text-black/50 bg-white/30' 
+            : 'text-white/50 bg-black/30'
+        }`}>
           {formattedDate}
         </div>
       )}
+      </div>
+    </div>
 
-    {isExpanded &&
-      createPortal(
-        <div className="fixed inset-0 z-50">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+    {/* Expanded View Portal */}
+    {isExpanded && createPortal(
+      <div className="fixed inset-0 z-50">
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          onClick={() => setIsExpanded(false)}
+        />
+
+        {/* Modal content - full screen */}
+        <div className={`relative z-0 w-[70vw] max-w-4xl mx-auto rounded-2xl mt-8 h-[75vh] overflow-y-auto pb-6 backdrop-blur-2xl border shadow-2xl ${
+          theme === 'light' 
+            ? 'bg-white/90 border-black/10 shadow-black/20' 
+            : 'bg-black/90 border-white/10 shadow-white/20'
+        }`}>
+          <button
+            className={`absolute right-4 top-4 z-50 rounded-xl p-2 backdrop-blur-sm border transition-all duration-300 ${
+              theme === 'light'
+                ? 'text-black/60 bg-black/5 border-black/10 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-700'
+                : 'text-white/60 bg-white/5 border-white/10 hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300'
+            }`}
             onClick={() => setIsExpanded(false)}
-          />
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
 
-          {/* Modal content - full screen */}
-          <div className="relative z-0 w-[80vw] mx-auto rounded-xl  mt-10 h-[80vh] bg-white dark:bg-dark-surface overflow-y-auto pb-8">
-            <button
-              className="absolute right-3 top-3 z-50 text-gray-600 hover:text-black dark:text-dark-text-muted dark:hover:text-dark-text bg-black/20 hover:bg-black/40 rounded-full p-1"
-              onClick={() => setIsExpanded(false)}
-              aria-label="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
+          <div className="p-4 sm:p-5 max-w-4xl mx-auto">
+            <div className="flex items-start gap-3 mb-6">
+              <div className={`p-3 rounded-xl backdrop-blur-sm border ${
+                theme === 'light' 
+                  ? 'bg-black/5 border-black/10 text-black/80' 
+                  : 'bg-white/5 border-white/10 text-white/80'
+              }`}>
+                {favicon ? (
+                  <img src={favicon} alt="favicon" className="w-6 h-6 rounded-sm" />
+                ) : (
+                  <LinkIcon />
+                )}
+              </div>
+              <div className="min-w-0">
+                <h2 className={`text-2xl font-bold truncate ${
+                  theme === 'light' ? 'text-black' : 'text-white'
+                }`}>
+                  {domain || "Website"}
+                </h2>
+                {domain && (
+                  <p className={`text-sm truncate ${
+                    theme === 'light' ? 'text-black/60' : 'text-white/60'
+                  }`}>{domain}</p>
+                )}
+              </div>
+            </div>
 
-            <div className="p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
-              <div className="flex items-start gap-3 mb-4">
-                <div className="p-2 rounded-lg bg-purple-100 dark:bg-white/10">
-                  {favicon ? (
-                    <img src={favicon} alt="favicon" className="w-5 h-5 rounded-sm" />
-                  ) : (
-                    <LinkIcon />
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-dark-text truncate">
-                    {title || domain || "Website"}
-                  </h2>
-                  {domain && (
-                    <p className="text-sm text-gray-500 dark:text-dark-text-muted truncate">{domain}</p>
-                  )}
+
+            <div className="space-y-6">
+              <div>
+                <h3 className={`text-lg font-semibold mb-4 ${
+                  theme === 'light' ? 'text-black' : 'text-white'
+                }`}>Summary</h3>
+                <div className={`rounded-xl p-6 backdrop-blur-sm border ${
+                  theme === 'light'
+                    ? 'bg-white/30 border-black/5'
+                    : 'bg-black/30 border-white/5'
+                }`}>
+                  <p className={`whitespace-pre-line ${
+                    theme === 'light' ? 'text-black/80' : 'text-white/80'
+                  }`}>
+                    {description || "No summary available yet."}
+                  </p>
                 </div>
               </div>
-
-              {websiteMetadata?.screenshot && (
-                <img
-                  src={websiteMetadata.screenshot}
-                  alt={title || domain || "Website screenshot"}
-                  className="w-full h-auto rounded-lg border border-gray-200 dark:border-dark-border mb-6"
-                />
-              )}
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-dark-text">Summary</h3>
-                <p className="text-gray-700 dark:text-dark-text-muted whitespace-pre-line">
-                  {description || "No summary available yet."}
-                </p>
-                {tags && tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 pt-2">
+              {tags && tags.length > 0 && (
+                <div>
+                  <h3 className={`text-lg font-semibold mb-4 ${
+                    theme === 'light' ? 'text-black' : 'text-white'
+                  }`}>Tags</h3>
+                  <div className="flex flex-wrap gap-3">
                     {tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="bg-purple-600/10 text-purple-700 px-3 py-1 text-xs font-medium rounded-full dark:bg-purple-500/20 dark:text-purple-300"
+                        className={`px-3 py-1 text-sm font-medium rounded-full backdrop-blur-sm border ${
+                          theme === 'light'
+                            ? 'bg-black/5 border-black/10 text-black/70'
+                            : 'bg-white/5 border-white/10 text-white/70'
+                        }`}
                       >
                         #{tag}
                       </span>
                     ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
-            {formattedDate && (
-              <div className="absolute bottom-3 right-4 text-xs text-gray-600 dark:text-dark-text-muted md:text-[11px]">
-                {formattedDate}
-              </div>
-            )}
           </div>
-        </div>,
-        document.body
-      )}
-
-    </div>
+          {formattedDate && (
+            <div className={`text-sm ${
+              theme === 'light' ? 'text-black/50' : 'text-white/50'
+            }`}>
+              Bookmarked: {formattedDate}
+            </div>
+          )}
+        </div>
+      </div>,
+      document.body
+    )}
+    </>
   );
 }

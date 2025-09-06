@@ -16,13 +16,12 @@ export function NoteEditor({
   onSave,
   onCancel,
 }: NoteEditorProps) {
-  const [title, setTitle] = useState(initialTitle);
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   // Initialize content from the link field if it exists and is a data URL
   useEffect(() => {
     setTitle(initialTitle ?? '');
-
     // Check if initialContent is a data URL
     if (initialContent?.startsWith('data:text/plain;charset=utf-8,')) {
       try {
@@ -39,7 +38,7 @@ export function NoteEditor({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave({
-      title: title.trim(),
+      title: '',
       content: content.trim()
     });
   };
@@ -60,20 +59,6 @@ export function NoteEditor({
       </div>
       
       <form onSubmit={handleSubmit} className="p-4 space-y-4">
-        <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-dark-text-muted mb-1">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border rounded-md shadow-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:bg-dark-surface dark:text-white"
-            placeholder="Enter a title"
-            required
-          />
-        </div>
 
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-dark-text-muted mb-1">

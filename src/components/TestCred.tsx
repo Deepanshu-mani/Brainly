@@ -8,7 +8,7 @@ interface TestCredProps {
 export function TestCred({ emailRef, passwordRef }: TestCredProps) {
   return (
     <button
-      className="relative mx-auto w-32 h-8 flex items-center justify-center overflow-hidden text-sm text-white/60 rounded-lg px-2 py-1 transition-colors duration-200 hover:bg-white/10 group"
+      className="relative mx-auto w-32 h-8 flex items-center justify-center overflow-hidden text-sm dark:text-white/60 rounded-lg px-2 py-1 tran text-black hover:bg-black/10 sition-colors duration-200 dark:hover:bg-white/10 group"
       onClick={() => {
         if (emailRef.current) emailRef.current.value = "mani@gmail.com";
         if (passwordRef.current) passwordRef.current.value = "mani123";
