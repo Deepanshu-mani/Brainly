@@ -6,6 +6,7 @@ import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 import { TermsOfService } from "./pages/TermsOfService";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { Landing } from "./pages/Landing";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/Layout";
 import { ToastProvider } from "./components/ToastProvider";
@@ -29,19 +30,19 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 
   if (isAuthenticated === null) return null; // or loading spinner
 
-  return isAuthenticated ? children : <Navigate to="/signin" replace />;
+  return isAuthenticated ? children : <Navigate to="/" replace />;
 };
 
 function App() {
   return (
-    <ErrorBoundaryClass>
-      <ThemeProvider>
+    <ThemeProvider>
+      <ErrorBoundaryClass>
         <BrowserRouter>
           <Routes>
-            {/* Public routes with header */}
+            {/* Public routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<WithLayout><SignIn /></WithLayout>} />
             <Route path="/signup" element={<WithLayout><SignUp /></WithLayout>} />
-            <Route path="/" element={<Navigate to="/signin" replace />} />
             
             {/* Dashboard (has its own layout) */}
             <Route path="/dashboard" element={
@@ -57,13 +58,13 @@ function App() {
             <Route path="/terms" element={<WithLayout><TermsOfService /></WithLayout>} />
             <Route path="/privacy" element={<WithLayout><PrivacyPolicy /></WithLayout>} />
             
-            {/* Redirect any unknown routes to signin */}
-            <Route path="*" element={<Navigate to="/signin" replace />} />
+            {/* Redirect any unknown routes to landing */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <ToastProvider />
         </BrowserRouter>
-      </ThemeProvider>
-    </ErrorBoundaryClass>
+      </ErrorBoundaryClass>
+    </ThemeProvider>
   );
 }
 
