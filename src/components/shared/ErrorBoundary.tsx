@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { useTheme } from "../contexts/ThemeContext";
-import { Button } from "../ui/Button";
+import { useTheme } from "../../contexts/ThemeContext";
+import { Button } from "../../ui/Button";
 import { RefreshCw, AlertTriangle, Home } from "lucide-react";
 
 interface Props {

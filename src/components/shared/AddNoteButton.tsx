@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button } from "../ui/Button";
+import { Button } from "../../ui/Button";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { NoteEditor } from "./NoteEditor";
-import { useNotes } from "../hooks/useNotes";
+import { useNotes } from "../../hooks/useNotes";
 
 export function AddNoteButton() {
   const [isEditorOpen, setIsEditorOpen] = useState(false);

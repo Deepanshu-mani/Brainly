@@ -5,7 +5,7 @@ import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
 import { AlertTriangle, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
-import { CardActionButton } from "../components/SocialButton";
+import { CardActionButton } from "../components/shared/SocialButton";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
@@ -197,15 +197,15 @@ export const Card = React.memo(function Card({
         <div
           onClick={() => setIsExpanded(true)}
           className={`group flex items-center gap-4 p-4 w-full rounded-2xl cursor-pointer transition-all duration-300 border backdrop-blur-sm ${theme === "light"
-              ? "bg-white/60 border-black/5 hover:bg-white/80 hover:shadow-lg hover:shadow-black/5 hover:border-black/10"
-              : "bg-black/60 border-white/5 hover:bg-black/80 hover:shadow-lg hover:shadow-white/5 hover:border-white/10"
+            ? "bg-white/60 border-black/5 hover:bg-white/80 hover:shadow-lg hover:shadow-black/5 hover:border-black/10"
+            : "bg-black/60 border-white/5 hover:bg-black/80 hover:shadow-lg hover:shadow-white/5 hover:border-white/10"
             }`}
         >
           {/* Icon Box */}
           <div
             className={`flex-shrink-0 p-3 rounded-xl transition-colors duration-300 ${theme === "light"
-                ? "bg-black/5 text-black/70 group-hover:bg-black/10 group-hover:text-black"
-                : "bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white"
+              ? "bg-black/5 text-black/70 group-hover:bg-black/10 group-hover:text-black"
+              : "bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white"
               }`}
           >
             {type === "youtube" ? <YoutubeIcon /> : <TwitterIcon />}
@@ -229,8 +229,8 @@ export const Card = React.memo(function Card({
           {score !== undefined && (
             <div
               className={`flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full border ${theme === "light"
-                  ? "bg-purple-100/50 text-purple-700 border-purple-200"
-                  : "bg-purple-900/30 text-purple-300 border-purple-800/50"
+                ? "bg-purple-100/50 text-purple-700 border-purple-200"
+                : "bg-purple-900/30 text-purple-300 border-purple-800/50"
                 }`}
             >
               {Math.round(score * 100)}% Match
@@ -249,14 +249,14 @@ export const Card = React.memo(function Card({
             >
               <div
                 className={`relative z-0 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl backdrop-blur-2xl border shadow-2xl ${theme === "light"
-                    ? "bg-white/90 border-black/10 shadow-black/20"
-                    : "bg-black/90 border-white/10 shadow-white/20"
+                  ? "bg-white/90 border-black/10 shadow-black/20"
+                  : "bg-black/90 border-white/10 shadow-white/20"
                   }`}
               >
                 <button
                   className={`absolute right-4 top-4 z-50 rounded-xl p-2 backdrop-blur-sm border transition-all duration-300 ${theme === "light"
-                      ? "text-black/60 bg-black/5 border-black/10 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-700"
-                      : "text-white/60 bg-white/5 border-white/10 hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300"
+                    ? "text-black/60 bg-black/5 border-black/10 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-700"
+                    : "text-white/60 bg-white/5 border-white/10 hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300"
                     }`}
                   onClick={() => setIsExpanded(false)}
                   aria-label="Close"
@@ -269,8 +269,8 @@ export const Card = React.memo(function Card({
                       <div className="flex items-center gap-3">
                         <div
                           className={`p-3 rounded-xl backdrop-blur-sm border ${theme === "light"
-                              ? "bg-black/5 border-black/10 text-black/80"
-                              : "bg-white/5 border-white/10 text-white/80"
+                            ? "bg-black/5 border-black/10 text-black/80"
+                            : "bg-white/5 border-white/10 text-white/80"
                             }`}
                         >
                           <YoutubeIcon />
@@ -305,8 +305,8 @@ export const Card = React.memo(function Card({
                         </div>
                         <div
                           className={`lg:col-span-1 rounded-xl p-6 backdrop-blur-sm border ${theme === "light"
-                              ? "bg-white/30 border-black/5"
-                              : "bg-black/30 border-white/5"
+                            ? "bg-white/30 border-black/5"
+                            : "bg-black/30 border-white/5"
                             }`}
                         >
                           <div className="flex items-center justify-between mb-4">
@@ -319,8 +319,8 @@ export const Card = React.memo(function Card({
                             <button
                               onClick={() => fetchSummary(true)}
                               className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 ${theme === "light"
-                                  ? "bg-purple-600 text-white hover:bg-purple-700"
-                                  : "bg-purple-500 text-white hover:bg-purple-600"
+                                ? "bg-purple-600 text-white hover:bg-purple-700"
+                                : "bg-purple-500 text-white hover:bg-purple-600"
                                 } disabled:opacity-60`}
                               disabled={sumLoading}
                             >
@@ -348,8 +348,8 @@ export const Card = React.memo(function Card({
                                     <span
                                       key={i}
                                       className={`text-xs px-2 py-0.5 rounded-full ${theme === "light"
-                                          ? "bg-purple-500/20 text-purple-700"
-                                          : "bg-purple-400/20 text-purple-300"
+                                        ? "bg-purple-500/20 text-purple-700"
+                                        : "bg-purple-400/20 text-purple-300"
                                         }`}
                                     >
                                       #{k}
@@ -371,8 +371,8 @@ export const Card = React.memo(function Card({
                       <div className="flex items-center gap-3">
                         <div
                           className={`p-3 rounded-xl backdrop-blur-sm border ${theme === "light"
-                              ? "bg-black/5 border-black/10 text-black/80"
-                              : "bg-white/5 border-white/10 text-white/80"
+                            ? "bg-black/5 border-black/10 text-black/80"
+                            : "bg-white/5 border-white/10 text-white/80"
                             }`}
                         >
                           <TwitterIcon />
@@ -392,16 +392,16 @@ export const Card = React.memo(function Card({
                               {!twitterLoaded && (
                                 <div
                                   className={`absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm ${theme === "light"
-                                      ? "bg-white/80 border border-black/10"
-                                      : "bg-black/80 border border-white/10"
+                                    ? "bg-white/80 border border-black/10"
+                                    : "bg-black/80 border border-white/10"
                                     }`}
                                 >
                                   <div className="flex items-center gap-2">
                                     <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
                                     <span
                                       className={`text-sm ${theme === "light"
-                                          ? "text-black/60"
-                                          : "text-white/60"
+                                        ? "text-black/60"
+                                        : "text-white/60"
                                         }`}
                                     >
                                       Loading tweet...
@@ -428,8 +428,8 @@ export const Card = React.memo(function Card({
                         </div>
                         <div
                           className={`lg:col-span-1 rounded-xl p-6 backdrop-blur-sm border ${theme === "light"
-                              ? "bg-white/30 border-black/5"
-                              : "bg-black/30 border-white/5"
+                            ? "bg-white/30 border-black/5"
+                            : "bg-black/30 border-white/5"
                             }`}
                         >
                           <div className="flex items-center justify-between mb-4">
@@ -442,8 +442,8 @@ export const Card = React.memo(function Card({
                             <button
                               onClick={() => fetchSummary(true)}
                               className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 ${theme === "light"
-                                  ? "bg-purple-600 text-white hover:bg-purple-700"
-                                  : "bg-purple-500 text-white hover:bg-purple-600"
+                                ? "bg-purple-600 text-white hover:bg-purple-700"
+                                : "bg-purple-500 text-white hover:bg-purple-600"
                                 } disabled:opacity-60`}
                               disabled={sumLoading}
                             >
@@ -471,8 +471,8 @@ export const Card = React.memo(function Card({
                                     <span
                                       key={i}
                                       className={`text-xs px-2 py-0.5 rounded-full ${theme === "light"
-                                          ? "bg-purple-500/20 text-purple-700"
-                                          : "bg-purple-400/20 text-purple-300"
+                                        ? "bg-purple-500/20 text-purple-700"
+                                        : "bg-purple-400/20 text-purple-300"
                                         }`}
                                     >
                                       #{k}
@@ -494,8 +494,8 @@ export const Card = React.memo(function Card({
                   {notes && (
                     <div
                       className={`mt-6 p-4 rounded-xl backdrop-blur-sm border ${theme === "light"
-                          ? "bg-white/30 border-black/5"
-                          : "bg-black/30 border-white/5"
+                        ? "bg-white/30 border-black/5"
+                        : "bg-black/30 border-white/5"
                         }`}
                     >
                       <p
@@ -526,8 +526,8 @@ export const Card = React.memo(function Card({
                           <span
                             key={index}
                             className={`px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm border transition-all duration-300 ${theme === "light"
-                                ? "bg-purple-500/20 border-purple-500/30 text-purple-700"
-                                : "bg-purple-400/20 border-purple-400/30 text-purple-300"
+                              ? "bg-purple-500/20 border-purple-500/30 text-purple-700"
+                              : "bg-purple-400/20 border-purple-400/30 text-purple-300"
                               }`}
                           >
                             #{tag}
@@ -583,8 +583,8 @@ export const Card = React.memo(function Card({
               <span
                 key={index}
                 className={`px-3 py-1 text-xs font-medium rounded-full backdrop-blur-sm border transition-all duration-300 ${theme === "light"
-                    ? "bg-purple-500/20 border-purple-500/30 text-purple-700"
-                    : "bg-purple-400/20 border-purple-400/30 text-purple-300"
+                  ? "bg-purple-500/20 border-purple-500/30 text-purple-700"
+                  : "bg-purple-400/20 border-purple-400/30 text-purple-300"
                   }`}
               >
                 #{tag}
@@ -632,16 +632,16 @@ export const Card = React.memo(function Card({
                   {!twitterLoaded && (
                     <div
                       className={`absolute inset-0 flex items-center justify-center rounded-lg backdrop-blur-sm ${theme === "light"
-                          ? "bg-white/80 border border-black/10"
-                          : "bg-black/80 border border-white/10"
+                        ? "bg-white/80 border border-black/10"
+                        : "bg-black/80 border border-white/10"
                         }`}
                     >
                       <div className="flex items-center gap-2">
                         <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent"></div>
                         <span
                           className={`text-sm ${theme === "light"
-                              ? "text-black/60"
-                              : "text-white/60"
+                            ? "text-black/60"
+                            : "text-white/60"
                             }`}
                         >
                           Loading tweet...
@@ -689,8 +689,8 @@ export const Card = React.memo(function Card({
         {formattedDate && (
           <div
             className={`absolute bottom-3 right-3 text-[11px] select-none backdrop-blur-sm px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-300 ${theme === "light"
-                ? "text-black/50 bg-white/30"
-                : "text-white/50 bg-black/30"
+              ? "text-black/50 bg-white/30"
+              : "text-white/50 bg-black/30"
               }`}
           >
             {formattedDate}
@@ -702,8 +702,8 @@ export const Card = React.memo(function Card({
       {score !== undefined && (
         <div
           className={`absolute bottom-3 left-3 text-[11px] font-bold px-2 py-1 rounded-full backdrop-blur-md shadow-sm border transition-all duration-300 ${theme === "light"
-              ? "bg-white/90 text-black border-black/10"
-              : "bg-black/90 text-white border-white/10"
+            ? "bg-white/90 text-black border-black/10"
+            : "bg-black/90 text-white border-white/10"
             }`}
         >
           {Math.round(score * 100)}% Match
@@ -720,14 +720,14 @@ export const Card = React.memo(function Card({
           >
             <div
               className={`relative z-0 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl backdrop-blur-2xl border shadow-2xl ${theme === "light"
-                  ? "bg-white/90 border-black/10 shadow-black/20"
-                  : "bg-black/90 border-white/10 shadow-white/20"
+                ? "bg-white/90 border-black/10 shadow-black/20"
+                : "bg-black/90 border-white/10 shadow-white/20"
                 }`}
             >
               <button
                 className={`absolute right-4 top-4 z-50 rounded-xl p-2 backdrop-blur-sm border transition-all duration-300 ${theme === "light"
-                    ? "text-black/60 bg-black/5 border-black/10 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-700"
-                    : "text-white/60 bg-white/5 border-white/10 hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300"
+                  ? "text-black/60 bg-black/5 border-black/10 hover:bg-red-500/20 hover:border-red-500/30 hover:text-red-700"
+                  : "text-white/60 bg-white/5 border-white/10 hover:bg-red-400/20 hover:border-red-400/30 hover:text-red-300"
                   }`}
                 onClick={() => setIsExpanded(false)}
                 aria-label="Close"
@@ -740,8 +740,8 @@ export const Card = React.memo(function Card({
                     <div className="flex items-center gap-3">
                       <div
                         className={`p-3 rounded-xl backdrop-blur-sm border ${theme === "light"
-                            ? "bg-black/5 border-black/10 text-black/80"
-                            : "bg-white/5 border-white/10 text-white/80"
+                          ? "bg-black/5 border-black/10 text-black/80"
+                          : "bg-white/5 border-white/10 text-white/80"
                           }`}
                       >
                         <YoutubeIcon />
@@ -776,8 +776,8 @@ export const Card = React.memo(function Card({
                       </div>
                       <div
                         className={`lg:col-span-1 rounded-xl p-6 backdrop-blur-sm border ${theme === "light"
-                            ? "bg-white/30 border-black/5"
-                            : "bg-black/30 border-white/5"
+                          ? "bg-white/30 border-black/5"
+                          : "bg-black/30 border-white/5"
                           }`}
                       >
                         <div className="flex items-center justify-between mb-4">
@@ -790,8 +790,8 @@ export const Card = React.memo(function Card({
                           <button
                             onClick={() => fetchSummary(true)}
                             className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 ${theme === "light"
-                                ? "bg-purple-600 text-white hover:bg-purple-700"
-                                : "bg-purple-500 text-white hover:bg-purple-600"
+                              ? "bg-purple-600 text-white hover:bg-purple-700"
+                              : "bg-purple-500 text-white hover:bg-purple-600"
                               } disabled:opacity-60`}
                             disabled={sumLoading}
                           >
@@ -839,8 +839,8 @@ export const Card = React.memo(function Card({
                     <div className="flex items-center gap-3">
                       <div
                         className={`p-3 rounded-xl backdrop-blur-sm border ${theme === "light"
-                            ? "bg-black/5 border-black/10 text-black/80"
-                            : "bg-white/5 border-white/10 text-white/80"
+                          ? "bg-black/5 border-black/10 text-black/80"
+                          : "bg-white/5 border-white/10 text-white/80"
                           }`}
                       >
                         <TwitterIcon />
@@ -857,8 +857,8 @@ export const Card = React.memo(function Card({
                       <div className="lg:col-span-2">
                         <div
                           className={`rounded-xl p-4 backdrop-blur-sm border ${theme === "light"
-                              ? "bg-white/30 border-black/5"
-                              : "bg-black/30 border-white/5"
+                            ? "bg-white/30 border-black/5"
+                            : "bg-black/30 border-white/5"
                             }`}
                         >
                           <TwitterEmbedErrorBoundary>
@@ -883,35 +883,35 @@ export const Card = React.memo(function Card({
                             ) : (
                               <div
                                 className={`rounded-lg p-6 text-center ${theme === "light"
-                                    ? "bg-blue-50 border border-blue-200"
-                                    : "bg-blue-900/20 border border-blue-800/50"
+                                  ? "bg-blue-50 border border-blue-200"
+                                  : "bg-blue-900/20 border border-blue-800/50"
                                   }`}
                               >
                                 <div
                                   className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 ${theme === "light"
-                                      ? "bg-blue-100"
-                                      : "bg-blue-800/50"
+                                    ? "bg-blue-100"
+                                    : "bg-blue-800/50"
                                     }`}
                                 >
                                   <AlertTriangle
                                     className={`w-6 h-6 ${theme === "light"
-                                        ? "text-blue-600"
-                                        : "text-blue-400"
+                                      ? "text-blue-600"
+                                      : "text-blue-400"
                                       }`}
                                   />
                                 </div>
                                 <p
                                   className={`font-medium ${theme === "light"
-                                      ? "text-blue-700"
-                                      : "text-blue-300"
+                                    ? "text-blue-700"
+                                    : "text-blue-300"
                                     }`}
                                 >
                                   Invalid Twitter Link
                                 </p>
                                 <p
                                   className={`text-sm mt-1 ${theme === "light"
-                                      ? "text-blue-600"
-                                      : "text-blue-400"
+                                    ? "text-blue-600"
+                                    : "text-blue-400"
                                     }`}
                                 >
                                   This tweet cannot be displayed due to an
@@ -924,8 +924,8 @@ export const Card = React.memo(function Card({
                       </div>
                       <div
                         className={`lg:col-span-1 rounded-xl p-6 backdrop-blur-sm border ${theme === "light"
-                            ? "bg-white/30 border-black/5"
-                            : "bg-black/30 border-white/5"
+                          ? "bg-white/30 border-black/5"
+                          : "bg-black/30 border-white/5"
                           }`}
                       >
                         <div className="flex items-center justify-between mb-4">
@@ -938,8 +938,8 @@ export const Card = React.memo(function Card({
                           <button
                             onClick={() => fetchSummary(true)}
                             className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-300 ${theme === "light"
-                                ? "bg-purple-600 text-white hover:bg-purple-700"
-                                : "bg-purple-500 text-white hover:bg-purple-600"
+                              ? "bg-purple-600 text-white hover:bg-purple-700"
+                              : "bg-purple-500 text-white hover:bg-purple-600"
                               } disabled:opacity-60`}
                             disabled={sumLoading}
                           >
@@ -949,8 +949,8 @@ export const Card = React.memo(function Card({
                         {isShared ? (
                           <p
                             className={`text-sm ${theme === "light"
-                                ? "text-black/60"
-                                : "text-white/60"
+                              ? "text-black/60"
+                              : "text-white/60"
                               }`}
                           >
                             Sign in to view AI summary.
@@ -958,8 +958,8 @@ export const Card = React.memo(function Card({
                         ) : sumError ? (
                           <p
                             className={`text-sm ${theme === "light"
-                                ? "text-red-600"
-                                : "text-red-400"
+                              ? "text-red-600"
+                              : "text-red-400"
                               }`}
                           >
                             {sumError}
@@ -967,8 +967,8 @@ export const Card = React.memo(function Card({
                         ) : sumLoading && !summary ? (
                           <p
                             className={`text-sm ${theme === "light"
-                                ? "text-black/60"
-                                : "text-white/60"
+                              ? "text-black/60"
+                              : "text-white/60"
                               }`}
                           >
                             Generating summary…
@@ -977,8 +977,8 @@ export const Card = React.memo(function Card({
                           <div className="space-y-4">
                             <p
                               className={`text-sm leading-relaxed whitespace-pre-wrap ${theme === "light"
-                                  ? "text-black/80"
-                                  : "text-white/80"
+                                ? "text-black/80"
+                                : "text-white/80"
                                 }`}
                             >
                               {summary}
@@ -989,8 +989,8 @@ export const Card = React.memo(function Card({
                                   <span
                                     key={i}
                                     className={`text-xs px-3 py-1 rounded-full backdrop-blur-sm border ${theme === "light"
-                                        ? "bg-black/5 border-black/10 text-black/70"
-                                        : "bg-white/5 border-white/10 text-white/70"
+                                      ? "bg-black/5 border-black/10 text-black/70"
+                                      : "bg-white/5 border-white/10 text-white/70"
                                       }`}
                                   >
                                     #{k}
@@ -1002,8 +1002,8 @@ export const Card = React.memo(function Card({
                         ) : (
                           <p
                             className={`text-sm ${theme === "light"
-                                ? "text-black/60"
-                                : "text-white/60"
+                              ? "text-black/60"
+                              : "text-white/60"
                               }`}
                           >
                             No summary yet.

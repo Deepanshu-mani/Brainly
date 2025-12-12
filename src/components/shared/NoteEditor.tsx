@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Button } from "../ui/Button";
-import { PlusIcon } from "../ui/icons/PlusIcon";
-import { CrossIcon } from "../ui/icons/CrossIcon";
-import { useTheme } from "../contexts/ThemeContext";
+import { Button } from "../../ui/Button";
+import { PlusIcon } from "../../ui/icons/PlusIcon";
+import { CrossIcon } from "../../ui/icons/CrossIcon";
+import { useTheme } from "../../contexts/ThemeContext";
 
 type NoteEditorProps = {
   initialContent?: string;

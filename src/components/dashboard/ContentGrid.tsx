@@ -1,18 +1,18 @@
 import React from "react";
 import Masonry from "react-masonry-css";
-import { Card } from "../ui/Card";
-import { WebsiteCard } from "../ui/WebsiteCard";
+import { Card } from "../../ui/Card";
+import { WebsiteCard } from "../../ui/WebsiteCard";
 import { NoteCard } from "./NoteCard";
-import { AddToBrainCard } from "./AddToBrainCard";
-import { useTheme } from "../contexts/ThemeContext";
+import { AddToBrainCard } from "../shared/AddToBrainCard";
+import { useTheme } from "../../contexts/ThemeContext";
 import {
   CardSkeleton,
   WebsiteCardSkeleton,
   NoteCardSkeleton,
   AddToBrainCardSkeleton,
-} from "./SkeletonLoader";
-import { CardErrorBoundary } from "./ErrorBoundary";
-import type { Content } from "../types/content";
+} from "../shared/SkeletonLoader";
+import { CardErrorBoundary } from "../shared/ErrorBoundary";
+import type { Content } from "../../types/content";
 
 interface ContentGridProps {
   contents: Content[];
@@ -113,30 +113,26 @@ export const ContentGrid = React.memo(function ContentGrid({
       {contents.length > 0 && (
         <div className="text-center py-8 mt-8">
           <div
-            className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-sm border ${
-              theme === "light"
-                ? "bg-black/5 border-black/10 text-black/60"
-                : "bg-white/5 border-white/10 text-white/60"
-            }`}
+            className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-sm border ${theme === "light"
+              ? "bg-black/5 border-black/10 text-black/60"
+              : "bg-white/5 border-white/10 text-white/60"
+              }`}
           >
             <div
-              className={`w-2 h-2 rounded-full ${
-                theme === "light" ? "bg-black/30" : "bg-white/30"
-              }`}
+              className={`w-2 h-2 rounded-full ${theme === "light" ? "bg-black/30" : "bg-white/30"
+                }`}
             ></div>
             <span className="text-sm font-medium">
               You've reached the end of your memories
             </span>
             <div
-              className={`w-2 h-2 rounded-full ${
-                theme === "light" ? "bg-black/30" : "bg-white/30"
-              }`}
+              className={`w-2 h-2 rounded-full ${theme === "light" ? "bg-black/30" : "bg-white/30"
+                }`}
             ></div>
           </div>
           <p
-            className={`text-xs mt-2 ${
-              theme === "light" ? "text-black/40" : "text-white/40"
-            }`}
+            className={`text-xs mt-2 ${theme === "light" ? "text-black/40" : "text-white/40"
+              }`}
           >
             {contents.length} total memories
           </p>

@@ -1,11 +1,11 @@
 import { LogOut } from "lucide-react";
-import { BrainIcon, ShareIcon } from "../ui/icons";
-import { ThemeToggle } from "../ui/ThemeToggle";
-import { useTheme } from "../contexts/ThemeContext";
+import { BrainIcon, ShareIcon } from "../../ui/icons";
+import { ThemeToggle } from "../../ui/ThemeToggle";
+import { useTheme } from "../../contexts/ThemeContext";
 import { useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { showToast } from "../utils/toast";
+import { BACKEND_URL } from "../../config";
+import { showToast } from "../../utils/toast";
 
 interface DashboardHeaderProps {
   user: { username: string; email: string } | null;

@@ -1,10 +1,10 @@
-import { CrossIcon } from "../ui/icons/CrossIcon";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
+import { CrossIcon } from "../../ui/icons/CrossIcon";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
 import { useRef, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { LinkIcon } from "../ui/icons/LinkIcon";
+import { BACKEND_URL } from "../../config";
+import { LinkIcon } from "../../ui/icons/LinkIcon";
 
 export function BookmarkWebsiteModal({
   open,

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { ThemeToggle } from "../ui/ThemeToggle";
-import { useTheme } from "../contexts/ThemeContext";
+import { ThemeToggle } from "../../ui/ThemeToggle";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface LayoutProps {
   children: ReactNode;

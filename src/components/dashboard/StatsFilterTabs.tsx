@@ -1,6 +1,6 @@
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
-import type { Content } from "../types/content";
+import type { Content } from "../../types/content";
 
 type ContentFilter = "all" | "website" | "youtube" | "twitter" | "note";
 

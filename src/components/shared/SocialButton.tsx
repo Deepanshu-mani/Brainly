@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Maximize2, Link, Trash2, Edit } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface CardActionButtonProps {
   className?: string;

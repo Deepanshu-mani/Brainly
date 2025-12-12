@@ -1,5 +1,5 @@
 import { Card } from "../ui/Card";
-import { NoteCard } from "../components/NoteCard";
+import { NoteCard } from "../components/dashboard/NoteCard";
 import { WebsiteCard } from "../ui/WebsiteCard";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -41,22 +41,19 @@ export function Share() {
   if (loading) {
     return (
       <div
-        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
-          theme === "light" ? "bg-white" : "bg-black"
-        }`}
+        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${theme === "light" ? "bg-white" : "bg-black"
+          }`}
       >
         <div className="text-center">
           <div
-            className={`animate-spin rounded-full h-12 w-12 border-2 mx-auto mb-6 ${
-              theme === "light"
+            className={`animate-spin rounded-full h-12 w-12 border-2 mx-auto mb-6 ${theme === "light"
                 ? "border-black/20 border-t-black"
                 : "border-white/20 border-t-white"
-            }`}
+              }`}
           ></div>
           <p
-            className={`text-lg font-medium ${
-              theme === "light" ? "text-black/60" : "text-white/60"
-            }`}
+            className={`text-lg font-medium ${theme === "light" ? "text-black/60" : "text-white/60"
+              }`}
           >
             Loading shared content...
           </p>
@@ -68,22 +65,19 @@ export function Share() {
   if (!data) {
     return (
       <div
-        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
-          theme === "light" ? "bg-white" : "bg-black"
-        }`}
+        className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${theme === "light" ? "bg-white" : "bg-black"
+          }`}
       >
         <div className="text-center">
           <h2
-            className={`text-3xl font-bold mb-4 ${
-              theme === "light" ? "text-black" : "text-white"
-            }`}
+            className={`text-3xl font-bold mb-4 ${theme === "light" ? "text-black" : "text-white"
+              }`}
           >
             Content Not Found
           </h2>
           <p
-            className={`text-lg font-medium ${
-              theme === "light" ? "text-black/60" : "text-white/60"
-            }`}
+            className={`text-lg font-medium ${theme === "light" ? "text-black/60" : "text-white/60"
+              }`}
           >
             The shared content you're looking for doesn't exist or has been
             removed.
@@ -99,9 +93,8 @@ export function Share() {
 
   return (
     <div
-      className={`min-h-screen w-full relative transition-colors duration-300 ${
-        theme === "light" ? "bg-white" : "bg-black"
-      }`}
+      className={`min-h-screen w-full relative transition-colors duration-300 ${theme === "light" ? "bg-white" : "bg-black"
+        }`}
       style={{
         backgroundColor: theme === "light" ? "#ffffff" : "#000000",
       }}
@@ -135,11 +128,10 @@ export function Share() {
 
       {/* Modern Header */}
       <header
-        className={`border-b backdrop-blur-2xl sticky top-0 z-50 ${
-          theme === "light"
+        className={`border-b backdrop-blur-2xl sticky top-0 z-50 ${theme === "light"
             ? "border-black/10 bg-white/80 shadow-lg shadow-black/5"
             : "border-white/10 bg-black/80 shadow-lg shadow-white/5"
-        }`}
+          }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
@@ -157,11 +149,10 @@ export function Share() {
             <div className="flex items-center space-x-3">
               {/* Shared indicator */}
               <div
-                className={`px-4 py-2 rounded-xl text-sm font-medium ${
-                  theme === "light"
+                className={`px-4 py-2 rounded-xl text-sm font-medium ${theme === "light"
                     ? "bg-black/10 text-black/60"
                     : "bg-white/10 text-white/60"
-                }`}
+                  }`}
               >
                 Shared Content
               </div>
@@ -175,16 +166,14 @@ export function Share() {
         {/* Header */}
         <div className="mb-12">
           <h1
-            className={`text-5xl font-bold mb-4 tracking-tight ${
-              theme === "light" ? "text-black" : "text-white"
-            }`}
+            className={`text-5xl font-bold mb-4 tracking-tight ${theme === "light" ? "text-black" : "text-white"
+              }`}
           >
             Shared by {data.username}
           </h1>
           <p
-            className={`text-xl font-medium ${
-              theme === "light" ? "text-black/60" : "text-white/60"
-            }`}
+            className={`text-xl font-medium ${theme === "light" ? "text-black/60" : "text-white/60"
+              }`}
           >
             {filteredContent.length} memories shared
           </p>
@@ -193,11 +182,10 @@ export function Share() {
         {/* Filter Tabs */}
         <div className="mb-12">
           <div
-            className={`flex space-x-2 p-2 rounded-2xl w-fit backdrop-blur-sm border ${
-              theme === "light"
+            className={`flex space-x-2 p-2 rounded-2xl w-fit backdrop-blur-sm border ${theme === "light"
                 ? "bg-black/5 border-black/10"
                 : "bg-white/5 border-white/10"
-            }`}
+              }`}
           >
             {[
               { key: "all", label: "All Memories", count: data.content.length },
@@ -227,22 +215,21 @@ export function Share() {
                 onClick={() =>
                   setFilter(
                     tab.key as
-                      | "all"
-                      | "website"
-                      | "youtube"
-                      | "twitter"
-                      | "note",
+                    | "all"
+                    | "website"
+                    | "youtube"
+                    | "twitter"
+                    | "note",
                   )
                 }
-                className={`px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                  filter === tab.key
+                className={`px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${filter === tab.key
                     ? theme === "light"
                       ? "bg-black text-white shadow-lg"
                       : "bg-white text-black shadow-lg"
                     : theme === "light"
                       ? "text-black/60 hover:text-black hover:bg-black/10"
                       : "text-white/60 hover:text-white hover:bg-white/10"
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
@@ -256,16 +243,14 @@ export function Share() {
             <div className="text-center py-20">
               <div className="max-w-lg mx-auto">
                 <h3
-                  className={`text-2xl font-bold mb-4 ${
-                    theme === "light" ? "text-black" : "text-white"
-                  }`}
+                  className={`text-2xl font-bold mb-4 ${theme === "light" ? "text-black" : "text-white"
+                    }`}
                 >
                   No {filter} content
                 </h3>
                 <p
-                  className={`text-lg font-medium ${
-                    theme === "light" ? "text-black/60" : "text-white/60"
-                  }`}
+                  className={`text-lg font-medium ${theme === "light" ? "text-black/60" : "text-white/60"
+                    }`}
                 >
                   This user hasn't shared any {filter === "all" ? "" : filter}{" "}
                   content yet.

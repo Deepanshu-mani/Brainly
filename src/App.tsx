@@ -14,11 +14,11 @@ import { TermsOfService } from "./pages/TermsOfService";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { Landing } from "./pages/Landing";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { Layout } from "./components/Layout";
-import { ToastProvider } from "./components/ToastProvider";
+import { Layout } from "./components/shared/Layout";
+import { ToastProvider } from "./components/shared/ToastProvider";
 import ErrorBoundaryClass, {
   GridErrorBoundary,
-} from "./components/ErrorBoundary";
+} from "./components/shared/ErrorBoundary";
 
 // Wrapper component to apply layout to specific routes
 const WithLayout = ({ children }: { children: JSX.Element }) => (

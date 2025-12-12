@@ -3,17 +3,17 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 
 // Components
-import { DashboardHeader } from "../components/DashboardHeader";
-import { DashboardGreeting } from "../components/DashboardGreeting";
-import { DashboardSearchBar } from "../components/DashboardSearchBar";
-import { SearchSkeleton } from "../components/SearchSkeleton";
-import { AIResponseCard } from "../components/AIResponseCard";
-import { MostRelevantContent } from "../components/MostRelevantContent";
-import { StatsFilterTabs } from "../components/StatsFilterTabs";
-import { ContentGrid } from "../components/ContentGrid";
-import { CreateContentModal } from "../components/CreateContentModal";
-import { NoteEditor } from "../components/NoteEditor";
-import { BookmarkWebsiteModal } from "../components/BookmarkWebsiteModal";
+import { DashboardHeader } from "../components/dashboard/DashboardHeader";
+import { DashboardGreeting } from "../components/dashboard/DashboardGreeting";
+import { DashboardSearchBar } from "../components/dashboard/DashboardSearchBar";
+import { SearchSkeleton } from "../components/shared/SearchSkeleton";
+import { AIResponseCard } from "../components/shared/AIResponseCard";
+import { MostRelevantContent } from "../components/dashboard/MostRelevantContent";
+import { StatsFilterTabs } from "../components/dashboard/StatsFilterTabs";
+import { ContentGrid } from "../components/dashboard/ContentGrid";
+import { CreateContentModal } from "../components/modals/CreateContentModal";
+import { NoteEditor } from "../components/shared/NoteEditor";
+import { BookmarkWebsiteModal } from "../components/modals/BookmarkWebsiteModal";
 // Sidebar removed as it is not currently used in the layout
 
 // Hooks
@@ -327,9 +327,8 @@ export function Dashboard() {
   return (
     <>
       <div
-        className={`min-h-screen w-full relative transition-colors duration-300 ${
-          theme === "light" ? "bg-white" : "bg-black"
-        }`}
+        className={`min-h-screen w-full relative transition-colors duration-300 ${theme === "light" ? "bg-white" : "bg-black"
+          }`}
         style={{
           backgroundColor: theme === "light" ? "#ffffff" : "#000000",
         }}
@@ -370,9 +369,8 @@ export function Dashboard() {
 
         {/* Main Content */}
         <main
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 relative z-10 ${
-            theme === "light" ? "text-black" : "text-white"
-          }`}
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 relative z-10 ${theme === "light" ? "text-black" : "text-white"
+            }`}
         >
           {/* Greeting */}
           <DashboardGreeting

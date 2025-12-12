@@ -1,8 +1,8 @@
-import { useTheme } from "../contexts/ThemeContext";
-import { Card } from "../ui/Card";
-import { WebsiteCard } from "../ui/WebsiteCard";
+import { useTheme } from "../../contexts/ThemeContext";
+import { Card } from "../../ui/Card";
+import { WebsiteCard } from "../../ui/WebsiteCard";
 import { NoteCard } from "./NoteCard";
-import type { Content } from "../types/content";
+import type { Content } from "../../types/content";
 
 interface MostRelevantContentProps {
   contents: Content[];

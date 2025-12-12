@@ -1,11 +1,11 @@
-import { CrossIcon } from "../ui/icons/CrossIcon";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
+import { CrossIcon } from "../../ui/icons/CrossIcon";
+import { Button } from "../../ui/Button";
+import { Input } from "../../ui/Input";
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "../../config";
 
-import type { ContentType } from "../types/content";
+import type { ContentType } from "../../types/content";
 
 export function UpdateContentModal({
   open,

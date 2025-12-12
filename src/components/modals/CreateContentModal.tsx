@@ -1,12 +1,12 @@
 import { X, Globe, StickyNote } from "lucide-react";
 import { useRef, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { showToast } from "../utils/toast";
-import { Button } from "../ui/Button";
-import { detectContentType } from "../utils/contentTypeDetector";
+import { BACKEND_URL } from "../../config";
+import { showToast } from "../../utils/toast";
+import { Button } from "../../ui/Button";
+import { detectContentType } from "../../utils/contentTypeDetector";
 
-import type { ContentType } from "../types/content";
+import type { ContentType } from "../../types/content";
 
 export function CreateContentModal({
   open,
