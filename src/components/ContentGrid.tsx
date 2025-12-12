@@ -1,13 +1,18 @@
-import React from 'react';
-import Masonry from 'react-masonry-css';
-import { Card } from '../ui/Card';
-import { WebsiteCard } from '../ui/WebsiteCard';
-import { NoteCard } from './NoteCard';
-import { AddToBrainCard } from './AddToBrainCard';
-import { useTheme } from '../contexts/ThemeContext';
-import { CardSkeleton, WebsiteCardSkeleton, NoteCardSkeleton, AddToBrainCardSkeleton } from './SkeletonLoader';
-import { CardErrorBoundary } from './ErrorBoundary';
-import type { Content } from '../types/content';
+import React from "react";
+import Masonry from "react-masonry-css";
+import { Card } from "../ui/Card";
+import { WebsiteCard } from "../ui/WebsiteCard";
+import { NoteCard } from "./NoteCard";
+import { AddToBrainCard } from "./AddToBrainCard";
+import { useTheme } from "../contexts/ThemeContext";
+import {
+  CardSkeleton,
+  WebsiteCardSkeleton,
+  NoteCardSkeleton,
+  AddToBrainCardSkeleton,
+} from "./SkeletonLoader";
+import { CardErrorBoundary } from "./ErrorBoundary";
+import type { Content } from "../types/content";
 
 interface ContentGridProps {
   contents: Content[];
@@ -17,7 +22,13 @@ interface ContentGridProps {
   onAddMemory: () => void;
 }
 
-export const ContentGrid = React.memo(function ContentGrid({ contents, loading, onUpdateContent, onDeleteContent, onAddMemory }: ContentGridProps) {
+export const ContentGrid = React.memo(function ContentGrid({
+  contents,
+  loading,
+  onUpdateContent,
+  onDeleteContent,
+  onAddMemory,
+}: ContentGridProps) {
   const { theme } = useTheme();
 
   if (loading) {
@@ -32,7 +43,7 @@ export const ContentGrid = React.memo(function ContentGrid({ contents, loading, 
           <div className="mb-6 sm:mb-8">
             <AddToBrainCardSkeleton />
           </div>
-          
+
           {/* Content Skeletons */}
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="mb-6 sm:mb-8">
@@ -63,19 +74,22 @@ export const ContentGrid = React.memo(function ContentGrid({ contents, loading, 
         <div className="mb-6 sm:mb-8">
           <AddToBrainCard onAddMemory={onAddMemory} />
         </div>
-        
+
         {contents.map((content) => (
-          <div key={content._id} className="mb-6 sm:mb-8">
+          <div
+            key={content._id}
+            className="mb-6 sm:mb-8 card-container card-transition"
+          >
             <CardErrorBoundary>
-              {content.type === 'note' ? (
+              {content.type === "note" ? (
                 <NoteCard
                   content={content}
                   onUpdate={onUpdateContent}
                   onDelete={onDeleteContent}
                 />
-              ) : content.type === 'website' ? (
+              ) : content.type === "website" ? (
                 <WebsiteCard
-                  content={content as any}
+                  content={content}
                   onDelete={() => onDeleteContent(content._id)}
                   isShared={false}
                 />
@@ -83,9 +97,9 @@ export const ContentGrid = React.memo(function ContentGrid({ contents, loading, 
                 <Card
                   id={content._id}
                   link={content.link}
-                  type={content.type as 'twitter' | 'youtube'}
+                  type={content.type as "twitter" | "youtube"}
                   tags={content.tags}
-                  createdAt={(content as any).createdAt || (content as any).updatedAt}
+                  createdAt={content.createdAt || content.updatedAt}
                   onDelete={() => onDeleteContent(content._id)}
                   isShared={false}
                 />
@@ -94,28 +108,36 @@ export const ContentGrid = React.memo(function ContentGrid({ contents, loading, 
           </div>
         ))}
       </Masonry>
-      
+
       {/* End of memories indicator */}
       {contents.length > 0 && (
         <div className="text-center py-8 mt-8">
-          <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-sm border ${
-            theme === 'light'
-              ? 'bg-black/5 border-black/10 text-black/60'
-              : 'bg-white/5 border-white/10 text-white/60'
-          }`}>
-            <div className={`w-2 h-2 rounded-full ${
-              theme === 'light' ? 'bg-black/30' : 'bg-white/30'
-            }`}></div>
+          <div
+            className={`inline-flex items-center gap-3 px-6 py-3 rounded-full backdrop-blur-sm border ${
+              theme === "light"
+                ? "bg-black/5 border-black/10 text-black/60"
+                : "bg-white/5 border-white/10 text-white/60"
+            }`}
+          >
+            <div
+              className={`w-2 h-2 rounded-full ${
+                theme === "light" ? "bg-black/30" : "bg-white/30"
+              }`}
+            ></div>
             <span className="text-sm font-medium">
               You've reached the end of your memories
             </span>
-            <div className={`w-2 h-2 rounded-full ${
-              theme === 'light' ? 'bg-black/30' : 'bg-white/30'
-            }`}></div>
+            <div
+              className={`w-2 h-2 rounded-full ${
+                theme === "light" ? "bg-black/30" : "bg-white/30"
+              }`}
+            ></div>
           </div>
-          <p className={`text-xs mt-2 ${
-            theme === 'light' ? 'text-black/40' : 'text-white/40'
-          }`}>
+          <p
+            className={`text-xs mt-2 ${
+              theme === "light" ? "text-black/40" : "text-white/40"
+            }`}
+          >
             {contents.length} total memories
           </p>
         </div>

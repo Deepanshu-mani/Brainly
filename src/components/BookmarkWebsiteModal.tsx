@@ -6,49 +6,61 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { LinkIcon } from "../ui/icons/LinkIcon";
 
-export function BookmarkWebsiteModal({ open, onClose }: {
-    open: boolean,
-    onClose: () => void 
+export function BookmarkWebsiteModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
 }) {
   const urlRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
-  const [processingStatus, setProcessingStatus] = useState<'idle' | 'processing' | 'completed' | 'error'>('idle');
+  const [processingStatus, setProcessingStatus] = useState<
+    "idle" | "processing" | "completed" | "error"
+  >("idle");
 
   async function bookmarkWebsite() {
     const url = urlRef.current?.value;
-    
+
     if (!url) {
       alert("Please enter a URL");
       return;
     }
 
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
       alert("Please enter a valid URL starting with http:// or https://");
       return;
     }
 
     setLoading(true);
-    setProcessingStatus('processing');
-    
+    setProcessingStatus("processing");
+
     try {
-      await axios.post(`${BACKEND_URL}/content/bookmark`, {
-        url: url
-      }, {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      });
-      
-      setProcessingStatus('completed');
+      await axios.post(
+        `${BACKEND_URL}/content/bookmark`,
+        {
+          url: url,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        },
+      );
+
+      setProcessingStatus("completed");
       setTimeout(() => {
         onClose();
-        setProcessingStatus('idle');
+        setProcessingStatus("idle");
       }, 1500);
-      
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Failed to bookmark website:", error);
-      setProcessingStatus('error');
-      alert(error.response?.data?.message || "Failed to bookmark website. Please try again.");
+      setProcessingStatus("error");
+      let message = "Failed to bookmark website. Please try again.";
+      if (axios.isAxiosError(error)) {
+        message = error.response?.data?.message || message;
+      }
+      alert(message);
     } finally {
       setLoading(false);
     }
@@ -56,27 +68,27 @@ export function BookmarkWebsiteModal({ open, onClose }: {
 
   const getStatusMessage = () => {
     switch (processingStatus) {
-      case 'processing':
-        return 'Processing website with AI...';
-      case 'completed':
-        return 'Website bookmarked successfully!';
-      case 'error':
-        return 'Failed to process website';
+      case "processing":
+        return "Processing website with AI...";
+      case "completed":
+        return "Website bookmarked successfully!";
+      case "error":
+        return "Failed to process website";
       default:
-        return '';
+        return "";
     }
   };
 
   const getStatusColor = () => {
     switch (processingStatus) {
-      case 'processing':
-        return 'text-blue-600';
-      case 'completed':
-        return 'text-green-600';
-      case 'error':
-        return 'text-red-600';
+      case "processing":
+        return "text-blue-600";
+      case "completed":
+        return "text-green-600";
+      case "error":
+        return "text-red-600";
       default:
-        return 'text-gray-600';
+        return "text-gray-600";
     }
   };
 
@@ -89,7 +101,10 @@ export function BookmarkWebsiteModal({ open, onClose }: {
               <h2 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent dark:from-dark-primary dark:to-dark-primary-hover">
                 Bookmark Website
               </h2>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors p-1 dark:text-dark-text-muted dark:hover:text-dark-text">
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors p-1 dark:text-dark-text-muted dark:hover:text-dark-text"
+              >
                 <CrossIcon />
               </button>
             </div>
@@ -103,8 +118,8 @@ export function BookmarkWebsiteModal({ open, onClose }: {
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <LinkIcon className="h-5 w-5 text-gray-400" />
                   </div>
-                  <Input 
-                    placeholder="https://example.com" 
+                  <Input
+                    placeholder="https://example.com"
                     reference={urlRef}
                     className="pl-10"
                   />
@@ -114,15 +129,15 @@ export function BookmarkWebsiteModal({ open, onClose }: {
                 </p>
               </div>
 
-              {processingStatus !== 'idle' && (
+              {processingStatus !== "idle" && (
                 <div className={`text-sm font-medium ${getStatusColor()}`}>
                   {getStatusMessage()}
                 </div>
               )}
 
               <div className="pt-4">
-                <Button 
-                  variant="primary" 
+                <Button
+                  variant="primary"
                   className="w-full"
                   loading={loading}
                   onClick={bookmarkWebsite}
@@ -144,4 +159,3 @@ export function BookmarkWebsiteModal({ open, onClose }: {
     </div>
   );
 }
-

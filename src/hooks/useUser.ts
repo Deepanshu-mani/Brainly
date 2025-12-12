@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BACKEND_URL } from '../config';
-import { showToast } from '../utils/toast';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+import { showToast } from "../utils/toast";
 
 export interface User {
   id: string;
@@ -15,7 +15,7 @@ export function useUser() {
 
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
         setUser(null);
         setLoading(false);
@@ -24,42 +24,46 @@ export function useUser() {
 
       const response = await axios.get(`${BACKEND_URL}/user/profile`, {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       });
 
       setUser(response.data);
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.error("Error fetching user profile:", error);
       setUser(null);
       // If token is invalid, remove it
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     } finally {
       setLoading(false);
     }
   };
 
   const logout = async () => {
-    const logoutToast = showToast.loading('Logging out...');
+    const logoutToast = showToast.loading("Logging out...");
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token) {
-        await axios.post(`${BACKEND_URL}/user/logout`, {}, {
-          headers: {
-            Authorization: token
-          }
-        });
+        await axios.post(
+          `${BACKEND_URL}/user/logout`,
+          {},
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
       }
       showToast.dismiss(logoutToast);
-      showToast.success('Logged out successfully!');
+      showToast.success("Logged out successfully!");
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error("Error during logout:", error);
       showToast.dismiss(logoutToast);
-      showToast.error('Error during logout, but you have been signed out.');
+      showToast.error("Error during logout, but you have been signed out.");
     } finally {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       setUser(null);
-      window.location.href = '/signin';
+      window.location.href = "/signin";
     }
   };
 

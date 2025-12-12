@@ -15,14 +15,14 @@ interface CardActionButtonProps {
   isEditMode?: boolean; // New prop to determine if this is an edit action
 }
 
-export function CardActionButton({ 
-  className = "", 
-  onExpand, 
-  onShare, 
-  onDelete, 
+export function CardActionButton({
+  className = "",
+  onExpand,
+  onShare,
+  onDelete,
   isValidLink = true,
   isShared = false,
-  isEditMode = false 
+  isEditMode = false,
 }: CardActionButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -30,14 +30,14 @@ export function CardActionButton({
 
   const actionButtons = [
     { icon: Maximize2, label: "Expand", action: onExpand },
-    { 
-      icon: isEditMode ? Edit : Link, 
-      label: isEditMode ? "Edit" : "Open link", 
-      action: onShare, 
-      disabled: isEditMode ? false : !isValidLink 
+    {
+      icon: isEditMode ? Edit : Link,
+      label: isEditMode ? "Edit" : "Open link",
+      action: onShare,
+      disabled: isEditMode ? false : !isValidLink,
     },
     { icon: Trash2, label: "Delete", action: onDelete, disabled: isShared },
-  ].filter(button => button.action); // Only show buttons that have actions
+  ].filter((button) => button.action); // Only show buttons that have actions
 
   const handleAction = (index: number) => {
     const button = actionButtons[index];
@@ -66,9 +66,10 @@ export function CardActionButton({
         <button
           className={`
             h-8 w-8 relative rounded-md backdrop-blur-sm border transition-all duration-300
-            ${theme === 'light'
-              ? 'bg-white/90 border-black/10 hover:bg-black/5 hover:border-black/20'
-              : 'bg-black/90 border-white/10 hover:bg-white/5 hover:border-white/20'
+            ${
+              theme === "light"
+                ? "bg-white/90 border-black/10 hover:bg-black/5 hover:border-black/20"
+                : "bg-black/90 border-white/10 hover:bg-white/5 hover:border-white/20"
             }
             flex items-center justify-center shadow-lg
           `}
@@ -96,16 +97,17 @@ export function CardActionButton({
             disabled={button.disabled}
             className={`
               h-8 w-8 flex items-center justify-center
-              ${theme === 'light'
-                ? 'bg-white/90 border-r border-black/10 hover:bg-black/5'
-                : 'bg-black/90 border-r border-white/10 hover:bg-white/5'
+              ${
+                theme === "light"
+                  ? "bg-white/90 border-r border-black/10 hover:bg-black/5"
+                  : "bg-black/90 border-r border-white/10 hover:bg-white/5"
               }
-              ${i === actionButtons.length - 1 ? 'rounded-l-md' : ''}
-              ${i === 0 ? 'rounded-r-md' : ''}
+              ${i === actionButtons.length - 1 ? "rounded-l-md" : ""}
+              ${i === 0 ? "rounded-r-md" : ""}
               last:border-r-0
               outline-none relative overflow-hidden
               transition-colors duration-200 shadow-lg
-              ${button.disabled ? 'opacity-50 cursor-not-allowed' : ''}
+              ${button.disabled ? "opacity-50 cursor-not-allowed" : ""}
             `}
             animate={{
               opacity: isVisible ? 1 : 0,
@@ -131,7 +133,7 @@ export function CardActionButton({
             </motion.div>
             <motion.div
               className={`absolute inset-0 ${
-                theme === 'light' ? 'bg-white' : 'bg-black'
+                theme === "light" ? "bg-white" : "bg-black"
               }`}
               initial={{ opacity: 0 }}
               animate={{

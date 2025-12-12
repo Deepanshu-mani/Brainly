@@ -20,4 +20,3 @@ export function XIcon({ className = "h-6 w-6" }: IconProps) {
     </svg>
   );
 }
-

@@ -1,19 +1,17 @@
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from "../contexts/ThemeContext";
 
 interface SkeletonProps {
   className?: string;
   children?: React.ReactNode;
 }
 
-export function Skeleton({ className = '', children }: SkeletonProps) {
+export function Skeleton({ className = "", children }: SkeletonProps) {
   const { theme } = useTheme();
-  
+
   return (
-    <div 
+    <div
       className={`animate-pulse ${
-        theme === 'light' 
-          ? 'bg-gray-200' 
-          : 'bg-white/10'
+        theme === "light" ? "bg-gray-200" : "bg-white/10"
       } rounded-lg ${className}`}
     >
       {children}
@@ -41,18 +39,18 @@ export function WebsiteCardSkeleton() {
           <Skeleton className="w-4 h-4 rounded" />
           <Skeleton className="h-3 w-16" />
         </div>
-        
+
         {/* Content */}
         <Skeleton className="h-4 w-full mb-2" />
         <Skeleton className="h-4 w-5/6 mb-2" />
         <Skeleton className="h-4 w-4/6 mb-4" />
-        
+
         {/* Tags */}
         <div className="flex gap-2 mb-3">
           <Skeleton className="h-5 w-12 rounded-full" />
           <Skeleton className="h-5 w-16 rounded-full" />
         </div>
-        
+
         {/* Date */}
         <Skeleton className="h-3 w-20 ml-auto" />
       </div>
@@ -69,7 +67,7 @@ export function NoteCardSkeleton() {
           <Skeleton className="w-4 h-4 rounded" />
           <Skeleton className="h-3 w-12" />
         </div>
-        
+
         {/* Content */}
         <div className="space-y-2 mb-4">
           <Skeleton className="h-3 w-full" />
@@ -77,13 +75,13 @@ export function NoteCardSkeleton() {
           <Skeleton className="h-3 w-4/6" />
           <Skeleton className="h-3 w-3/4" />
         </div>
-        
+
         {/* Tags */}
         <div className="flex gap-2 mb-3">
           <Skeleton className="h-5 w-10 rounded-full" />
           <Skeleton className="h-5 w-14 rounded-full" />
         </div>
-        
+
         {/* Date */}
         <Skeleton className="h-3 w-20 ml-auto" />
       </div>

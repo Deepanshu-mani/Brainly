@@ -1,10 +1,20 @@
 export type ContentType = "youtube" | "twitter" | "note" | "website";
 
-export const CONTENT_TYPES: ContentType[] = ["youtube", "twitter", "note", "website"];
+export const CONTENT_TYPES: ContentType[] = [
+  "youtube",
+  "twitter",
+  "note",
+  "website",
+];
 
-export type ProcessingStatus = "pending" | "processing" | "completed" | "failed";
+export type ProcessingStatus =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "failed";
 
 export interface WebsiteMetadata {
+  title?: string;
   description: string;
   favicon: string;
   domain: string;
@@ -27,6 +37,7 @@ export interface BaseContent {
   // Processing status
   processingStatus?: ProcessingStatus;
   processingError?: string;
+  score?: number;
 }
 
 export interface LinkContent extends BaseContent {

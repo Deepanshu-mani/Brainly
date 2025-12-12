@@ -2,7 +2,6 @@
 
 A modern, responsive web application that allows users to bookmark and organize their favorite YouTube videos and Twitter/X posts in one centralized dashboard. Built as a demonstration project showcasing full-stack web development skills.
 
-
 ## ✨ Features
 
 - **📚 Content Bookmarking**: Save YouTube videos and Twitter/X posts with custom titles
@@ -16,6 +15,7 @@ A modern, responsive web application that allows users to bookmark and organize 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 19** - Modern UI library with latest features
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first CSS framework
@@ -24,6 +24,7 @@ A modern, responsive web application that allows users to bookmark and organize 
 - **Vite** - Fast build tool and development server
 
 ### Backend
+
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web application framework
 - **MongoDB** - NoSQL database for data storage
@@ -31,6 +32,7 @@ A modern, responsive web application that allows users to bookmark and organize 
 - **bcrypt** - Password hashing
 
 ### Development Tools
+
 - **ESLint** - Code linting
 - **PostCSS** - CSS processing
 - **Autoprefixer** - CSS vendor prefixing
@@ -40,29 +42,34 @@ A modern, responsive web application that allows users to bookmark and organize 
 ### 🔐 Authentication Pages
 
 #### Sign Up
+
 ![Sign Up Page](./public/screenshots/signup.png)
-*Clean and modern signup form with gradient background*
+_Clean and modern signup form with gradient background_
 
 #### Sign In
+
 ![Sign In Page](./public/screenshots/signin.png)
-*Streamlined signin experience with animated background elements*
+_Streamlined signin experience with animated background elements_
 
 ### 📊 Dashboard
-![Dashboard Desktop](./public/screenshots/dashboard-desktop.png)
-*Main dashboard showing content cards, statistics, and filtering options*
 
+![Dashboard Desktop](./public/screenshots/dashboard-desktop.png)
+_Main dashboard showing content cards, statistics, and filtering options_
 
 ### 🔗 Share Page
+
 ![Share Page](./public/screenshots/share-page.png)
-*Public view of shared content collections*
+_Public view of shared content collections_
 
 ### 🎯 Content Management
+
 ![Add Content Modal](./public/screenshots/add-content-modal.png)
-*Modal for adding new YouTube videos and Twitter posts*
+_Modal for adding new YouTube videos and Twitter posts_
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - MongoDB database
 - npm or yarn package manager
@@ -70,23 +77,27 @@ A modern, responsive web application that allows users to bookmark and organize 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/brainly-frontend.git
    cd brainly-frontend
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment Setup**
    Create a `.env` file in the root directory:
+
    ```env
    VITE_BACKEND_URL=http://localhost:3000
    ```
 
 4. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -127,22 +138,26 @@ src/
 ## 🔧 Key Functionalities
 
 ### Content Management
+
 - Add YouTube videos and Twitter/X posts
 - Organize content with custom titles
 - Delete unwanted bookmarks
 - Real-time content updates
 
 ### Filtering & Search
+
 - Filter by content type (All, YouTube, Twitter)
 - Visual indicators for different content types
 - Statistics dashboard with content counts
 
 ### Sharing System
+
 - Generate unique shareable links
 - Public view without authentication required
 - Maintain privacy controls
 
 ### Responsive Design
+
 - Mobile-first approach
 - Collapsible sidebar for mobile
 - Touch-friendly interface
@@ -150,7 +165,7 @@ src/
 
 ## 🚨 Demo Project Notice
 
-**This is a demonstration project created for educational and portfolio purposes.** 
+**This is a demonstration project created for educational and portfolio purposes.**
 
 - Not intended for commercial use
 - Use test data only
@@ -160,6 +175,7 @@ src/
 ## 📄 Legal Pages
 
 The application includes comprehensive legal documentation:
+
 - **Terms of Service**: Clear usage guidelines for the demo project
 - **Privacy Policy**: Transparent data handling practices
 - **Demo Disclaimers**: Important notices about the project's nature
@@ -167,6 +183,7 @@ The application includes comprehensive legal documentation:
 ## 🤝 Contributing
 
 This is a personal portfolio project, but feedback and suggestions are welcome! Feel free to:
+
 - Report bugs or issues
 - Suggest new features
 - Provide design feedback
@@ -174,6 +191,7 @@ This is a personal portfolio project, but feedback and suggestions are welcome! 
 ## 📧 Contact
 
 For questions about this project or collaboration opportunities:
+
 - **Portfolio**: [Your Portfolio URL]
 - **LinkedIn**: [Your LinkedIn Profile]
 - **Email**: [Your Email]

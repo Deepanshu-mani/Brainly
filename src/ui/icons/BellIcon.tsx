@@ -1,5 +1,4 @@
-
-export function BellIcon({ className = 'w-5 h-5' }: { className?: string }) {
+export function BellIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
