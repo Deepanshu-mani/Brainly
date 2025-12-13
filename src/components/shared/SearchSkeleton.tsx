@@ -4,87 +4,61 @@ export function SearchSkeleton() {
   const { theme } = useTheme();
 
   return (
-    <div className="space-y-4">
-      {/* AI Response Skeleton */}
-      <div
-        className={`border rounded-2xl p-6 backdrop-blur-sm animate-pulse ${
-          theme === "light"
-            ? "bg-black/5 border-black/10"
-            : "bg-white/5 border-white/10"
-        }`}
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <div
-            className={`w-8 h-8 rounded-lg ${
-              theme === "light" ? "bg-black/20" : "bg-white/20"
+    <div className="max-w-5xl mx-auto space-y-4">
+      {/* Section Header Skeleton */}
+      <div className="flex items-center gap-2 px-1">
+        <div
+          className={`h-4 w-4 rounded animate-pulse ${theme === "light" ? "bg-black/10" : "bg-white/10"
             }`}
-          />
-          <div
-            className={`h-4 w-32 rounded ${
-              theme === "light" ? "bg-black/20" : "bg-white/20"
+        />
+        <div
+          className={`h-3 w-36 rounded animate-pulse ${theme === "light" ? "bg-black/10" : "bg-white/10"
             }`}
-          />
-        </div>
-        <div className="space-y-2">
-          <div
-            className={`h-3 w-full rounded ${
-              theme === "light" ? "bg-black/20" : "bg-white/20"
-            }`}
-          />
-          <div
-            className={`h-3 w-5/6 rounded ${
-              theme === "light" ? "bg-black/20" : "bg-white/20"
-            }`}
-          />
-          <div
-            className={`h-3 w-4/6 rounded ${
-              theme === "light" ? "bg-black/20" : "bg-white/20"
-            }`}
-          />
-        </div>
+        />
       </div>
 
-      {/* Results Skeleton */}
-      <div>
-        <div
-          className={`h-5 w-32 mb-4 rounded ${
-            theme === "light" ? "bg-black/20" : "bg-white/20"
+      {/* Content Loading Skeleton */}
+      <div
+        className={`px-6 py-8 rounded-xl border ${theme === "light"
+            ? "bg-white/80 border-black/10"
+            : "bg-black/40 border-white/10"
           }`}
-        />
+      >
+        <div className="flex flex-col items-center justify-center space-y-4">
+          {/* Animated dots */}
+          <div className="flex space-x-1.5">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className={`w-2.5 h-2.5 rounded-full animate-bounce ${theme === "light" ? "bg-black" : "bg-white"
+                  }`}
+                style={{ animationDelay: `${i * 0.15}s` }}
+              />
+            ))}
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`h-64 rounded-2xl backdrop-blur-sm animate-pulse ${
-                theme === "light"
-                  ? "bg-black/5 border border-black/10"
-                  : "bg-white/5 border border-white/10"
+          {/* Loading text */}
+          <p
+            className={`text-sm font-medium ${theme === "light" ? "text-black/70" : "text-white/70"
               }`}
-              style={{
-                animationDelay: `${i * 100}ms`,
-                animationDuration: "1.5s",
-              }}
-            >
-              <div className="p-4 space-y-3">
-                <div
-                  className={`h-4 w-3/4 rounded ${
-                    theme === "light" ? "bg-black/20" : "bg-white/20"
+          >
+            Searching your memories...
+          </p>
+
+          {/* Shimmer lines */}
+          <div className="w-full max-w-md space-y-2 pt-2">
+            {[100, 85, 70].map((width, i) => (
+              <div
+                key={i}
+                className={`h-2 rounded-full animate-pulse ${theme === "light" ? "bg-black/5" : "bg-white/5"
                   }`}
-                />
-                <div
-                  className={`h-3 w-full rounded ${
-                    theme === "light" ? "bg-black/20" : "bg-white/20"
-                  }`}
-                />
-                <div
-                  className={`h-3 w-5/6 rounded ${
-                    theme === "light" ? "bg-black/20" : "bg-white/20"
-                  }`}
-                />
-              </div>
-            </div>
-          ))}
+                style={{
+                  width: `${width}%`,
+                  animationDelay: `${i * 0.1}s`
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

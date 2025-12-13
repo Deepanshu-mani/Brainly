@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, Component } from "react";
 import type { ErrorInfo, ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { YoutubeIcon } from "./icons/YoutubeIcon";
 import { AlertTriangle, X } from "lucide-react";
@@ -192,51 +193,130 @@ export const Card = React.memo(function Card({
 
   // Compact mode - Render as a sleek List Item for Search Results
   if (compact) {
+    const [isHovered, setIsHovered] = useState(false);
+    const [metadata, setMetadata] = useState<{ title?: string; description?: string }>({});
+    const [metadataLoading, setMetadataLoading] = useState(false);
+
+    // Fetch metadata on hover
+    useEffect(() => {
+      if (isHovered && !metadata.title && !metadataLoading) {
+        setMetadataLoading(true);
+        axios
+          .get(`${BACKEND_URL}/content/${id}/summary`, {
+            headers: {
+              Authorization: localStorage.getItem("token") || "",
+            },
+          })
+          .then((res) => {
+            setMetadata({
+              title: res.data.title || (type === "youtube" ? "YouTube Video" : "Tweet"),
+              description: res.data.summary || "",
+            });
+          })
+          .catch(() => {
+            // Fallback to basic info
+            setMetadata({
+              title: type === "youtube" ? "YouTube Video" : "Tweet",
+              description: "",
+            });
+          })
+          .finally(() => setMetadataLoading(false));
+      }
+    }, [isHovered, id, metadata.title, metadataLoading, type]);
+
     return (
       <>
-        <div
+        <motion.div
           onClick={() => setIsExpanded(true)}
-          className={`group flex items-center gap-4 p-4 w-full rounded-2xl cursor-pointer transition-all duration-300 border backdrop-blur-sm ${theme === "light"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className={`group flex flex-col gap-2 p-4 w-full rounded-2xl cursor-pointer transition-all duration-300 border backdrop-blur-sm ${theme === "light"
             ? "bg-white/60 border-black/5 hover:bg-white/80 hover:shadow-lg hover:shadow-black/5 hover:border-black/10"
             : "bg-black/60 border-white/5 hover:bg-black/80 hover:shadow-lg hover:shadow-white/5 hover:border-white/10"
             }`}
         >
-          {/* Icon Box */}
-          <div
-            className={`flex-shrink-0 p-3 rounded-xl transition-colors duration-300 ${theme === "light"
-              ? "bg-black/5 text-black/70 group-hover:bg-black/10 group-hover:text-black"
-              : "bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white"
-              }`}
-          >
-            {type === "youtube" ? <YoutubeIcon /> : <TwitterIcon />}
-          </div>
-
-          {/* Content Info */}
-          <div className="flex-1 min-w-0">
-            <h3
-              className={`font-semibold text-sm truncate mb-0.5 ${theme === "light" ? "text-black" : "text-white"}`}
-            >
-              {type === "youtube" ? "YouTube Video" : "Tweet"}
-            </h3>
-            <p
-              className={`text-xs truncate ${theme === "light" ? "text-black/50" : "text-white/50"}`}
-            >
-              {link}
-            </p>
-          </div>
-
-          {/* Match Score Badge */}
-          {score !== undefined && (
-            <div
-              className={`flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full border ${theme === "light"
-                ? "bg-purple-100/50 text-purple-700 border-purple-200"
-                : "bg-purple-900/30 text-purple-300 border-purple-800/50"
+          <div className="flex items-center gap-4">
+            {/* Icon Box */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className={`flex-shrink-0 p-3 rounded-xl transition-colors duration-300 ${theme === "light"
+                ? "bg-black/5 text-black/70 group-hover:bg-black/10 group-hover:text-black"
+                : "bg-white/5 text-white/70 group-hover:bg-white/10 group-hover:text-white"
                 }`}
             >
-              {Math.round(score * 100)}% Match
+              {type === "youtube" ? <YoutubeIcon /> : <TwitterIcon />}
+            </motion.div>
+
+            {/* Content Info */}
+            <div className="flex-1 min-w-0">
+              <h3
+                className={`font-semibold text-sm truncate mb-0.5 ${theme === "light" ? "text-black" : "text-white"
+                  }`}
+              >
+                {type === "youtube" ? "YouTube Video" : "Tweet"}
+              </h3>
+              <p
+                className={`text-xs truncate ${theme === "light" ? "text-black/50" : "text-white/50"
+                  }`}
+              >
+                {type === "youtube" ? "YouTube" : "Twitter"}
+              </p>
             </div>
-          )}
-        </div>
+
+            {/* Match Score Badge */}
+            {score !== undefined && (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className={`flex-shrink-0 text-[10px] font-bold px-2 py-1 rounded-full border ${theme === "light"
+                  ? "bg-purple-100/50 text-purple-700 border-purple-200"
+                  : "bg-purple-900/30 text-purple-300 border-purple-800/50"
+                  }`}
+              >
+                {Math.round(score * 100)}% Match
+              </motion.div>
+            )}
+          </div>
+
+          {/* Expanded metadata on hover */}
+          <AnimatePresence>
+            {isHovered && metadata.description && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 350,
+                  damping: 25,
+                  opacity: { duration: 0.2 }
+                }}
+                className={`text-xs leading-relaxed line-clamp-1 overflow-hidden pl-[60px] ${theme === "light" ? "text-black/60" : "text-white/60"
+                  }`}
+              >
+                {metadata.description}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Loading state on hover */}
+          <AnimatePresence>
+            {isHovered && metadataLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className={`text-xs pl-[60px] flex items-center gap-2 ${theme === "light" ? "text-black/40" : "text-white/40"
+                  }`}
+              >
+                <div className="w-1 h-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "0s" }} />
+                <div className="w-1 h-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "0.15s" }} />
+                <div className="w-1 h-1 rounded-full bg-current animate-bounce" style={{ animationDelay: "0.3s" }} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Expanded Modal */}
         {isExpanded &&

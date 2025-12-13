@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import ReactMarkdown from "react-markdown";
 
 // Components
 import { DashboardHeader } from "../components/dashboard/DashboardHeader";
@@ -369,7 +370,7 @@ export function Dashboard() {
 
         {/* Main Content */}
         <main
-          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 relative z-10 ${theme === "light" ? "text-black" : "text-white"
+          className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10 ${theme === "light" ? "text-black" : "text-white"
             }`}
         >
           {/* Greeting */}
@@ -384,56 +385,18 @@ export function Dashboard() {
             isSearching={isSearching}
           />
 
-          {/* Search Results Area - Fixed Height with Scroll */}
+          {/* Search Results Area - Compact */}
           {isSearching ? (
-            <div className="mt-6">
+            <div className="mt-3">
               <SearchSkeleton />
             </div>
           ) : showAiResponse && relevantContent.length > 0 ? (
-            <div className="max-w-4xl mx-auto mt-8 mb-20 space-y-12 animate-fadeIn">
-              {/* AI Response Section (First) */}
-              <div className="space-y-4">
+            <div className="max-w-5xl mx-auto mt-4 mb-12 space-y-4 animate-fadeIn">
+              {/* Relevant Memories First */}
+              <div className="space-y-3">
                 <div
-                  className={`flex items-center gap-2 px-1 ${theme === "light" ? "text-black/60" : "text-white/60"}`}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
-                  <h3 className="text-xs font-bold uppercase tracking-widest">
-                    AI Insight
-                  </h3>
-                </div>
-
-                {aiResponse && (
-                  <div
-                    className={`p-1 rounded-3xl ${theme === "light" ? "bg-gradient-to-br from-purple-100 to-blue-50" : "bg-gradient-to-br from-purple-900/20 to-blue-900/10"}`}
-                  >
-                    <div className="shadow-2xl shadow-purple-500/5 rounded-2xl overflow-hidden">
-                      <AIResponseCard
-                        response={aiResponse}
-                        onClose={handleCloseAiResponse}
-                        searchTime={searchTime}
-                        resultCount={resultCount}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Search Results Section (Second) */}
-              <div className="space-y-6">
-                <div
-                  className={`flex items-center gap-2 px-1 ${theme === "light" ? "text-black/60" : "text-white/60"}`}
+                  className={`flex items-center gap-2 px-1 ${theme === "light" ? "text-black/60" : "text-white/60"
+                    }`}
                 >
                   <svg
                     className="w-4 h-4"
@@ -459,6 +422,91 @@ export function Dashboard() {
                   onDeleteContent={handleDeleteContent}
                 />
               </div>
+
+              {/* Compact AI Summary Below */}
+              {aiResponse && (
+                <div className="space-y-2">
+                  <div
+                    className={`flex items-center gap-2 px-1 ${theme === "light" ? "text-black/60" : "text-white/60"
+                      }`}
+                  >
+                    <div className={`flex items-center justify-center w-4 h-4 rounded ${theme === "light"
+                        ? "bg-gradient-to-br from-purple-500 to-blue-500"
+                        : "bg-gradient-to-br from-purple-600 to-blue-600"
+                      }`}>
+                      <svg
+                        className="w-2.5 h-2.5 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={3}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xs font-bold uppercase tracking-widest">
+                      AI Summary
+                    </h3>
+                    {searchTime !== undefined && resultCount !== undefined && (
+                      <span className="text-[10px] opacity-60">
+                        {resultCount} {resultCount === 1 ? "result" : "results"} • {searchTime}ms
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    {/* Gradient accent border */}
+                    <div className={`absolute inset-0 rounded-xl ${theme === "light"
+                        ? "bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20"
+                        : "bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-purple-600/20"
+                      } blur-sm`} />
+                    <div
+                      className={`relative px-4 py-3 rounded-xl text-sm leading-relaxed border backdrop-blur-sm ${theme === "light"
+                          ? "bg-white/90 border-black/10 text-black/80"
+                          : "bg-black/60 border-white/10 text-white/80"
+                        }`}
+                    >
+                      {aiResponse === "Analyzing your memories..." ? (
+                        <div className="flex items-center space-x-2">
+                          <div className="flex space-x-1">
+                            {[0, 1, 2].map((i) => (
+                              <div
+                                key={i}
+                                className={`w-1.5 h-1.5 rounded-full animate-bounce ${theme === "light" ? "bg-purple-500" : "bg-purple-400"
+                                  }`}
+                                style={{ animationDelay: `${i * 0.15}s` }}
+                              />
+                            ))}
+                          </div>
+                          <span>{aiResponse}</span>
+                        </div>
+                      ) : (
+                        <ReactMarkdown
+                          components={{
+                            strong: ({ ...props }) => (
+                              <strong
+                                className={`font-bold ${theme === "light" ? "text-black" : "text-white"
+                                  }`}
+                                {...props}
+                              />
+                            ),
+                            p: ({ ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                            ul: ({ ...props }) => (
+                              <ul className="list-disc list-inside mb-2 space-y-0.5" {...props} />
+                            ),
+                            li: ({ ...props }) => <li className="ml-2" {...props} />,
+                          }}
+                        >
+                          {aiResponse}
+                        </ReactMarkdown>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           ) : showAiResponse && aiResponse ? (
             <div className="mt-6 mb-4 max-h-[600px]">
