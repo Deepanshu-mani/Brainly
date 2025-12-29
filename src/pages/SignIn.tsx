@@ -113,7 +113,9 @@ export function SignIn() {
               Sign in to your second brain
             </p>
           </div>
-          <TestCred emailRef={emailRef} passwordRef={passwordRef} />
+          {import.meta.env.DEV && (
+            <TestCred emailRef={emailRef} passwordRef={passwordRef} />
+          )}
         </div>
 
         {/* Form */}

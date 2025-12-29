@@ -1,10 +1,10 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Chrome, MessageSquare, Youtube, FileText, Bookmark, Globe, AlertCircle, X } from "lucide-react";
 
 const ProblemSection = () => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
   const [closedIcons, setClosedIcons] = useState<string[]>([]);
   const [hoveredStat, setHoveredStat] = useState<number | null>(null);
 
@@ -42,7 +42,7 @@ const ProblemSection = () => {
   return (
     <section ref={ref} className="section-padding relative overflow-hidden">
       <div className="container-tight">
-        <motion.div 
+        <motion.div
           className="max-w-3xl mx-auto text-center"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -64,9 +64,8 @@ const ProblemSection = () => {
           {icons.map(({ Icon, label, color }, index) => (
             <motion.div
               key={label}
-              className={`absolute left-1/2 top-1/2 card-interactive p-5 group cursor-pointer ${
-                closedIcons.includes(label) ? "opacity-0 scale-0" : ""
-              }`}
+              className={`absolute left-1/2 top-1/2 card-interactive p-5 group cursor-pointer ${closedIcons.includes(label) ? "opacity-0 scale-0" : ""
+                }`}
               initial={{ opacity: 0, scale: 0 }}
               animate={isInView && !closedIcons.includes(label) ? {
                 opacity: 1,
@@ -75,33 +74,33 @@ const ProblemSection = () => {
                 y: positions[index].y,
                 rotate: positions[index].rotate,
               } : { opacity: 0, scale: 0 }}
-              transition={{ 
+              transition={{
                 delay: 0.1 * index + 0.3,
                 type: "spring",
                 stiffness: 100,
               }}
-              whileHover={{ 
-                scale: 1.15, 
+              whileHover={{
+                scale: 1.15,
                 rotate: 0,
                 zIndex: 10,
               }}
               onClick={() => handleClose(label)}
             >
               <Icon className={`w-8 h-8 text-muted-foreground transition-colors ${color}`} />
-              <motion.div 
+              <motion.div
                 className="absolute -top-1 -right-1 w-5 h-5 bg-foreground rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                 whileHover={{ scale: 1.2 }}
               >
                 <X className="w-3 h-3 text-background" />
               </motion.div>
-              <motion.span 
+              <motion.span
                 className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-muted-foreground whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 {label}
               </motion.span>
             </motion.div>
           ))}
-          
+
           {/* Chaos indicator */}
           {closedIcons.length > 0 && (
             <motion.div
@@ -117,14 +116,14 @@ const ProblemSection = () => {
         </div>
 
         {/* Interactive Pain point stats */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           {painPoints.map(({ number, label, suffix }, index) => (
-            <motion.div 
+            <motion.div
               key={label}
               className="text-center p-6 card-elevated border-destructive/20 group hover:border-destructive/40 transition-colors cursor-pointer relative overflow-hidden"
               whileHover={{ scale: 1.05 }}
@@ -133,12 +132,12 @@ const ProblemSection = () => {
               onHoverEnd={() => setHoveredStat(null)}
             >
               {/* Animated background on hover */}
-              <motion.div 
+              <motion.div
                 className="absolute inset-0 bg-destructive/5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: hoveredStat === index ? 1 : 0 }}
               />
-              
+
               <div className="flex items-center justify-center gap-2 mb-2 relative">
                 <motion.div
                   animate={hoveredStat === index ? { rotate: [0, 10, -10, 0] } : {}}
@@ -146,7 +145,7 @@ const ProblemSection = () => {
                 >
                   <AlertCircle className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                 </motion.div>
-                <motion.span 
+                <motion.span
                   className="font-heading text-3xl md:text-4xl font-bold tabular-nums"
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -170,14 +169,14 @@ const Counter = ({ value, isInView, delay }: { value: number; isInView: boolean;
   const [count, setCount] = useState(0);
   const countRef = useRef<NodeJS.Timeout | null>(null);
 
-  useState(() => {
+  useEffect(() => {
     if (isInView) {
       const timeout = setTimeout(() => {
         const duration = 1500;
         const steps = 30;
         const increment = value / steps;
         let current = 0;
-        
+
         countRef.current = setInterval(() => {
           current += increment;
           if (current >= value) {
@@ -188,13 +187,13 @@ const Counter = ({ value, isInView, delay }: { value: number; isInView: boolean;
           }
         }, duration / steps);
       }, delay * 1000);
-      
+
       return () => {
         clearTimeout(timeout);
         if (countRef.current) clearInterval(countRef.current);
       };
     }
-  });
+  }, [isInView, value, delay]);
 
   return <>{isInView ? count : 0}</>;
 };
